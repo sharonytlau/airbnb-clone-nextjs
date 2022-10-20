@@ -1,6 +1,7 @@
 import React from 'react'
 import SearchBar from 'components/SearchBar'
 import CategoryFilters from 'components/CategoryFilters'
+import ListingCards from 'components/ListingCards'
 
 const fakeCategories = [
   {
@@ -61,14 +62,39 @@ const fakeCategories = [
   },
 ]
 
+const fakeListingCards = [
+  {
+    image: 'https://source.unsplash.com/IWfe63thJxk',
+    title: 'New England',
+    price: 80,
+    rating: 4.99,
+    distance: 200,
+  },
+  {
+    image: 'https://source.unsplash.com/IWfe63thJxk',
+    title: 'Bedfordshire',
+    price: 100,
+    rating: 4.8,
+    distance: 270,
+  },
+  {
+    image: 'https://source.unsplash.com/IWfe63thJxk',
+    title: 'Buckinghamshire',
+    price: 70,
+    rating: 4.85,
+    distance: 180,
+  },
+]
+
 function Explore() {
   return (
-    <div className="h-full w-full flex flex-col justify-between pt-3">
+    <div className="h-full w-full flex flex-col justify-between gap-4 pt-3">
       {/* Search Bar */}
       <SearchBar />
       {/* Filters */}
       <CategoryFilters categories={fakeCategories} />
-      {/* B&B Cards */}
+      {/* Listings */}
+      <ListingCards data={fakeListingCards} />
       <div>B&B Cards</div>
       {/* Footer */}
       <div>Footer</div>
