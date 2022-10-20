@@ -5,8 +5,8 @@ import Explore from './Explore'
 
 const Home: NextPage = () => {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
-     <Explore/>
+    <div className="flex h-screen flex-col items-center justify-center py-2">
+      <Explore />
     </div>
   )
 }

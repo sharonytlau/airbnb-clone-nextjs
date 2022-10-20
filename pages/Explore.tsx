@@ -1,15 +1,11 @@
 import React from 'react'
-import { SearchIcon } from 'components/icons/SearchIcon'
+import SearchBar from 'components/SearchBar'
 
 function Explore() {
   return (
-    <div>
+    <div className="flex flex-col justify-between h-full pt-3">
       {/* Search Bar */}
-      <div className="flex">
-        Search Bar
-        <SearchIcon />
-        <input type="text" placeholder="Where to?" />
-      </div>
+      <SearchBar />
       {/* Filters */}
       <div>Filters</div>
       {/* B&B Cards */}
