@@ -95,7 +95,6 @@ function Explore() {
       <CategoryFilters categories={fakeCategories} />
       {/* Listings */}
       <ListingCards data={fakeListingCards} />
-      <div>B&B Cards</div>
       {/* Footer */}
       <div>Footer</div>
     </div>
