@@ -30,7 +30,7 @@ function ListingCards({ data }: ListingCardsProps) {
                 <p className="text-sm"> {'Oct 22 - 25'} </p>
                 <p className="mt-2 text-sm">
                   <span className="font-bold">{`$${price}`}</span>
-                  <span className="font-medium"> night </span>
+                  <span> night </span>
                 </p>
               </div>
               <div className="font-bold"> {`★ ${rating}`} </div>

@@ -2,6 +2,7 @@ import React from 'react'
 import SearchBar from 'components/SearchBar'
 import CategoryFilters from 'components/CategoryFilters'
 import ListingCards from 'components/ListingCards'
+import TheFooter from 'components/TheFooter'
 
 const fakeCategories = [
   {
@@ -96,7 +97,7 @@ function Explore() {
       {/* Listings */}
       <ListingCards data={fakeListingCards} />
       {/* Footer */}
-      <div>Footer</div>
+      <TheFooter />
     </div>
   )
 }
