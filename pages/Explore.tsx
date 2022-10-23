@@ -89,7 +89,7 @@ const fakeListingCards = [
 
 function Explore() {
   return (
-    <div className="h-full w-full flex flex-col justify-between gap-4 pt-3">
+    <div className="h-full w-full flex flex-col justify-between gap-4 pt-4">
       {/* Search Bar */}
       <SearchBar />
       {/* Filters */}

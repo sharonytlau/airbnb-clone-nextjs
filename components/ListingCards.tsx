@@ -15,7 +15,7 @@ type ListingCardsProps = {
 
 function ListingCards({ data }: ListingCardsProps) {
   return (
-    <div className="flex-1 overflow-y-auto px-7 space-y-8 text-gray-900">
+    <div className="flex-1 overflow-y-auto scrollbar-hide px-7 space-y-8 text-gray-900">
       {data.map((el) => {
         const { image, title, price, rating, distance } = el
         return (

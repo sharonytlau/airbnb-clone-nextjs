@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import { SearchIcon2 } from 'components/icons/SearchIcon2'
+import { ExploreIcon } from 'components/icons/ExploreIcon'
 import { HeartIcon } from 'components/icons/HeartIcon'
 import { MapIcon } from 'components/icons/MapIcon'
 import { MoreIcon } from 'components/icons/MoreIcon'
 
 const bottomIcons = [
   {
-    icon: <SearchIcon2 />,
+    icon: <ExploreIcon />,
     text: 'Explore',
     to: '',
   },
@@ -58,16 +58,11 @@ function TheFooter() {
           >
             <div className={`text-xl ${getIconStyle(el.text)}`}>{el.icon}</div>
             <div className={`text-xxs ${getIconTextStyle(el.text)}`}>
-              {' '}
-              {el.text}{' '}
+              {el.text}
             </div>
           </div>
         )
       })}
-      {/* <SearchIcon2 className="text-xl" />
-      <HeartIcon className="text-xl" />
-      <MapIcon className="text-xl" />
-      <MoreIcon className="text-xl" /> */}
     </div>
   )
 }
