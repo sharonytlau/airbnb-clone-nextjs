@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import SearchBar from 'components/SearchBar'
 import CategoryFilters from 'components/CategoryFilters'
 import ListingCards from 'components/ListingCards'
 import TheFooter from 'components/TheFooter'
+import SearchDrawer from 'components/SearchDrawer'
 
 const fakeCategories = [
   {
@@ -88,16 +89,22 @@ const fakeListingCards = [
 ]
 
 function Explore() {
+  const [showDrawer, setShowDrawer] = useState(false)
+
   return (
     <div className="h-full w-full flex flex-col justify-between gap-4 pt-4">
       {/* Search Bar */}
-      <SearchBar />
+      <SearchBar handleShowDrawer={() => setShowDrawer(true)} />
       {/* Filters */}
       <CategoryFilters categories={fakeCategories} />
       {/* Listings */}
       <ListingCards data={fakeListingCards} />
       {/* Footer */}
       <TheFooter />
+      <SearchDrawer
+        showDrawer={showDrawer}
+        handleHideDrawer={() => setShowDrawer(false)}
+      />
     </div>
   )
 }

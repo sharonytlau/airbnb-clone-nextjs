@@ -2,9 +2,18 @@ import React from 'react'
 import { SearchIcon } from 'components/icons/SearchIcon'
 import { FilterIcon } from 'components/icons/FilterIcon'
 
-function SearchBar() {
+type SearchBarProps = {
+  handleShowDrawer: (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => void
+}
+
+function SearchBar({ handleShowDrawer }: SearchBarProps) {
   return (
-    <div className="flex items-center justify-between gap-3 py-2 pl-5 pr-3 shadow-[0_2px_15px] shadow-gray-200 rounded-full mx-6  text-gray-900">
+    <div
+      className="flex items-center justify-between gap-3 py-2 pl-5 pr-3 shadow-[0_2px_15px] shadow-gray-200 rounded-full mx-6  text-gray-900"
+      onClick={handleShowDrawer}
+    >
       <div className="flex gap-4 items-center tracking-tight">
         <SearchIcon className="text-lg text-gray-800" />
         <div>
