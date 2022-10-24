@@ -6,6 +6,8 @@ import { SearchFineIcon } from 'components/icons/SearchFineIcon'
 import { CancelIcon } from 'components/icons/CancelIcon'
 import { HistoryIcon } from 'components/icons/HistoryIcon'
 import { BackIcon } from 'components/icons/BackIcon'
+import { AddIcon } from 'components/icons/AddIcon'
+import { MinusIcon } from 'components/icons/MinusIcon'
 import { SearchTypes, SearchCard } from 'components/SearchCard'
 import { getEnumKeys } from 'utils/utils'
 
@@ -25,6 +27,13 @@ const fakeAreas = [
 ]
 
 const tabs = [{ title: 'Stays' }, { title: 'Experiences' }]
+
+const guestChoices = [
+  { title: 'Adults', description: 'Ages 13 or above' },
+  { title: 'Children', description: 'Ages 2-12' },
+  { title: 'Infant', description: 'Under 2' },
+  { title: 'Pets', description: 'Bringing a service animal' },
+]
 
 type SearchDrawerProps = {
   showDrawer: Boolean
@@ -89,17 +98,12 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
       <div className="relative flex justify-center gap-4 text-base py-6">
         <RoundedButton
           actionType={showDestinationInputModal ? 'BACK' : 'CANCEL'}
-          handleCancel={
-            showDestinationInputModal ? undefined : handleHideDrawer
-          }
-          handleBack={
+          handleClick={
             showDestinationInputModal
-              ? function hideModal() {
-                  console.log('hide modal!!!')
-
+              ? () => {
                   setShowDestinationInputModal(false)
                 }
-              : undefined
+              : handleHideDrawer
           }
         />
         {tabs.map(({ title }) => {
@@ -161,6 +165,27 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
                   </div>
                 </>
               )}
+
+              {activeCard === 'WHO' &&
+                guestChoices.map(({ title, description }) => {
+                  return (
+                    <div className="flex justify-between items-center pb-3 border-b border-b-zinc-150">
+                      <div>
+                        <p> {title} </p>
+                        <p className="text-gray-500"> {description}</p>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center justify-center text-md rounded-full border border-zinc-150 p-0.5 text-zinc-150">
+                          <MinusIcon />
+                        </div>
+                        <span className="text-gray-500">0</span>
+                        <div className="flex items-center justify-center text-md rounded-full border border-gray-400 p-0.5 text-gray-700">
+                          <AddIcon />
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })}
             </SearchCard>
           ))}
 
@@ -243,21 +268,17 @@ enum RoundedBtnTypes {
 
 type RoundedButtonProps = {
   actionType?: keyof typeof RoundedBtnTypes
-  handleCancel?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
-  handleBack?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+  handleClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
 }
 
 function RoundedButton({
   actionType = 'BACK',
-  handleCancel,
-  handleBack,
+  handleClick,
 }: RoundedButtonProps) {
   return (
     <div
       className="w-8 h-8 absolute top-50% -translate-y-[0.1rem] left-5 flex items-center justify-center bg-zinc-25 border border-gray-400 rounded-full"
-      onClick={
-        handleCancel ? handleCancel : handleBack ? handleBack : undefined
-      }
+      onClick={handleClick}
     >
       {actionType === 'CANCEL' ? (
         <CancelIcon />
