@@ -32,6 +32,8 @@ type SearchDrawerProps = {
 function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
   const [activeTab, setActiveTab] = useState(tabs[0].title)
   const [activeArea, setActiveArea] = useState(fakeAreas[0].title)
+  const [showDestinationInputModal, setShowDestinationInputModal] =
+    useState(false)
 
   const getDrawerStyle = (showDrawer: Boolean) => {
     const show = 'opacity-100'
@@ -62,14 +64,14 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
 
   return (
     <div
-      className={`fixed left-0 top-0 px-3 flex flex-col gap-3 bg-zinc-100 w-screen h-screen z-50 text-sm font-medium text-gray-900 transition-all duration-500 ease-out ${getDrawerStyle(
+      className={`fixed left-0 top-0 flex flex-col bg-zinc-100 w-screen h-screen z-25 text-sm font-medium text-gray-900 transition-all duration-500 ease-out ${getDrawerStyle(
         showDrawer
       )}`}
     >
       {/* tabs */}
-      <div className="relative flex justify-center gap-4 text-base pt-5 pb-2">
+      <div className="relative flex justify-center gap-4 text-base py-6">
         <div
-          className="absolute top-50% -translate-y-[0.2rem] left-3 flex items-center p-1.5 bg-white border border-gray-400 rounded-full"
+          className="absolute top-50% -translate-y-[0.1rem] left-5 flex items-center p-1.5 bg-white border border-gray-400 rounded-full"
           onClick={handleHideDrawer}
         >
           <CancelIcon />
@@ -88,59 +90,81 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
         })}
       </div>
 
-      {/* card: Where */}
-      <div className="flex flex-col gap-4 bg-white rounded-3xl p-5 shadow-[0_5px_15px] shadow-zinc-350">
-        <h2 className="text-lg"> Where to? </h2>
-        <div className="flex items-center gap-2 py-3 text-zinc-500 border rounded-xl p-4">
-          <div className="text-zinc-900 text-md stroke-1 stroke-current">
-            <SearchFineIcon />
-          </div>
-          <span>Search destinations</span>
-        </div>
-        {/* area cards */}
-        <div className="flex gap-4 overflow-x-scroll scrollbar-hide">
-          {fakeAreas.map(({ image, title }) => {
-            return (
-              <div
-                className={`flex flex-col gap-2 ${getAreaStyle(title)}`}
-                onClick={() => setActiveArea(title)}
-              >
-                <div
-                  className={`w-30 h-30 flex items-center rounded-2xl justify-center overflow-hidden ${getAreaImageStyle(
-                    title
-                  )}`}
-                >
-                  {image}
-                </div>
-                <div> {title}</div>
+      {/* initial search */}
+      {!showDestinationInputModal && (
+        <div className="flex flex-col gap-3 px-3">
+          {/* card: Where */}
+          <div className="flex flex-col gap-4 bg-white rounded-3xl p-5 shadow-[0_5px_15px] shadow-zinc-350">
+            <h2 className="text-lg"> Where to? </h2>
+            <div
+              className="flex items-center gap-2 py-3 text-zinc-500 border rounded-xl p-4"
+              onClick={() => {
+                setShowDestinationInputModal(true)
+              }}
+            >
+              <div className="text-zinc-900 text-md stroke-1 stroke-current">
+                <SearchFineIcon />
               </div>
-            )
-          })}
-        </div>
-      </div>
-
-      {/* card: When */}
-      <div className="flex justify-between bg-white p-4 rounded-2xl shadow-[0_2px_6px] shadow-zinc-200">
-        <h2 className="text-zinc-600"> When </h2>
-        <span> Add dates </span>
-      </div>
-      {/* card: Who */}
-      <div className="flex justify-between bg-white p-4 rounded-2xl shadow-[0_2px_6px] shadow-zinc-200">
-        <h2 className="text-zinc-600"> Who </h2>
-        <span> Add guests </span>
-      </div>
-      {/* footer */}
-      <div className="flex justify-between p-3 mt-auto bg-zinc-75 text-base">
-        <button>
-          <span className="underline">Clear all</span>
-        </button>
-        <button className="flex items-center gap-2 px-4 py-2 bg-rose-500 text-white rounded-lg">
-          <div className="text-lg">
-            <SearchFineIcon />
+              <span>Search destinations</span>
+            </div>
+            {/* area cards */}
+            <div className="flex gap-4 overflow-x-scroll scrollbar-hide">
+              {fakeAreas.map(({ image, title }) => {
+                return (
+                  <div
+                    className={`flex flex-col gap-2 ${getAreaStyle(title)}`}
+                    onClick={() => setActiveArea(title)}
+                  >
+                    <div
+                      className={`w-30 h-30 flex items-center rounded-2xl justify-center overflow-hidden ${getAreaImageStyle(
+                        title
+                      )}`}
+                    >
+                      {image}
+                    </div>
+                    <div> {title}</div>
+                  </div>
+                )
+              })}
+            </div>
           </div>
-          <span>Search</span>
-        </button>
-      </div>
+          {/* card: When */}
+          <div className="flex justify-between bg-white p-4 rounded-2xl shadow-[0_2px_6px] shadow-zinc-200">
+            <h2 className="text-zinc-600"> When </h2>
+            <span> Add dates </span>
+          </div>
+          {/* card: Who */}
+          <div className="flex justify-between bg-white p-4 rounded-2xl shadow-[0_2px_6px] shadow-zinc-200">
+            <h2 className="text-zinc-600"> Who </h2>
+            <span> Add guests </span>
+          </div>
+          {/* footer */}
+          <div className="fixed left-0 bottom-0 w-full flex justify-between p-3 bg-zinc-75 text-base">
+            <button>
+              <span className="underline">Clear all</span>
+            </button>
+            <button className="flex items-center gap-2 px-4 py-2 bg-rose-500 text-white rounded-lg">
+              <div className="text-lg">
+                <SearchFineIcon />
+              </div>
+              <span>Search</span>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* modal: destination input */}
+      {showDestinationInputModal && (
+        <div className="flex-grow bg-white">
+          <div className=" bottom-50 z-50">hello111</div>
+          <button
+            className="bg-rose-500 p-3 color-white"
+            onClick={() => setShowDestinationInputModal(false)}
+          >
+            cancel
+          </button>
+        </div>
+      )}
     </div>
   )
 }
