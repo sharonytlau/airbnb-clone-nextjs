@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { WorldMap } from 'components/maps/WorldMap'
 import { EuropeMap } from 'components/maps/EuropeMap'
 import { SouthAmericaMap } from 'components/maps/SouthAmericaMap'
-import { SearchIcon } from './icons/SearchIcon'
 import { SearchFineIcon } from './icons/SearchFineIcon'
 import { CancelIcon } from './icons/CancelIcon'
 
@@ -20,16 +19,44 @@ const fakeAreas = [
     title: 'South America',
   },
 ]
+
+const tabs = [{ title: 'Stays' }, { title: 'Experiences' }]
+
 type SearchDrawerProps = {
   showDrawer: Boolean
   handleHideDrawer: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
+  const [activeTab, setActiveTab] = useState(tabs[0].title)
+  const [activeArea, setActiveArea] = useState(fakeAreas[0].title)
+
   const getDrawerStyle = (showDrawer: Boolean) => {
     const show = 'opacity-100'
     const hide = 'opacity-50 translate-y-full'
     return showDrawer ? show : hide
+  }
+
+  const getTabStyle = (title: string) => {
+    const active = 'border-b-2 border-current'
+    const inactive = 'text-gray-500'
+
+    return title === activeTab ? active : inactive
+  }
+
+  const getAreaStyle = (title: string) => {
+    const active = ''
+    const inactive = 'text-gray-500'
+
+    return title === activeArea ? active : inactive
+  }
+
+  const getAreaImageStyle = (title: string) => {
+    const active = 'outline-offset-[-2px] outline outline-2 outline-gray-800'
+    // const active = 'border-2 border-gray-800'
+    const inactive = 'outline-offset-[-1px] outline outline-1 outline-gray-300'
+
+    return title === activeArea ? active : inactive
   }
 
   return (
@@ -43,9 +70,20 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
         <div className="absolute left-3 flex items-center p-1 bg-white border border-gray-400 rounded-full">
           <CancelIcon />
         </div>
-        <div className="border-b-2 border-current"> Stays </div>
-        <div> Experiences </div>
+        {tabs.map(({ title }) => {
+          return (
+            <div
+              className={getTabStyle(title)}
+              onClick={() => {
+                setActiveTab(title)
+              }}
+            >
+              {title}
+            </div>
+          )
+        })}
       </div>
+
       {/* card: Where */}
       <div className="flex flex-col gap-4 bg-white rounded-3xl p-5 shadow-[0_5px_15px] shadow-zinc-350">
         <h2 className="text-lg"> Where to? </h2>
@@ -57,16 +95,26 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
         </div>
         {/* area cards */}
         <div className="flex gap-4 overflow-x-scroll scrollbar-hide">
-          {fakeAreas.map((el) => {
+          {fakeAreas.map(({ image, title }) => {
             return (
-              <div className="flex flex-col gap-2">
-                {el.image}
-                <div> {el.title}</div>
+              <div
+                className={`flex flex-col gap-2 ${getAreaStyle(title)}`}
+                onClick={() => setActiveArea(title)}
+              >
+                <div
+                  className={`w-30 h-30 flex items-center rounded-2xl justify-center overflow-hidden ${getAreaImageStyle(
+                    title
+                  )}`}
+                >
+                  {image}
+                </div>
+                <div> {title}</div>
               </div>
             )
           })}
         </div>
       </div>
+
       {/* card: When */}
       <div className="flex justify-between bg-white p-4 rounded-2xl shadow-[0_2px_6px] shadow-zinc-200">
         <h2 className="text-zinc-600"> When </h2>
