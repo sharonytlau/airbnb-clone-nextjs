@@ -56,7 +56,7 @@ function TheFooter() {
             className="flex flex-col items-center gap-1"
             onClick={() => handleClick(el.text)}
           >
-            <div className={`text-xl ${getIconStyle(el.text)}`}>{el.icon}</div>
+            <div className={`text-2xl ${getIconStyle(el.text)}`}>{el.icon}</div>
             <div className={`text-xxs ${getIconTextStyle(el.text)}`}>
               {el.text}
             </div>
