@@ -2,10 +2,12 @@ import React, { useState } from 'react'
 import { WorldMap } from 'components/maps/WorldMap'
 import { EuropeMap } from 'components/maps/EuropeMap'
 import { SouthAmericaMap } from 'components/maps/SouthAmericaMap'
-import { SearchFineIcon } from './icons/SearchFineIcon'
-import { CancelIcon } from './icons/CancelIcon'
-import { HistoryIcon } from './icons/HistoryIcon'
-import { BackIcon } from './icons/BackIcon'
+import { SearchFineIcon } from 'components/icons/SearchFineIcon'
+import { CancelIcon } from 'components/icons/CancelIcon'
+import { HistoryIcon } from 'components/icons/HistoryIcon'
+import { BackIcon } from 'components/icons/BackIcon'
+import { SearchTypes, SearchCard } from 'components/SearchCard'
+import { getEnumKeys } from 'utils/utils'
 
 const fakeAreas = [
   {
@@ -36,8 +38,8 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
   const [activeArea, setActiveArea] = useState(fakeAreas[0].title)
   const [showDestinationInputModal, setShowDestinationInputModal] =
     useState(false)
-  // const [upperLeftBtnType, setUpperLeftBtnType] =
-  //   useState<keyof typeof RoundedBtnType>('CANCEL')
+  const [activeCardType, setActiveCardType] =
+    useState<keyof typeof SearchTypes>('WHERE')
 
   const getDrawerStyle = (showDrawer: Boolean) => {
     const show = 'opacity-100'
@@ -106,45 +108,47 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
       {/* initial search */}
       {!showDestinationInputModal && (
         <div className="flex flex-col gap-3 px-3">
-          {/* card: Where */}
-          <div className="flex flex-col gap-4 bg-white rounded-3xl p-5 shadow-[0_5px_15px] shadow-zinc-350">
-            <h2 className="text-lg"> Where to? </h2>
-            <SearchDestinationInput
-              handleClick={() => {
-                setShowDestinationInputModal(true)
-              }}
-            />
-            {/* area cards */}
-            <div className="flex gap-4 overflow-x-scroll scrollbar-hide">
-              {fakeAreas.map(({ image, title }) => {
-                return (
-                  <div
-                    className={`flex flex-col gap-2 ${getAreaStyle(title)}`}
-                    onClick={() => setActiveArea(title)}
-                  >
-                    <div
-                      className={`w-30 h-30 flex items-center rounded-2xl justify-center overflow-hidden ${getAreaImageStyle(
-                        title
-                      )}`}
-                    >
-                      {image}
-                    </div>
-                    <div> {title}</div>
+          {/* cards: Where, When, Who */}
+          {getEnumKeys(SearchTypes).map((type) => (
+            <SearchCard
+              searchType={type}
+              open={type === activeCardType}
+              handleClick={() => setActiveCardType(type)}
+            >
+              {activeCardType === 'WHERE' && (
+                <>
+                  <SearchDestinationInput
+                    handleClick={() => {
+                      setShowDestinationInputModal(true)
+                    }}
+                  />
+                  {/* area cards */}
+                  <div className="flex gap-4 overflow-x-scroll scrollbar-hide">
+                    {fakeAreas.map(({ image, title }) => {
+                      return (
+                        <div
+                          className={`flex flex-col gap-2 ${getAreaStyle(
+                            title
+                          )}`}
+                          onClick={() => setActiveArea(title)}
+                        >
+                          <div
+                            className={`w-30 h-30 flex items-center rounded-2xl justify-center overflow-hidden ${getAreaImageStyle(
+                              title
+                            )}`}
+                          >
+                            {image}
+                          </div>
+                          <div> {title}</div>
+                        </div>
+                      )
+                    })}
                   </div>
-                )
-              })}
-            </div>
-          </div>
-          {/* card: When */}
-          <div className="flex justify-between bg-white p-4 rounded-2xl shadow-[0_2px_6px] shadow-zinc-200">
-            <h2 className="text-zinc-600"> When </h2>
-            <span> Add dates </span>
-          </div>
-          {/* card: Who */}
-          <div className="flex justify-between bg-white p-4 rounded-2xl shadow-[0_2px_6px] shadow-zinc-200">
-            <h2 className="text-zinc-600"> Who </h2>
-            <span> Add guests </span>
-          </div>
+                </>
+              )}
+            </SearchCard>
+          ))}
+
           {/* footer */}
           <div className="fixed left-0 bottom-0 w-full flex justify-between p-3 bg-zinc-75 text-base">
             <button>
@@ -162,7 +166,7 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
 
       {/* modal: destination input */}
       {showDestinationInputModal && (
-        <div className="flex-grow flex flex-col gap-6 bg-white p-5 rounded-4xl shadow-[0_5px_15px] shadow-zinc-350">
+        <div className="flex-grow flex flex-col gap-6 bg-white p-6 rounded-4xl shadow-[0_5px_15px] shadow-zinc-350">
           <SearchDestinationInput
             enableInput
             handleClick={() => {
@@ -173,7 +177,7 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
             <h3 className="font-semibold"> Recent Searches</h3>
             <div className="flex items-center gap-4 py-4">
               <div className="flex items-center justify-center w-12 h-12 bg-zinc-150 rounded-xl">
-                <HistoryIcon className="text-xl" />
+                <HistoryIcon className="text-2xl" />
               </div>
               <div className="font-normal">
                 <p className="text-base">London · Stays</p>
@@ -217,13 +221,13 @@ function SearchDestinationInput({
   )
 }
 
-enum RoundedBtnType {
+enum RoundedBtnTypes {
   CANCEL,
   BACK,
 }
 
 type RoundedButtonProps = {
-  actionType?: keyof typeof RoundedBtnType
+  actionType?: keyof typeof RoundedBtnTypes
   handleCancel?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   handleBack?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
 }
