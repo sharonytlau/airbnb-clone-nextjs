@@ -28,13 +28,6 @@ const fakeAreas = [
 
 const tabs = [{ title: 'Stays' }, { title: 'Experiences' }]
 
-const guestChoices = [
-  { title: 'Adults', description: 'Ages 13 or above' },
-  { title: 'Children', description: 'Ages 2-12' },
-  { title: 'Infant', description: 'Under 2' },
-  { title: 'Pets', description: 'Bringing a service animal' },
-]
-
 type SearchDrawerProps = {
   showDrawer: Boolean
   handleHideDrawer: (
@@ -49,6 +42,31 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
     useState(false)
   const [activeCard, setActiveCard] =
     useState<keyof typeof SearchTypes>('WHERE')
+  const [guestNum, setGuestNum] = useState({
+    Adults: 0,
+    Children: 0,
+    Infant: 0,
+    Pets: 0,
+  })
+
+  enum guestTypes {
+    'Adults',
+    'Children',
+    'Infant',
+    'Pets',
+  }
+
+  type GuestChoice = {
+    title: keyof typeof guestTypes
+    description: string
+  }
+
+  const guestChoices: GuestChoice[] = [
+    { title: 'Adults', description: 'Ages 13 or above' },
+    { title: 'Children', description: 'Ages 2-12' },
+    { title: 'Infant', description: 'Under 2' },
+    { title: 'Pets', description: 'Bringing a service animal' },
+  ]
 
   const getDrawerStyle = (showDrawer: Boolean) => {
     const show = 'opacity-100'
@@ -75,6 +93,34 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
     const inactive = 'outline-offset-[-1px] outline outline-1 outline-gray-300'
 
     return title === activeArea ? active : inactive
+  }
+
+  const getGuestIconStyle = (
+    type: 'add' | 'minus',
+    title: keyof typeof guestTypes
+  ) => {
+    const disableCond =
+      type === 'add' ? checkGuestMax(title) : checkGuestMin(title)
+    const disable = 'border-zinc-150 text-zinc-150'
+    const enable = 'border-gray-400 text-gray-700'
+
+    return disableCond ? disable : enable
+  }
+
+  function checkGuestMin(title: keyof typeof guestTypes) {
+    return guestNum[title] === 0
+  }
+
+  function checkGuestMax(title: keyof typeof guestTypes) {
+    switch (title) {
+      case 'Adults':
+      case 'Children':
+        return guestNum['Adults'] + guestNum['Children'] === 16
+      case 'Infant':
+        return guestNum['Infant'] === 5
+      case 'Pets':
+        return guestNum['Pets'] === 5
+    }
   }
 
   function getCardInput(type: keyof typeof SearchTypes) {
@@ -174,14 +220,44 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
                         <p> {title} </p>
                         <p className="text-gray-500"> {description}</p>
                       </div>
-                      <div className="flex items-center gap-3">
-                        <div className="flex items-center justify-center text-md rounded-full border border-zinc-150 p-0.5 text-zinc-150">
+                      <div className="flex items-center gap-1">
+                        <button
+                          className={`flex items-center justify-center text-md rounded-full p-0.5 border ${getGuestIconStyle(
+                            'minus',
+                            title
+                          )}`}
+                          disabled={checkGuestMin(title)}
+                          onClick={() =>
+                            setGuestNum((before) => {
+                              return {
+                                ...before,
+                                [title]: before[title] - 1,
+                              }
+                            })
+                          }
+                        >
                           <MinusIcon />
-                        </div>
-                        <span className="text-gray-500">0</span>
-                        <div className="flex items-center justify-center text-md rounded-full border border-gray-400 p-0.5 text-gray-700">
+                        </button>
+                        <span className="text-gray-500 text-center w-8">
+                          {guestNum[title]}
+                        </span>
+                        <button
+                          className={`flex items-center justify-center text-md rounded-full p-0.5 border ${getGuestIconStyle(
+                            'add',
+                            title
+                          )}`}
+                          disabled={checkGuestMax(title)}
+                          onClick={() =>
+                            setGuestNum((before) => {
+                              return {
+                                ...before,
+                                [title]: before[title] + 1,
+                              }
+                            })
+                          }
+                        >
                           <AddIcon />
-                        </div>
+                        </button>
                       </div>
                     </div>
                   )

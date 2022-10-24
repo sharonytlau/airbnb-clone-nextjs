@@ -25,7 +25,7 @@ export function SearchCard({
   handleClick,
   input,
 }: SearchCardProps) {
-  console.log('get type!!', searchType)
+  console.log('rendered', { searchType, children, open, handleClick, input })
 
   const texts = {
     ...cardTexts[searchType],
