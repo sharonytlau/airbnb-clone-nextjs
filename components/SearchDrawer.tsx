@@ -38,7 +38,7 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
   const [activeArea, setActiveArea] = useState(fakeAreas[0].title)
   const [showDestinationInputModal, setShowDestinationInputModal] =
     useState(false)
-  const [activeCardType, setActiveCardType] =
+  const [activeCard, setActiveCard] =
     useState<keyof typeof SearchTypes>('WHERE')
 
   const getDrawerStyle = (showDrawer: Boolean) => {
@@ -66,6 +66,17 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
     const inactive = 'outline-offset-[-1px] outline outline-1 outline-gray-300'
 
     return title === activeArea ? active : inactive
+  }
+
+  function getCardInput(type: keyof typeof SearchTypes) {
+    switch (type) {
+      case 'WHERE':
+        return activeArea
+      case 'WHEN':
+        return ''
+      case 'WHO':
+        return ''
+    }
   }
 
   return (
@@ -112,10 +123,11 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
           {getEnumKeys(SearchTypes).map((type) => (
             <SearchCard
               searchType={type}
-              open={type === activeCardType}
-              handleClick={() => setActiveCardType(type)}
+              open={type === activeCard}
+              handleClick={() => setActiveCard(type)}
+              input={getCardInput(type)}
             >
-              {activeCardType === 'WHERE' && (
+              {activeCard === 'WHERE' && (
                 <>
                   <SearchDestinationInput
                     handleClick={() => {
@@ -130,7 +142,10 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
                           className={`flex flex-col gap-2 ${getAreaStyle(
                             title
                           )}`}
-                          onClick={() => setActiveArea(title)}
+                          onClick={() => {
+                            setActiveArea(title)
+                            setActiveCard('WHEN')
+                          }}
                         >
                           <div
                             className={`w-30 h-30 flex items-center rounded-2xl justify-center overflow-hidden ${getAreaImageStyle(

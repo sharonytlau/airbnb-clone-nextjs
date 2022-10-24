@@ -23,6 +23,7 @@ export function SearchCard({
   children,
   open = false,
   handleClick,
+  input,
 }: SearchCardProps) {
   console.log('get type!!', searchType)
 
@@ -43,7 +44,7 @@ export function SearchCard({
       onClick={handleClick}
     >
       <h2 className="text-zinc-600"> {texts.title} </h2>
-      <span> {texts.placeholder} </span>
+      <span> {input || texts.placeholder} </span>
     </div>
   )
 }
