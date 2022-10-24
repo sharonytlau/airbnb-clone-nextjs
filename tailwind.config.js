@@ -12,7 +12,9 @@ module.exports = {
     extend: {
       colors: {
         zinc: {
+          25: '#fbfbfb',
           75: '#f8f8f8',
+          150: '#eeeeef',
           350: '#c2c2c8',
         },
       },
@@ -27,6 +29,9 @@ module.exports = {
       },
       spacing: {
         30: '7.5rem', // 120px
+      },
+      borderRadius: {
+        '4xl': '1.875rem', // 30px
       },
     },
   },
