@@ -24,7 +24,9 @@ const tabs = [{ title: 'Stays' }, { title: 'Experiences' }]
 
 type SearchDrawerProps = {
   showDrawer: Boolean
-  handleHideDrawer: (event: React.MouseEvent<HTMLButtonElement>) => void
+  handleHideDrawer: (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => void
 }
 
 function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
@@ -53,7 +55,6 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
 
   const getAreaImageStyle = (title: string) => {
     const active = 'outline-offset-[-2px] outline outline-2 outline-gray-800'
-    // const active = 'border-2 border-gray-800'
     const inactive = 'outline-offset-[-1px] outline outline-1 outline-gray-300'
 
     return title === activeArea ? active : inactive
@@ -67,7 +68,10 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
     >
       {/* tabs */}
       <div className="relative flex justify-center gap-4 text-base pt-5 pb-2">
-        <div className="absolute left-3 flex items-center p-1 bg-white border border-gray-400 rounded-full">
+        <div
+          className="absolute top-50% -translate-y-[0.2rem] left-3 flex items-center p-1.5 bg-white border border-gray-400 rounded-full"
+          onClick={handleHideDrawer}
+        >
           <CancelIcon />
         </div>
         {tabs.map(({ title }) => {
@@ -130,10 +134,7 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
         <button>
           <span className="underline">Clear all</span>
         </button>
-        <button
-          className="flex items-center gap-2 px-4 py-2 bg-rose-500 text-white rounded-lg"
-          onClick={handleHideDrawer}
-        >
+        <button className="flex items-center gap-2 px-4 py-2 bg-rose-500 text-white rounded-lg">
           <div className="text-lg">
             <SearchFineIcon />
           </div>
