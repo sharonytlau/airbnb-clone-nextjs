@@ -4,6 +4,8 @@ import { EuropeMap } from 'components/maps/EuropeMap'
 import { SouthAmericaMap } from 'components/maps/SouthAmericaMap'
 import { SearchFineIcon } from './icons/SearchFineIcon'
 import { CancelIcon } from './icons/CancelIcon'
+import { HistoryIcon } from './icons/HistoryIcon'
+import { BackIcon } from './icons/BackIcon'
 
 const fakeAreas = [
   {
@@ -34,6 +36,8 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
   const [activeArea, setActiveArea] = useState(fakeAreas[0].title)
   const [showDestinationInputModal, setShowDestinationInputModal] =
     useState(false)
+  // const [upperLeftBtnType, setUpperLeftBtnType] =
+  //   useState<keyof typeof RoundedBtnType>('CANCEL')
 
   const getDrawerStyle = (showDrawer: Boolean) => {
     const show = 'opacity-100'
@@ -70,12 +74,21 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
     >
       {/* tabs */}
       <div className="relative flex justify-center gap-4 text-base py-6">
-        <div
-          className="absolute top-50% -translate-y-[0.1rem] left-5 flex items-center p-1.5 bg-white border border-gray-400 rounded-full"
-          onClick={handleHideDrawer}
-        >
-          <CancelIcon />
-        </div>
+        <RoundedButton
+          actionType={showDestinationInputModal ? 'BACK' : 'CANCEL'}
+          handleCancel={
+            showDestinationInputModal ? undefined : handleHideDrawer
+          }
+          handleBack={
+            showDestinationInputModal
+              ? function hideModal() {
+                  console.log('hide modal!!!')
+
+                  setShowDestinationInputModal(false)
+                }
+              : undefined
+          }
+        />
         {tabs.map(({ title }) => {
           return (
             <div
@@ -96,17 +109,11 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
           {/* card: Where */}
           <div className="flex flex-col gap-4 bg-white rounded-3xl p-5 shadow-[0_5px_15px] shadow-zinc-350">
             <h2 className="text-lg"> Where to? </h2>
-            <div
-              className="flex items-center gap-2 py-3 text-zinc-500 border rounded-xl p-4"
-              onClick={() => {
+            <SearchDestinationInput
+              handleClick={() => {
                 setShowDestinationInputModal(true)
               }}
-            >
-              <div className="text-zinc-900 text-md stroke-1 stroke-current">
-                <SearchFineIcon />
-              </div>
-              <span>Search destinations</span>
-            </div>
+            />
             {/* area cards */}
             <div className="flex gap-4 overflow-x-scroll scrollbar-hide">
               {fakeAreas.map(({ image, title }) => {
@@ -155,15 +162,88 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
 
       {/* modal: destination input */}
       {showDestinationInputModal && (
-        <div className="flex-grow bg-white">
-          <div className=" bottom-50 z-50">hello111</div>
-          <button
-            className="bg-rose-500 p-3 color-white"
-            onClick={() => setShowDestinationInputModal(false)}
-          >
-            cancel
-          </button>
+        <div className="flex-grow flex flex-col gap-6 bg-white p-5 rounded-4xl shadow-[0_5px_15px] shadow-zinc-350">
+          <SearchDestinationInput
+            enableInput
+            handleClick={() => {
+              console.log('1111')
+            }}
+          />
+          <div>
+            <h3 className="font-semibold"> Recent Searches</h3>
+            <div className="flex items-center gap-4 py-4">
+              <div className="flex items-center justify-center w-12 h-12 bg-zinc-150 rounded-xl">
+                <HistoryIcon className="text-xl" />
+              </div>
+              <div className="font-normal">
+                <p className="text-base">London · Stays</p>
+                <p className="text-zinc-400 text-xs ">Jan 25-27 · 1 guest</p>
+              </div>
+            </div>
+          </div>
         </div>
+      )}
+    </div>
+  )
+}
+
+type SearchDestinationInputProps = {
+  handleClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+  enableInput?: boolean
+}
+
+function SearchDestinationInput({
+  handleClick,
+  enableInput = false,
+}: SearchDestinationInputProps) {
+  const [hasFocused, setHasFocused] = useState(false)
+
+  return (
+    <div
+      className={`flex items-center gap-2 py-4 text-zinc-500  rounded-xl p-4 ${
+        hasFocused ? 'bg-zinc-100' : 'border border-zinc-400'
+      }`}
+      onClick={handleClick}
+    >
+      <div className="text-zinc-900 text-md stroke-1 stroke-current">
+        <SearchFineIcon />
+      </div>
+      <input
+        placeholder="Search destinations"
+        disabled={!enableInput}
+        className="bg-transparent outline-none"
+      />
+    </div>
+  )
+}
+
+enum RoundedBtnType {
+  CANCEL,
+  BACK,
+}
+
+type RoundedButtonProps = {
+  actionType?: keyof typeof RoundedBtnType
+  handleCancel?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+  handleBack?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+}
+
+function RoundedButton({
+  actionType = 'BACK',
+  handleCancel,
+  handleBack,
+}: RoundedButtonProps) {
+  return (
+    <div
+      className="w-8 h-8 absolute top-50% -translate-y-[0.1rem] left-5 flex items-center justify-center bg-zinc-25 border border-gray-400 rounded-full"
+      onClick={
+        handleCancel ? handleCancel : handleBack ? handleBack : undefined
+      }
+    >
+      {actionType === 'CANCEL' ? (
+        <CancelIcon />
+      ) : (
+        <BackIcon className="text-xs" />
       )}
     </div>
   )
