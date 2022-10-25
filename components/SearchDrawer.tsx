@@ -69,6 +69,12 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
     startOfCurrentMonth,
     add(startOfCurrentMonth, { months: 1 }),
     add(startOfCurrentMonth, { months: 2 }),
+    add(startOfCurrentMonth, { months: 3 }),
+    add(startOfCurrentMonth, { months: 4 }),
+    add(startOfCurrentMonth, { months: 5 }),
+    add(startOfCurrentMonth, { months: 6 }),
+    add(startOfCurrentMonth, { months: 7 }),
+    add(startOfCurrentMonth, { months: 8 }),
   ])
 
   // calendar
@@ -82,7 +88,12 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
       end: endOfTheLastWeek,
     })
 
-    const daysObj = daysOfTheWeek.map((date) => {
+    type DayObj = {
+      day: Date
+      style: string
+    }
+
+    const daysObj: DayObj[] = daysOfTheWeek.map((date) => {
       return {
         day: date,
         style:
@@ -216,172 +227,180 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
 
       {/* initial search */}
       {!showDestinationInputModal && (
-        <div className="flex flex-col gap-3 px-3">
+        <div className="flex-grow flex flex-col gap-3 px-3 overflow-y-hidden">
           {/* cards: Where, When, Who */}
-          {getEnumKeys(SearchTypes).map((type) => (
-            <SearchCard
-              searchType={type}
-              open={type === activeCard}
-              handleClick={() => setActiveCard(type)}
-              input={getCardInput(type)}
-            >
-              {/* Where */}
-              {activeCard === 'WHERE' && (
-                <div className="px-6 flex flex-col gap-4">
-                  <SearchDestinationInput
-                    handleClick={() => {
-                      setShowDestinationInputModal(true)
-                    }}
-                  />
-                  {/* area cards */}
-                  <div className="flex gap-4 overflow-x-scroll scrollbar-hide">
-                    {fakeAreas.map(({ image, title }) => {
-                      return (
-                        <div
-                          className={`flex flex-col gap-2 ${getAreaStyle(
-                            title
-                          )}`}
-                          onClick={() => {
-                            setActiveArea(title)
-                            setActiveCard('WHEN')
-                          }}
-                        >
+          {getEnumKeys(SearchTypes).map((type) => {
+            return (
+              <SearchCard
+                searchType={type}
+                open={type === activeCard}
+                handleClick={() => setActiveCard(type)}
+                input={getCardInput(type)}
+              >
+                {/* Where */}
+                {activeCard === 'WHERE' && (
+                  <div className="px-6 flex flex-col gap-4">
+                    <SearchDestinationInput
+                      handleClick={() => {
+                        setShowDestinationInputModal(true)
+                      }}
+                    />
+                    {/* area cards */}
+                    <div className="flex gap-4 overflow-x-scroll scrollbar-hide">
+                      {fakeAreas.map(({ image, title }) => {
+                        return (
                           <div
-                            className={`w-30 h-30 flex items-center rounded-2xl justify-center overflow-hidden ${getAreaImageStyle(
+                            className={`flex flex-col gap-2 ${getAreaStyle(
                               title
                             )}`}
+                            onClick={() => {
+                              setActiveArea(title)
+                              setActiveCard('WHEN')
+                            }}
                           >
-                            {image}
+                            <div
+                              className={`w-30 h-30 flex items-center rounded-2xl justify-center overflow-hidden ${getAreaImageStyle(
+                                title
+                              )}`}
+                            >
+                              {image}
+                            </div>
+                            <div> {title}</div>
                           </div>
-                          <div> {title}</div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+                {/* When */}
+                {activeCard === 'WHEN' && (
+                  <div className="flex flex-col flex-grow">
+                    {/* tabs */}
+                    <div className="mx-auto flex justify-between items-center p-1.5 bg-zinc-150 rounded-full w-80 mb-4">
+                      <div className="bg-white px-5 py-2 rounded-full shadow-[0_2px_5px] shadow-gray-300 flex-1 text-center">
+                        Choose dates
+                      </div>
+                      <div className="flex-1 text-center">I'm flexible</div>
+                    </div>
+
+                    {/* Choose dates: Calendar Header*/}
+                    <div className="w-full border-b border-zinc-300">
+                      <table className="p- w-80 text-center text-zinc-500 text-xs table-fixed mx-auto">
+                        <tbody>
+                          <tr>
+                            {weekDays.map((el) => (
+                              <td className="p-1">
+                                {/*  bg-orange-200 border border-gray-300 */}
+                                {el}
+                              </td>
+                            ))}
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    {/* Calendar Body */}
+                    <div className="wrapper relative flex-grow">
+                      <div className="absolute left-0 right-0 top-0 bottom-24 h-full flex flex-col overflow-y-scroll">
+                        {displayMonthFirstDays.map((m) => {
+                          const { monthText, daysObj } = getMonthCalendar(m)
+                          return (
+                            <>
+                              <h3 className="text-base font-medium mt-4 mb-2 pl-5">
+                                {monthText}
+                              </h3>
+                              <table className="p- w-80 text-center text-zinc-500 text-xs table-fixed mx-auto">
+                                <tbody>
+                                  {splitArray(daysObj, 7).map((weekArr) => {
+                                    return (
+                                      <tr>
+                                        {weekArr.map(({ day, style }) => (
+                                          <td className="p-1">
+                                            {/*  bg-orange-200 border border-gray-300 */}
+                                            <span className={style}>
+                                              <time
+                                                dateTime={format(
+                                                  day,
+                                                  'yyyy-MM-dd'
+                                                )}
+                                              >
+                                                {format(day, 'd')}
+                                              </time>
+                                            </span>
+                                          </td>
+                                        ))}
+                                      </tr>
+                                    )
+                                  })}
+                                </tbody>
+                              </table>
+                            </>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Who */}
+                {activeCard === 'WHO' &&
+                  guestChoices.map(({ title, description }) => {
+                    return (
+                      <div className="flex justify-between items-center pb-3 mx-6 border-b border-b-zinc-150 last:border-b-0 last:pb-0 ">
+                        <div>
+                          <p> {title} </p>
+                          <p className="text-gray-500 font-normal">
+                            {description}
+                          </p>
                         </div>
-                      )
-                    })}
-                  </div>
-                </div>
-              )}
-              {/* When */}
-              {activeCard === 'WHEN' && (
-                <div>
-                  {/* tabs */}
-                  <div className="mx-auto flex justify-between items-center p-1.5 bg-zinc-150 rounded-full w-80 mb-4">
-                    <div className="bg-white px-5 py-2 rounded-full shadow-[0_2px_5px] shadow-gray-300 flex-1 text-center">
-                      Choose dates
-                    </div>
-                    <div className="flex-1 text-center">I'm flexible</div>
-                  </div>
-
-                  {/* Choose dates: Calendar */}
-                  <div className="w-full border-b border-zinc-300">
-                    <table className="p- w-80 text-center text-zinc-500 text-xs table-fixed mx-auto">
-                      <tbody>
-                        <tr>
-                          {weekDays.map((el) => (
-                            <td className="p-1">
-                              {/*  bg-orange-200 border border-gray-300 */}
-                              {el}
-                            </td>
-                          ))}
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  {/* Calendar Body */}
-                  <div>
-                    {displayMonthFirstDays.map((m) => {
-                      const { monthText, daysObj } = getMonthCalendar(m)
-                      return (
-                        <>
-                          <h3 className="text-base font-medium mt-4 mb-2 pl-5">
-                            {monthText}
-                          </h3>
-                          <table className="p- w-80 text-center text-zinc-500 text-xs table-fixed mx-auto">
-                            <tbody>
-                              {splitArray(daysObj, 7).map((weekArr) => {
-                                return (
-                                  <tr>
-                                    {weekArr.map(({ day, style }) => (
-                                      <td className="p-1">
-                                        {/*  bg-orange-200 border border-gray-300 */}
-                                        <span className={style}>
-                                          <time
-                                            dateTime={format(day, 'yyyy-MM-dd')}
-                                          >
-                                            {format(day, 'd')}
-                                          </time>
-                                        </span>
-                                      </td>
-                                    ))}
-                                  </tr>
-                                )
-                              })}
-                            </tbody>
-                          </table>
-                        </>
-                      )
-                    })}
-                  </div>
-                </div>
-              )}
-
-              {/* Who */}
-              {activeCard === 'WHO' &&
-                guestChoices.map(({ title, description }) => {
-                  return (
-                    <div className="flex justify-between items-center pb-3 mx-6 border-b border-b-zinc-150 last:border-b-0 last:pb-0 ">
-                      <div>
-                        <p> {title} </p>
-                        <p className="text-gray-500 font-normal">
-                          {description}
-                        </p>
+                        <div className="flex items-center gap-1">
+                          <button
+                            className={`flex items-center justify-center text-md rounded-full p-0.5 border ${getGuestIconStyle(
+                              'minus',
+                              title
+                            )}`}
+                            disabled={checkGuestMin(title)}
+                            onClick={() =>
+                              setGuestNum((before) => {
+                                return {
+                                  ...before,
+                                  [title]: before[title] - 1,
+                                }
+                              })
+                            }
+                          >
+                            <MinusIcon />
+                          </button>
+                          <span className="text-gray-800 text-center w-8 font-normal">
+                            {guestNum[title]}
+                          </span>
+                          <button
+                            className={`flex items-center justify-center text-md rounded-full p-0.5 border ${getGuestIconStyle(
+                              'add',
+                              title
+                            )}`}
+                            disabled={checkGuestMax(title)}
+                            onClick={() =>
+                              setGuestNum((before) => {
+                                return {
+                                  ...before,
+                                  [title]: before[title] + 1,
+                                }
+                              })
+                            }
+                          >
+                            <AddIcon />
+                          </button>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <button
-                          className={`flex items-center justify-center text-md rounded-full p-0.5 border ${getGuestIconStyle(
-                            'minus',
-                            title
-                          )}`}
-                          disabled={checkGuestMin(title)}
-                          onClick={() =>
-                            setGuestNum((before) => {
-                              return {
-                                ...before,
-                                [title]: before[title] - 1,
-                              }
-                            })
-                          }
-                        >
-                          <MinusIcon />
-                        </button>
-                        <span className="text-gray-800 text-center w-8 font-normal">
-                          {guestNum[title]}
-                        </span>
-                        <button
-                          className={`flex items-center justify-center text-md rounded-full p-0.5 border ${getGuestIconStyle(
-                            'add',
-                            title
-                          )}`}
-                          disabled={checkGuestMax(title)}
-                          onClick={() =>
-                            setGuestNum((before) => {
-                              return {
-                                ...before,
-                                [title]: before[title] + 1,
-                              }
-                            })
-                          }
-                        >
-                          <AddIcon />
-                        </button>
-                      </div>
-                    </div>
-                  )
-                })}
-            </SearchCard>
-          ))}
+                    )
+                  })}
+              </SearchCard>
+            )
+          })}
 
           {/* footer */}
-          <div className="fixed left-0 bottom-0 w-full flex justify-between py-3 px-5 bg-zinc-75 text-base">
+          <div className="fixed left-0 bottom-0 w-full flex justify-between py-3 px-5 bg-zinc-75 text-base z-10">
             <button>
               <span className="underline">Clear all</span>
             </button>

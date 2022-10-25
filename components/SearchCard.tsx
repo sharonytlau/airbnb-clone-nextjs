@@ -33,12 +33,20 @@ export function SearchCard({
       searchType.charAt(0).toUpperCase() + searchType.slice(1).toLowerCase(),
   }
 
+  const isWhen = searchType === 'WHEN'
+
   return open ? (
-    <div className="flex flex-col gap-4 bg-white rounded-3xl py-6 shadow-[0_5px_15px] shadow-zinc-350">
-      <h2 className="text-xl tracking-tight font-semibold px-6">
-        {texts.heading}
-      </h2>
-      {children}
+    <div className={`wrapper relative ${isWhen ? 'flex-grow' : ''} `}>
+      <div
+        className={`flex flex-col gap-4 bg-white rounded-3xl py-6 shadow-[0_5px_15px] shadow-zinc-350 ${
+          isWhen ? 'absolute z-30 top-0 -bottom-14 right-0 left-0 ' : ''
+        }`}
+      >
+        <h2 className="text-xl tracking-tight font-semibold px-6">
+          {texts.heading}
+        </h2>
+        {children}
+      </div>
     </div>
   ) : (
     <div
