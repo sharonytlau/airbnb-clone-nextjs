@@ -10,14 +10,14 @@ import { AddIcon } from 'components/icons/AddIcon'
 import { MinusIcon } from 'components/icons/MinusIcon'
 import { PlusMinusIcon } from 'components/icons/PlusMinusIcon'
 import { SearchTypes, SearchCard } from 'components/SearchCard'
-import { getEnumKeys } from 'utils/utils'
+import { getEnumKeys, compareDates } from 'utils/utils'
 import {
   add,
+  daysInWeek,
   eachDayOfInterval,
   endOfMonth,
   endOfWeek,
   format,
-  getMonth,
   startOfMonth,
   startOfToday,
   startOfWeek,
@@ -72,8 +72,19 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
     Pets: 0,
   })
 
+  type dateSelectionRange = {
+    start: Date | undefined
+    end: Date | undefined
+  }
+
   // When
   const [activeDatePill, setActiveDatePill] = useState(0)
+  const [dateSelectionRange, setDateSelectionRange] =
+    useState<dateSelectionRange>({
+      start: undefined,
+      end: undefined,
+    })
+  const [activeDate, setActiveDate] = useState<Date | undefined>(undefined)
 
   const today = startOfToday()
   const startOfCurrentMonth = startOfMonth(today)
@@ -90,12 +101,13 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
   ])
 
   // calendar
+  // todo: refactor
   function getMonthCalendar(startOfTheMonth: Date) {
     const startOfTheFirstWeek = startOfWeek(startOfTheMonth)
     const endOfTheMonth = endOfMonth(startOfTheMonth)
     const endOfTheLastWeek = endOfWeek(endOfTheMonth)
     const monthText = format(startOfTheMonth, 'MMMM yyyy')
-    const daysOfTheWeek = eachDayOfInterval({
+    const daysOfMonth = eachDayOfInterval({
       start: startOfTheFirstWeek,
       end: endOfTheLastWeek,
     })
@@ -105,15 +117,33 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
       style: string
     }
 
-    const daysObj: DayObj[] = daysOfTheWeek.map((date) => {
+    const daysObj: DayObj[] = daysOfMonth.map((day) => {
+      let style =
+        day < startOfTheMonth || day > endOfTheMonth
+          ? 'hidden'
+          : day < today
+          ? 'text-zinc-300'
+          : 'text-zinc-900'
+
+      const { start, end } = dateSelectionRange
+      console.log('dateSelectionRange!!!', { ...dateSelectionRange, day })
+
+      if (
+        (start && compareDates(day, start)) ||
+        (end && compareDates(day, end))
+      ) {
+        style =
+          style.replace('text-zinc-900', 'text-white') +
+          ' w-full h-full rounded-full bg-gray-800'
+      }
+
+      if (activeDate && compareDates(day, activeDate)) {
+        style += ' outline outline-gray-500'
+      }
+
       return {
-        day: date,
-        style:
-          date < startOfTheMonth || date > endOfTheMonth
-            ? 'hidden'
-            : date < today
-            ? 'text-zinc-300'
-            : 'text-zinc-900',
+        day,
+        style,
       }
     })
 
@@ -210,6 +240,40 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
         return ''
       case 'WHO':
         return ''
+    }
+  }
+
+  function handleClickCalendar(day: Date) {
+    setActiveDate(day)
+    const { start, end } = dateSelectionRange
+
+    console.log('clicked!!!')
+
+    if (end && start) {
+      if (day < end && day > start) {
+        setDateSelectionRange((before) => {
+          return { ...before, start: day }
+        })
+      } else {
+        setDateSelectionRange({ start: day, end: undefined })
+      }
+      return
+    }
+
+    if (start) {
+      if (day > start) {
+        setDateSelectionRange((before) => {
+          return { ...before, end: day }
+        })
+      } else {
+        setDateSelectionRange((before) => {
+          return { ...before, start: day }
+        })
+      }
+    } else {
+      setDateSelectionRange((before) => {
+        return { ...before, start: day }
+      })
     }
   }
 
@@ -310,14 +374,11 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
 
                     {/* Choose dates: Calendar Header*/}
                     <div className="w-full border-b border-zinc-300">
-                      <table className="p- w-80 text-center text-zinc-500 text-xs table-fixed mx-auto">
+                      <table className="text-center text-zinc-500 text-xs table-fixed mx-auto">
                         <tbody>
                           <tr>
                             {weekDays.map((el) => (
-                              <td className="p-1">
-                                {/*  bg-orange-200 border border-gray-300 */}
-                                {el}
-                              </td>
+                              <td className="w-10 h-10 p-px">{el}</td>
                             ))}
                           </tr>
                         </tbody>
@@ -334,26 +395,58 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
                             <h3 className="text-base font-medium mt-4 mb-2 pl-5">
                               {monthText}
                             </h3>
-                            <table className="p- w-80 text-center text-zinc-500 text-xs table-fixed mx-auto">
+                            <table className="text-center text-zinc-500 text-xs table-fixed mx-auto">
                               <tbody>
                                 {splitArray(daysObj, 7).map((weekArr) => {
                                   return (
                                     <tr>
-                                      {weekArr.map(({ day, style }) => (
-                                        <td className="w-10 h-10 text-sm">
-                                          {/*  bg-orange-200 border border-gray-300 */}
-                                          <span className={style}>
-                                            <time
-                                              dateTime={format(
-                                                day,
-                                                'yyyy-MM-dd'
-                                              )}
+                                      {weekArr.map(({ day, style }) => {
+                                        const { start, end } =
+                                          dateSelectionRange
+
+                                        const isStart =
+                                          start && compareDates(day, start)
+                                        const isEnd =
+                                          end && compareDates(day, end)
+
+                                        const isInRange =
+                                          start &&
+                                          end &&
+                                          ((day >= start && day <= end) ||
+                                            isStart ||
+                                            isEnd)
+
+                                        let cellStyle = isStart
+                                          ? 'rounded-tl-full rounded-bl-full'
+                                          : isEnd
+                                          ? 'rounded-tr-full rounded-br-full'
+                                          : ''
+
+                                        if (isInRange)
+                                          cellStyle += ' bg-orange-300'
+
+                                        return (
+                                          <td
+                                            className={` w-10 h-10 p-px text-sm ${cellStyle}`}
+                                          >
+                                            <button
+                                              className={`${style}`}
+                                              onClick={() =>
+                                                handleClickCalendar(day)
+                                              }
                                             >
-                                              {format(day, 'd')}
-                                            </time>
-                                          </span>
-                                        </td>
-                                      ))}
+                                              <time
+                                                dateTime={format(
+                                                  day,
+                                                  'yyyy-MM-dd'
+                                                )}
+                                              >
+                                                {format(day, 'd')}
+                                              </time>
+                                            </button>
+                                          </td>
+                                        )
+                                      })}
                                     </tr>
                                   )
                                 })}

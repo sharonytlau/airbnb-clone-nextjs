@@ -1,3 +1,5 @@
+import { format } from 'date-fns'
+
 export function getEnumKeys<T extends Object>(e: T) {
   const keys = Object.keys(e).filter((value) => isNaN(Number(value)) !== false)
   // Array<keyof typeof e>
@@ -19,4 +21,8 @@ export function splitArray<T>(arr: T[], len: number) {
 
     return resultArr
   }, [])
+}
+
+export function compareDates(d1: Date, d2: Date) {
+  return format(d1, 'MMddyyyy') === format(d2, 'MMddyyyy')
 }
