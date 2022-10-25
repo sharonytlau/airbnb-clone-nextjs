@@ -41,7 +41,8 @@ const fakeAreas = [
   },
 ]
 
-const whenTabs = [{ title: 'Stays' }, { title: 'Experiences' }]
+const tabs = [{ title: 'Stays' }, { title: 'Experiences' }]
+const whenTabs = [{ title: 'Choose dates' }, { title: "I'm flexible" }]
 
 const weekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
 
@@ -61,7 +62,7 @@ type SearchDrawerProps = {
 }
 
 function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
-  const [activeTab, setActiveTab] = useState(whenTabs[0].title)
+  const [activeTab, setActiveTab] = useState(tabs[0].title)
   const [activeArea, setActiveArea] = useState(fakeAreas[0].title)
   const [showDestinationInputModal, setShowDestinationInputModal] =
     useState(false)
@@ -80,6 +81,7 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
   }
 
   // When
+  const [activeWhenTab, setActiveWhenTab] = useState(whenTabs[0].title)
   const [activeDatePill, setActiveDatePill] = useState(0)
   const [dateSelectionRange, setDateSelectionRange] =
     useState<dateSelectionRange>({
@@ -216,6 +218,13 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
     return disableCond ? disable : enable
   }
 
+  const getWhenTabStyle = (title: string) => {
+    const active = 'bg-white shadow-[0_2px_5px] shadow-gray-300'
+    const inactive = '·'
+
+    return activeWhenTab === title ? active : inactive
+  }
+
   const getDatePillStyle = (index: number) => {
     const active =
       'bg-gray-100 outline-offset-[-2px] outline-2 outline-gray-800'
@@ -332,7 +341,7 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
               : handleHideDrawer
           }
         />
-        {whenTabs.map(({ title }) => {
+        {tabs.map(({ title }) => {
           return (
             <div
               className={getTabStyle(title)}
@@ -403,110 +412,119 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
                   <div className="flex flex-col flex-grow overflow-y-hidden">
                     {/* tabs */}
                     <div className="mx-auto flex justify-between items-center p-1.5 bg-zinc-150 rounded-full w-80 mb-4">
-                      <div className="bg-white px-5 py-2 rounded-full shadow-[0_2px_5px] shadow-gray-300 flex-1 text-center">
-                        Choose dates
-                      </div>
-                      <div className="flex-1 text-center">I'm flexible</div>
-                    </div>
-
-                    {/* Choose dates: Calendar Header*/}
-                    <div className="w-full border-b border-zinc-300">
-                      <table className="text-center text-zinc-500 text-xs table-fixed mx-auto">
-                        <tbody>
-                          <tr>
-                            {weekDays.map((el) => (
-                              <td className="w-10 h-10 p-px">{el}</td>
-                            ))}
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-
-                    {/* Calendar Body */}
-
-                    <div className="h-full flex-1 flex-col overflow-y-scroll scrollbar-hide">
-                      {displayMonthFirstDays.map((m) => {
-                        const { monthText, daysOfMonth } = getMonthCalendar(m)
+                      {whenTabs.map(({ title }) => {
                         return (
-                          <>
-                            <h3 className="text-base font-medium mt-4 mb-2 pl-5">
-                              {monthText}
-                            </h3>
-                            <table className="text-center text-zinc-500 text-xs table-fixed mx-auto">
-                              <tbody>
-                                {splitArray(daysOfMonth, 7).map((weekArr) => {
-                                  return (
-                                    <tr>
-                                      {weekArr.map((day) => {
-                                        const { cellStyle, circleStyle } =
-                                          getDateStyle(day, m)
-
-                                        return (
-                                          <td
-                                            className={` w-10 h-10 p-px text-sm ${cellStyle}`}
-                                          >
-                                            <button
-                                              className={`${circleStyle}`}
-                                              disabled={day < today}
-                                              onClick={() =>
-                                                handleClickCalendar(day)
-                                              }
-                                            >
-                                              <time
-                                                dateTime={format(
-                                                  day,
-                                                  'yyyy-MM-dd'
-                                                )}
-                                              >
-                                                {format(day, 'd')}
-                                              </time>
-                                            </button>
-                                          </td>
-                                        )
-                                      })}
-                                    </tr>
-                                  )
-                                })}
-                              </tbody>
-                            </table>
-                          </>
-                        )
-                      })}
-                    </div>
-
-                    {/* Calendar Pills */}
-                    <div className="flex gap-2 px-4 py-1.5 overflow-x-scroll scrollbar-hide border-t border-b border-gray-300">
-                      {getEnumKeys(DatePillTypes).map((val) => {
-                        const index = DatePillTypes[val]
-
-                        return (
-                          <button
-                            className={`flex items-center gap-2 py-2 px-4 outline whitespace-nowrap rounded-full text-xs font-normal ${getDatePillStyle(
-                              index
+                          <div
+                            className={`px-5 py-2 rounded-full  flex-1 text-center ${getWhenTabStyle(
+                              title
                             )}`}
-                            onClick={() => setActiveDatePill(index)}
+                            onClick={() => setActiveWhenTab(title)}
                           >
-                            {index !== 0 && <PlusMinusIcon />}
-                            <span>{val}</span>
-                          </button>
+                            {title}
+                          </div>
                         )
                       })}
                     </div>
 
-                    {/* Calendar Footer */}
-                    <div className="w-full flex justify-between py-4 px-5 text-base z-10">
-                      <button onClick={handleClearCalendar}>
-                        <span className="underline">
-                          {activeDate ? 'Clear' : 'Skip'}
-                        </span>
-                      </button>
-                      <button
-                        className="flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-lg"
-                        onClick={handleClearNext}
-                      >
-                        <span>Next</span>
-                      </button>
-                    </div>
+                    {activeWhenTab === 'Choose dates' && (
+                      <>
+                        {/* Choose dates: Calendar Header*/}
+                        <div className="w-full border-b border-zinc-300">
+                          <table className="text-center text-zinc-500 text-xs table-fixed mx-auto">
+                            <tbody>
+                              <tr>
+                                {weekDays.map((el) => (
+                                  <td className="w-10 h-10 p-px">{el}</td>
+                                ))}
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        {/* Calendar Body */}
+                        <div className="h-full flex-1 flex-col overflow-y-scroll scrollbar-hide">
+                          {displayMonthFirstDays.map((m) => {
+                            const { monthText, daysOfMonth } =
+                              getMonthCalendar(m)
+                            return (
+                              <>
+                                <h3 className="text-base font-medium mt-4 mb-2 pl-5">
+                                  {monthText}
+                                </h3>
+                                <table className="text-center text-zinc-500 text-xs table-fixed mx-auto">
+                                  <tbody>
+                                    {splitArray(daysOfMonth, 7).map(
+                                      (weekArr) => {
+                                        return (
+                                          <tr>
+                                            {weekArr.map((day) => {
+                                              const { cellStyle, circleStyle } =
+                                                getDateStyle(day, m)
+                                              return (
+                                                <td
+                                                  className={` w-10 h-10 p-px text-sm ${cellStyle}`}
+                                                >
+                                                  <button
+                                                    className={`${circleStyle}`}
+                                                    disabled={day < today}
+                                                    onClick={() =>
+                                                      handleClickCalendar(day)
+                                                    }
+                                                  >
+                                                    <time
+                                                      dateTime={format(
+                                                        day,
+                                                        'yyyy-MM-dd'
+                                                      )}
+                                                    >
+                                                      {format(day, 'd')}
+                                                    </time>
+                                                  </button>
+                                                </td>
+                                              )
+                                            })}
+                                          </tr>
+                                        )
+                                      }
+                                    )}
+                                  </tbody>
+                                </table>
+                              </>
+                            )
+                          })}
+                        </div>
+                        {/* Calendar Pills */}
+                        <div className="flex gap-2 px-4 py-1.5 overflow-x-scroll scrollbar-hide border-t border-b border-gray-300">
+                          {getEnumKeys(DatePillTypes).map((val) => {
+                            const index = DatePillTypes[val]
+                            return (
+                              <button
+                                className={`flex items-center gap-2 py-2 px-4 outline whitespace-nowrap rounded-full text-xs font-normal ${getDatePillStyle(
+                                  index
+                                )}`}
+                                onClick={() => setActiveDatePill(index)}
+                              >
+                                {index !== 0 && <PlusMinusIcon />}
+                                <span>{val}</span>
+                              </button>
+                            )
+                          })}
+                        </div>
+                        {/* Calendar Footer */}
+                        <div className="w-full flex justify-between py-4 px-5 text-base z-10">
+                          <button onClick={handleClearCalendar}>
+                            <span className="underline">
+                              {activeDate ? 'Clear' : 'Skip'}
+                            </span>
+                          </button>
+                          <button
+                            className="flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-lg"
+                            onClick={handleClearNext}
+                          >
+                            <span>Next</span>
+                          </button>
+                        </div>
+                      </>
+                    )}
                   </div>
                 )}
 
