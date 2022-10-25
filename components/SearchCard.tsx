@@ -9,6 +9,7 @@ type SearchCardProps = {
   children?: React.ReactNode
   open?: boolean
   input?: string
+  activeStyle?: string
   handleClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
 }
 
@@ -24,6 +25,7 @@ export function SearchCard({
   open = false,
   handleClick,
   input,
+  activeStyle = '',
 }: SearchCardProps) {
   console.log('rendered', { searchType, children, open, handleClick, input })
 
@@ -38,9 +40,7 @@ export function SearchCard({
   return open ? (
     <div className={`wrapper relative ${isWhen ? 'flex-grow' : ''} `}>
       <div
-        className={`flex flex-col gap-4 bg-white rounded-3xl py-6 shadow-[0_5px_15px] shadow-zinc-350 ${
-          isWhen ? 'absolute z-30 top-0 -bottom-14 right-0 left-0 ' : ''
-        }`}
+        className={`flex flex-col gap-4 bg-white rounded-3xl py-6 shadow-[0_5px_15px] shadow-zinc-350 overflow-hidden ${activeStyle}`}
       >
         <h2 className="text-xl tracking-tight font-semibold px-6">
           {texts.heading}
