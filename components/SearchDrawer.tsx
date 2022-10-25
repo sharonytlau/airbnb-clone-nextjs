@@ -18,6 +18,8 @@ import {
   endOfMonth,
   endOfWeek,
   format,
+  getMonth,
+  getYear,
   startOfMonth,
   startOfToday,
   startOfWeek,
@@ -101,7 +103,6 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
   ])
 
   // calendar
-  // todo: refactor
   function getMonthCalendar(startOfTheMonth: Date) {
     const startOfTheFirstWeek = startOfWeek(startOfTheMonth)
     const endOfTheMonth = endOfMonth(startOfTheMonth)
@@ -112,42 +113,49 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
       end: endOfTheLastWeek,
     })
 
-    type DayObj = {
-      day: Date
-      style: string
+    return { monthText, daysOfMonth }
+  }
+
+  const getDateStyle = (day: Date, m: Date) => {
+    const isHidden = day < startOfMonth(m) || day > endOfMonth(m)
+    if (isHidden) return { cellStyle: '', circleStyle: 'hidden' }
+
+    const isPast = day < today
+    if (isPast)
+      return {
+        cellStyle: '',
+        circleStyle: 'text-zinc-300',
+      }
+
+    const { start, end } = dateSelectionRange
+    const isStart = start && compareDates(day, start)
+    const isEnd = end && compareDates(day, end)
+    const isInRange =
+      start && end && ((day >= start && day <= end) || isStart || isEnd)
+
+    // cell style
+    let cellStyle = isStart
+      ? 'rounded-tl-full rounded-bl-full'
+      : isEnd
+      ? 'rounded-tr-full rounded-br-full'
+      : ''
+
+    if (isInRange) cellStyle += ' bg-zinc-75'
+
+    // circle style
+    let circleStyle = 'text-zinc-900'
+
+    if (isStart || isEnd) {
+      circleStyle =
+        circleStyle.replace('text-zinc-900', 'text-white') +
+        ' w-full h-full rounded-full bg-gray-800'
     }
 
-    const daysObj: DayObj[] = daysOfMonth.map((day) => {
-      let style =
-        day < startOfTheMonth || day > endOfTheMonth
-          ? 'hidden'
-          : day < today
-          ? 'text-zinc-300'
-          : 'text-zinc-900'
+    if (activeDate && compareDates(day, activeDate)) {
+      circleStyle += ' outline outline-gray-500'
+    }
 
-      const { start, end } = dateSelectionRange
-      console.log('dateSelectionRange!!!', { ...dateSelectionRange, day })
-
-      if (
-        (start && compareDates(day, start)) ||
-        (end && compareDates(day, end))
-      ) {
-        style =
-          style.replace('text-zinc-900', 'text-white') +
-          ' w-full h-full rounded-full bg-gray-800'
-      }
-
-      if (activeDate && compareDates(day, activeDate)) {
-        style += ' outline outline-gray-500'
-      }
-
-      return {
-        day,
-        style,
-      }
-    })
-
-    return { monthText, daysObj }
+    return { cellStyle, circleStyle }
   }
 
   enum guestTypes {
@@ -237,7 +245,24 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
       case 'WHERE':
         return activeArea
       case 'WHEN':
-        return ''
+        const { start, end } = dateSelectionRange
+
+        let dateRangeStr
+
+        if (start && end) {
+          if (
+            getMonth(start) === getMonth(end) &&
+            getYear(start) === getYear(end)
+          ) {
+            dateRangeStr = `${format(start, 'MMM d')} - ${format(end, 'd')}`
+          } else {
+            dateRangeStr = `${format(start, 'MMM d')} - ${format(end, 'MMM d')}`
+          }
+        } else {
+          return ''
+        }
+
+        return `${dateRangeStr} (±${DatePillTypes[activeDatePill]})`
       case 'WHO':
         return ''
     }
@@ -275,6 +300,18 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
         return { ...before, start: day }
       })
     }
+  }
+
+  function handleClearCalendar() {
+    if (activeDate) {
+      setActiveDate(undefined)
+      setDateSelectionRange({ start: undefined, end: undefined })
+    } else {
+      setActiveCard('WHO')
+    }
+  }
+  function handleClearNext() {
+    setActiveCard('WHO')
   }
 
   return (
@@ -389,7 +426,7 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
 
                     <div className="h-full flex-1 flex-col overflow-y-scroll scrollbar-hide">
                       {displayMonthFirstDays.map((m) => {
-                        const { monthText, daysObj } = getMonthCalendar(m)
+                        const { monthText, daysOfMonth } = getMonthCalendar(m)
                         return (
                           <>
                             <h3 className="text-base font-medium mt-4 mb-2 pl-5">
@@ -397,40 +434,20 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
                             </h3>
                             <table className="text-center text-zinc-500 text-xs table-fixed mx-auto">
                               <tbody>
-                                {splitArray(daysObj, 7).map((weekArr) => {
+                                {splitArray(daysOfMonth, 7).map((weekArr) => {
                                   return (
                                     <tr>
-                                      {weekArr.map(({ day, style }) => {
-                                        const { start, end } =
-                                          dateSelectionRange
-
-                                        const isStart =
-                                          start && compareDates(day, start)
-                                        const isEnd =
-                                          end && compareDates(day, end)
-
-                                        const isInRange =
-                                          start &&
-                                          end &&
-                                          ((day >= start && day <= end) ||
-                                            isStart ||
-                                            isEnd)
-
-                                        let cellStyle = isStart
-                                          ? 'rounded-tl-full rounded-bl-full'
-                                          : isEnd
-                                          ? 'rounded-tr-full rounded-br-full'
-                                          : ''
-
-                                        if (isInRange)
-                                          cellStyle += ' bg-orange-300'
+                                      {weekArr.map((day) => {
+                                        const { cellStyle, circleStyle } =
+                                          getDateStyle(day, m)
 
                                         return (
                                           <td
                                             className={` w-10 h-10 p-px text-sm ${cellStyle}`}
                                           >
                                             <button
-                                              className={`${style}`}
+                                              className={`${circleStyle}`}
+                                              disabled={day < today}
                                               onClick={() =>
                                                 handleClickCalendar(day)
                                               }
@@ -478,10 +495,15 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
 
                     {/* Calendar Footer */}
                     <div className="w-full flex justify-between py-4 px-5 text-base z-10">
-                      <button>
-                        <span className="underline">Clear</span>
+                      <button onClick={handleClearCalendar}>
+                        <span className="underline">
+                          {activeDate ? 'Clear' : 'Skip'}
+                        </span>
                       </button>
-                      <button className="flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-lg">
+                      <button
+                        className="flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-lg"
+                        onClick={handleClearNext}
+                      >
                         <span>Next</span>
                       </button>
                     </div>

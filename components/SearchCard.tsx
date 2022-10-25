@@ -50,7 +50,7 @@ export function SearchCard({
     </div>
   ) : (
     <div
-      className="flex justify-between bg-white p-4 rounded-2xl shadow-[0_2px_6px] shadow-zinc-200"
+      className="flex justify-between bg-white p-4 rounded-2xl shadow-[0_2px_6px] shadow-zinc-200 tracking-tight"
       onClick={handleClick}
     >
       <h2 className="text-zinc-600"> {texts.title} </h2>
