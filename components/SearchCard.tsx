@@ -15,7 +15,7 @@ type SearchCardProps = {
 const cardTexts = {
   WHERE: { placeholder: "I'm flexible", heading: 'Where to?' },
   WHEN: { placeholder: 'Add dates', heading: "When's your trip?" },
-  WHO: { placeholder: 'Add guests', heading: "Who's coming" },
+  WHO: { placeholder: 'Add guests', heading: "Who's coming?" },
 }
 
 export function SearchCard({
@@ -34,8 +34,10 @@ export function SearchCard({
   }
 
   return open ? (
-    <div className="flex flex-col gap-4 bg-white rounded-3xl p-6 shadow-[0_5px_15px] shadow-zinc-350">
-      <h2 className="text-xl tracking-tight font-semibold">{texts.heading}</h2>
+    <div className="flex flex-col gap-4 bg-white rounded-3xl py-6 shadow-[0_5px_15px] shadow-zinc-350">
+      <h2 className="text-xl tracking-tight font-semibold px-6">
+        {texts.heading}
+      </h2>
       {children}
     </div>
   ) : (

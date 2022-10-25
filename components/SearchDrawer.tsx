@@ -10,6 +10,18 @@ import { AddIcon } from 'components/icons/AddIcon'
 import { MinusIcon } from 'components/icons/MinusIcon'
 import { SearchTypes, SearchCard } from 'components/SearchCard'
 import { getEnumKeys } from 'utils/utils'
+import {
+  add,
+  eachDayOfInterval,
+  endOfMonth,
+  endOfWeek,
+  format,
+  getMonth,
+  startOfMonth,
+  startOfToday,
+  startOfWeek,
+} from 'date-fns'
+import { splitArray } from 'utils/utils'
 
 const fakeAreas = [
   {
@@ -27,6 +39,8 @@ const fakeAreas = [
 ]
 
 const tabs = [{ title: 'Stays' }, { title: 'Experiences' }]
+
+const weekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
 
 type SearchDrawerProps = {
   showDrawer: Boolean
@@ -48,6 +62,40 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
     Infant: 0,
     Pets: 0,
   })
+  let today = startOfToday()
+  let startOfCurrentMonth = startOfMonth(today)
+  const currentMonth = getMonth(today)
+  const [displayMonthFirstDays, setDisplayMonthFirstDays] = useState<Date[]>([
+    startOfCurrentMonth,
+    add(startOfCurrentMonth, { months: 1 }),
+    add(startOfCurrentMonth, { months: 2 }),
+  ])
+
+  // calendar
+  function getMonthCalendar(startOfTheMonth: Date) {
+    let startOfTheFirstWeek = startOfWeek(startOfTheMonth)
+    const endOfTheMonth = endOfMonth(startOfTheMonth)
+    const endOfTheLastWeek = endOfWeek(endOfTheMonth)
+    const monthText = format(startOfTheMonth, 'MMMM yyyy')
+    const daysOfTheWeek = eachDayOfInterval({
+      start: startOfTheFirstWeek,
+      end: endOfTheLastWeek,
+    })
+
+    const daysObj = daysOfTheWeek.map((date) => {
+      return {
+        day: date,
+        style:
+          date < startOfTheMonth || date > endOfTheMonth
+            ? 'hidden'
+            : date < today
+            ? 'text-zinc-300'
+            : 'text-zinc-900',
+      }
+    })
+
+    return { monthText, daysObj }
+  }
 
   enum guestTypes {
     'Adults',
@@ -102,7 +150,7 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
     const disableCond =
       type === 'add' ? checkGuestMax(title) : checkGuestMin(title)
     const disable = 'border-zinc-150 text-zinc-150'
-    const enable = 'border-gray-400 text-gray-700'
+    const enable = 'border-gray-400 text-gray-500'
 
     return disableCond ? disable : enable
   }
@@ -177,8 +225,9 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
               handleClick={() => setActiveCard(type)}
               input={getCardInput(type)}
             >
+              {/* Where */}
               {activeCard === 'WHERE' && (
-                <>
+                <div className="px-6 flex flex-col gap-4">
                   <SearchDestinationInput
                     handleClick={() => {
                       setShowDestinationInputModal(true)
@@ -209,16 +258,82 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
                       )
                     })}
                   </div>
-                </>
+                </div>
+              )}
+              {/* When */}
+              {activeCard === 'WHEN' && (
+                <div>
+                  {/* tabs */}
+                  <div className="mx-auto flex justify-between items-center p-1.5 bg-zinc-150 rounded-full w-80 mb-4">
+                    <div className="bg-white px-5 py-2 rounded-full shadow-[0_2px_5px] shadow-gray-300 flex-1 text-center">
+                      Choose dates
+                    </div>
+                    <div className="flex-1 text-center">I'm flexible</div>
+                  </div>
+
+                  {/* Choose dates: Calendar */}
+                  <div className="w-full border-b border-zinc-300">
+                    <table className="p- w-80 text-center text-zinc-500 text-xs table-fixed mx-auto">
+                      <tbody>
+                        <tr>
+                          {weekDays.map((el) => (
+                            <td className="p-1">
+                              {/*  bg-orange-200 border border-gray-300 */}
+                              {el}
+                            </td>
+                          ))}
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  {/* Calendar Body */}
+                  <div>
+                    {displayMonthFirstDays.map((m) => {
+                      const { monthText, daysObj } = getMonthCalendar(m)
+                      return (
+                        <>
+                          <h3 className="text-base font-medium mt-4 mb-2 pl-5">
+                            {monthText}
+                          </h3>
+                          <table className="p- w-80 text-center text-zinc-500 text-xs table-fixed mx-auto">
+                            <tbody>
+                              {splitArray(daysObj, 7).map((weekArr) => {
+                                return (
+                                  <tr>
+                                    {weekArr.map(({ day, style }) => (
+                                      <td className="p-1">
+                                        {/*  bg-orange-200 border border-gray-300 */}
+                                        <span className={style}>
+                                          <time
+                                            dateTime={format(day, 'yyyy-MM-dd')}
+                                          >
+                                            {format(day, 'd')}
+                                          </time>
+                                        </span>
+                                      </td>
+                                    ))}
+                                  </tr>
+                                )
+                              })}
+                            </tbody>
+                          </table>
+                        </>
+                      )
+                    })}
+                  </div>
+                </div>
               )}
 
+              {/* Who */}
               {activeCard === 'WHO' &&
                 guestChoices.map(({ title, description }) => {
                   return (
-                    <div className="flex justify-between items-center pb-3 border-b border-b-zinc-150">
+                    <div className="flex justify-between items-center pb-3 mx-6 border-b border-b-zinc-150 last:border-b-0 last:pb-0 ">
                       <div>
                         <p> {title} </p>
-                        <p className="text-gray-500"> {description}</p>
+                        <p className="text-gray-500 font-normal">
+                          {description}
+                        </p>
                       </div>
                       <div className="flex items-center gap-1">
                         <button
@@ -238,7 +353,7 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
                         >
                           <MinusIcon />
                         </button>
-                        <span className="text-gray-500 text-center w-8">
+                        <span className="text-gray-800 text-center w-8 font-normal">
                           {guestNum[title]}
                         </span>
                         <button
@@ -266,7 +381,7 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
           ))}
 
           {/* footer */}
-          <div className="fixed left-0 bottom-0 w-full flex justify-between p-3 bg-zinc-75 text-base">
+          <div className="fixed left-0 bottom-0 w-full flex justify-between py-3 px-5 bg-zinc-75 text-base">
             <button>
               <span className="underline">Clear all</span>
             </button>
