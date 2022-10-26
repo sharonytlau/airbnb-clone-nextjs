@@ -49,7 +49,7 @@ function TheFooter() {
   }
 
   return (
-    <div className="flex items-center justify-around w-full py-2">
+    <div className="fixed bottom-0 bg-white flex items-center justify-around w-full py-2">
       {bottomIcons.map((el) => {
         return (
           <div

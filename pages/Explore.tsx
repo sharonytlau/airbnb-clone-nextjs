@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import SearchBar from 'components/SearchBar'
 import CategoryFilters from 'components/CategoryFilters'
 import ListingCards from 'components/ListingCards'
 import TheFooter from 'components/TheFooter'
 import SearchDrawer from 'components/SearchDrawer'
+import { ScrollableVertical } from 'components/ScrollableVertical'
 
 const fakeCategories = [
   {
@@ -97,9 +98,10 @@ const fakeListingCards = [
 
 function Explore() {
   const [showDrawer, setShowDrawer] = useState(false)
+  const [showFooter, setShowFooter] = useState(true)
 
   return (
-    <div className="h-full w-full flex flex-col justify-between pt-4">
+    <div className="h-full w-full flex flex-col pt-4">
       {/* Search Bar */}
       <div className="px-7">
         <SearchBar handleShowDrawer={() => setShowDrawer(true)} />
@@ -109,11 +111,23 @@ function Explore() {
         <CategoryFilters categories={fakeCategories} />
       </div>
       {/* Listings */}
-      <div className="px-7 flex-1 overflow-y-hidden">
+      <ScrollableVertical
+        style="gap-10 text-gray-900 p-7"
+        onScroll={{
+          onScrollUp() {
+            console.log('upppp')
+            setShowFooter(true)
+          },
+          onScrollDown() {
+            setShowFooter(false)
+            console.log('downnnn')
+          },
+        }}
+      >
         <ListingCards data={fakeListingCards} />
-      </div>
+      </ScrollableVertical>
       {/* Footer */}
-      <TheFooter />
+      {showFooter && <TheFooter />}
       <SearchDrawer
         showDrawer={showDrawer}
         handleHideDrawer={() => setShowDrawer(false)}

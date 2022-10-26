@@ -1,4 +1,3 @@
-import React from 'react'
 import Image from 'next/image'
 
 type ListingCard = {
@@ -15,7 +14,7 @@ type ListingCardsProps = {
 
 function ListingCards({ data }: ListingCardsProps) {
   return (
-    <div className="flex flex-col gap-10 h-full overflow-y-auto scrollbar-hide text-gray-900 py-7">
+    <>
       {data.map((el) => {
         const { image, title, price, rating, distance } = el
         return (
@@ -38,7 +37,7 @@ function ListingCards({ data }: ListingCardsProps) {
           </div>
         )
       })}
-    </div>
+    </>
   )
 }
 
