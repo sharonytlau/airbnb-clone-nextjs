@@ -13,6 +13,7 @@ export function ScrollableVertical({
   children,
   onScroll,
 }: ScrollableVerticalProps) {
+  const scrollThreshold = 80
   const ref = useRef<HTMLDivElement>(null)
   const scrollTop = useRef<number>(0)
   const [scrollDirection, setScrollDirection] = useState<ScrollDirection>(null)
@@ -22,9 +23,13 @@ export function ScrollableVertical({
     const lastScroll = scrollTop.current
     const currentScroll = ref.current?.scrollTop || 0
 
-    setScrollDirection(currentScroll > lastScroll ? 'DOWN' : 'UP')
-
-    scrollTop.current = currentScroll
+    if (
+      currentScroll - lastScroll >= scrollThreshold ||
+      lastScroll - currentScroll >= scrollThreshold
+    ) {
+      setScrollDirection(currentScroll > lastScroll ? 'DOWN' : 'UP')
+      scrollTop.current = currentScroll
+    }
   }
 
   useEffect(() => {
