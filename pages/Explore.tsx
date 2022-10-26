@@ -5,8 +5,7 @@ import ListingCards from 'components/ListingCards'
 import TheFooter from 'components/TheFooter'
 import SearchDrawer from 'components/SearchDrawer'
 import { ScrollableVertical } from 'components/ScrollableVertical'
-import { animated, useSpring } from '@react-spring/web'
-import { Z_FIXED } from 'zlib'
+import { SlideIn } from 'components/SlideIn'
 
 const fakeCategories = [
   {
@@ -101,22 +100,17 @@ const fakeListingCards = [
 function Explore() {
   const [showDrawer, setShowDrawer] = useState(false)
   const [showFooter, setShowFooter] = useState(true)
-  // animation
-  const styles = useSpring({
-    top: '0',
-    left: '0',
-    width: '100%',
-    height: '100%',
-    position: 'fixed' as 'fixed',
-    opacity: showDrawer ? 1 : 0,
-    transform: showDrawer ? 'translateY(0px)' : 'translateY(100%)',
-  })
 
   return (
     <div className="h-full w-full flex flex-col pt-4">
       {/* Search Bar */}
       <div className="px-7">
-        <SearchBar handleShowDrawer={() => setShowDrawer(true)} />
+        <SearchBar
+          handleShowDrawer={() => {
+            console.log('show drawer set to true')
+            setShowDrawer(true)
+          }}
+        />
       </div>
       {/* Filters */}
       <div className="pt-4">
@@ -139,15 +133,25 @@ function Explore() {
         <ListingCards data={fakeListingCards} />
       </ScrollableVertical>
       {/* Footer */}
-      {showFooter && <TheFooter />}
+      <SlideIn show={showFooter} styles={{ enter: { bottom: '0' } }}>
+        <TheFooter />
+      </SlideIn>
+      {/* {showFooter && <TheFooter />} */}
 
       {/* todo: refactor */}
       {/* SearchDrawer */}
-      {
-        <animated.div style={styles}>
-          <SearchDrawer handleHideDrawer={() => setShowDrawer(false)} />
-        </animated.div>
-      }
+      <SlideIn
+        show={showDrawer}
+        styles={{
+          enter: {
+            top: '0',
+            left: '0',
+            height: '100%',
+          },
+        }}
+      >
+        <SearchDrawer handleHideDrawer={() => setShowDrawer(false)} />
+      </SlideIn>
     </div>
   )
 }

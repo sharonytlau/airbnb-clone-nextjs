@@ -322,7 +322,10 @@ function SearchDrawer({ handleHideDrawer }: SearchDrawerProps) {
   }
 
   return (
-    <div className="flex flex-col bg-zinc-100 h-full z-25 text-sm font-medium text-gray-900">
+    <div
+      id="SEARCH_DRAWER"
+      className="flex flex-col bg-zinc-100 h-full z-25 text-sm font-medium text-gray-900"
+    >
       {/* tabs */}
       <div className="relative flex justify-center gap-4 text-base py-6">
         <RoundedButton
