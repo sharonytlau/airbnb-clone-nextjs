@@ -6,8 +6,8 @@ export enum SearchTypes {
 
 type SearchCardProps = {
   searchType: keyof typeof SearchTypes
+  activeType: keyof typeof SearchTypes
   children?: React.ReactNode
-  open?: boolean
   input?: string
   activeStyle?: string
   handleClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
@@ -21,13 +21,14 @@ const cardTexts = {
 
 export function SearchCard({
   searchType,
+  activeType,
   children,
-  open = false,
   handleClick,
   input,
   activeStyle = '',
 }: SearchCardProps) {
-  console.log('rendered', { searchType, children, open, handleClick, input })
+  const open = searchType === activeType
+  const hide = searchType === 'WHO' && activeType === 'WHEN'
 
   const texts = {
     ...cardTexts[searchType],
@@ -35,26 +36,26 @@ export function SearchCard({
       searchType.charAt(0).toUpperCase() + searchType.slice(1).toLowerCase(),
   }
 
-  const isWhen = searchType === 'WHEN'
-
   return open ? (
-    <div className={`wrapper relative ${isWhen ? 'flex-grow' : ''} `}>
-      <div
-        className={`flex flex-col gap-4 bg-white rounded-3xl py-6 shadow-[0_5px_15px] shadow-zinc-350 overflow-hidden ${activeStyle}`}
-      >
-        <h2 className="text-xl tracking-tight font-semibold px-6">
-          {texts.heading}
-        </h2>
-        {children}
-      </div>
-    </div>
-  ) : (
     <div
+      id={`search-card-${searchType}`}
+      className={`flex flex-col gap-4 bg-white rounded-3xl py-6 shadow-[0_5px_15px] shadow-zinc-350 overflow-hidden ${activeStyle}`}
+    >
+      <h2 className="text-xl tracking-tight font-semibold px-6">
+        {texts.heading}
+      </h2>
+      {children}
+    </div>
+  ) : !hide ? (
+    <div
+      id={`SEARCH_CARD_${searchType}`}
       className="flex justify-between bg-white p-4 rounded-2xl shadow-[0_2px_6px] shadow-zinc-200 tracking-tight"
       onClick={handleClick}
     >
       <h2 className="text-zinc-600"> {texts.title} </h2>
       <span> {input || texts.placeholder} </span>
     </div>
+  ) : (
+    <></>
   )
 }

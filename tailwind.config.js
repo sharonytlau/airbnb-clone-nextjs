@@ -32,15 +32,15 @@ module.exports = {
         },
       },
       fontSize: {
-        xxs: ['10px', '14px'],
-        xs: ['12px', '16px'],
-        sm: ['14px', '20px'],
-        base: ['16px', '24px'],
-        md: ['18px', '26px'],
-        lg: ['20px', '20px'],
-        xl: ['22px', '28px'],
-        '2xl': ['24px', '32px'],
-        '3xl': ['30px', '36px'],
+        xxs: ['0.625rem', '0.875rem'], // 10px
+        xs: ['0.75rem', '1rem'], // 12px
+        sm: ['0.875rem', '1.25rem'], // 14px
+        base: ['1rem', '1.5rem'], // 16px
+        md: ['1.125rem', '1.625rem'], // 18px
+        lg: ['1.25rem', '1.25rem'], // 20px
+        xl: ['1.375rem', '1.75rem'], // 22px
+        '2xl': ['1.5rem', '2rem'],
+        '3xl': ['1.875rem', '2.25rem'],
       },
       // rgba(24, 24, 27, 0.1)
       boxShadow: {

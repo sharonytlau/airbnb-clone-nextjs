@@ -1,16 +1,4 @@
-import React, { useState } from 'react'
-import { WorldMap } from 'components/maps/WorldMap'
-import { EuropeMap } from 'components/maps/EuropeMap'
-import { SouthAmericaMap } from 'components/maps/SouthAmericaMap'
-import { SearchFineIcon } from 'components/icons/SearchFineIcon'
-import { CancelIcon } from 'components/icons/CancelIcon'
-import { HistoryIcon } from 'components/icons/HistoryIcon'
-import { BackIcon } from 'components/icons/BackIcon'
-import { AddIcon } from 'components/icons/AddIcon'
-import { MinusIcon } from 'components/icons/MinusIcon'
-import { PlusMinusIcon } from 'components/icons/PlusMinusIcon'
-import { SearchTypes, SearchCard } from 'components/SearchCard'
-import { getEnumKeys, compareDates } from 'utils/utils'
+import { useEffect, useRef, useState } from 'react'
 import {
   add,
   daysInWeek,
@@ -24,6 +12,19 @@ import {
   startOfToday,
   startOfWeek,
 } from 'date-fns'
+
+import { WorldMap } from 'components/maps/WorldMap'
+import { EuropeMap } from 'components/maps/EuropeMap'
+import { SouthAmericaMap } from 'components/maps/SouthAmericaMap'
+import { SearchFineIcon } from 'components/icons/SearchFineIcon'
+import { CancelIcon } from 'components/icons/CancelIcon'
+import { HistoryIcon } from 'components/icons/HistoryIcon'
+import { BackIcon } from 'components/icons/BackIcon'
+import { AddIcon } from 'components/icons/AddIcon'
+import { MinusIcon } from 'components/icons/MinusIcon'
+import { PlusMinusIcon } from 'components/icons/PlusMinusIcon'
+import { SearchTypes, SearchCard } from 'components/SearchCard'
+import { getEnumKeys, compareDates } from 'utils/utils'
 import { splitArray } from 'utils/utils'
 
 const fakeAreas = [
@@ -55,13 +56,13 @@ enum DatePillTypes {
 }
 
 type SearchDrawerProps = {
-  showDrawer: Boolean
+  // showDrawer: Boolean
   handleHideDrawer: (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => void
 }
 
-function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
+function SearchDrawer({ handleHideDrawer }: SearchDrawerProps) {
   const [activeTab, setActiveTab] = useState(tabs[0].title)
   const [activeArea, setActiveArea] = useState(fakeAreas[0].title)
   const [showDestinationInputModal, setShowDestinationInputModal] =
@@ -178,12 +179,6 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
     { title: 'Infant', description: 'Under 2' },
     { title: 'Pets', description: 'Bringing a service animal' },
   ]
-
-  const getDrawerStyle = (showDrawer: Boolean) => {
-    const show = 'opacity-100'
-    const hide = 'opacity-50 translate-y-full'
-    return showDrawer ? show : hide
-  }
 
   const getTabStyle = (title: string) => {
     const active = 'border-b-2 border-current'
@@ -321,16 +316,13 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
       setActiveCard('WHO')
     }
   }
+
   function handleClearNext() {
     setActiveCard('WHO')
   }
 
   return (
-    <div
-      className={`fixed left-0 top-0 flex flex-col bg-zinc-100 w-screen h-screen z-25 text-sm font-medium text-gray-900 transition-all duration-500 ease-out ${getDrawerStyle(
-        showDrawer
-      )}`}
-    >
+    <div className="flex flex-col bg-zinc-100 h-full z-25 text-sm font-medium text-gray-900">
       {/* tabs */}
       <div className="relative flex justify-center gap-4 text-base py-6">
         <RoundedButton
@@ -365,12 +357,12 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
             return (
               <SearchCard
                 searchType={type}
-                open={type === activeCard}
+                activeType={activeCard}
                 handleClick={() => setActiveCard(type)}
                 input={getCardInput(type)}
                 activeStyle={
                   activeCard === 'WHEN'
-                    ? 'absolute z-30 top-0 -bottom-14 right-0 left-0 pb-0'
+                    ? `absolute z-30 top-[calc(8.5rem+2px)] bottom-[0.5rem] right-[0.75rem] left-[0.75rem] pb-0`
                     : ''
                 }
               >
@@ -592,7 +584,7 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
             <button>
               <span className="underline">Clear all</span>
             </button>
-            <button className="flex items-center gap-2 px-4 py-2 bg-prime-400 text-white rounded-lg">
+            <button className="flex items-center gap-2 px-6 py-2 bg-prime-400 text-white rounded-lg">
               <div className="text-lg">
                 <SearchFineIcon />
               </div>

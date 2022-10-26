@@ -5,6 +5,8 @@ import ListingCards from 'components/ListingCards'
 import TheFooter from 'components/TheFooter'
 import SearchDrawer from 'components/SearchDrawer'
 import { ScrollableVertical } from 'components/ScrollableVertical'
+import { animated, useSpring } from '@react-spring/web'
+import { Z_FIXED } from 'zlib'
 
 const fakeCategories = [
   {
@@ -99,6 +101,16 @@ const fakeListingCards = [
 function Explore() {
   const [showDrawer, setShowDrawer] = useState(false)
   const [showFooter, setShowFooter] = useState(true)
+  // animation
+  const styles = useSpring({
+    top: '0',
+    left: '0',
+    width: '100%',
+    height: '100%',
+    position: 'fixed' as 'fixed',
+    opacity: showDrawer ? 1 : 0,
+    transform: showDrawer ? 'translateY(0px)' : 'translateY(100%)',
+  })
 
   return (
     <div className="h-full w-full flex flex-col pt-4">
@@ -128,10 +140,14 @@ function Explore() {
       </ScrollableVertical>
       {/* Footer */}
       {showFooter && <TheFooter />}
-      <SearchDrawer
-        showDrawer={showDrawer}
-        handleHideDrawer={() => setShowDrawer(false)}
-      />
+
+      {/* todo: refactor */}
+      {/* SearchDrawer */}
+      {
+        <animated.div style={styles}>
+          <SearchDrawer handleHideDrawer={() => setShowDrawer(false)} />
+        </animated.div>
+      }
     </div>
   )
 }
