@@ -7,55 +7,55 @@ import SearchDrawer from 'components/SearchDrawer'
 
 const fakeCategories = [
   {
-    image: '/../public/mountains.png',
+    image: '/mountains.png',
     title: 'Mountains',
   },
   {
-    image: '/../public/landmarks.png',
+    image: '/landmarks.png',
     title: 'Landmarks',
   },
   {
-    image: '/../public/theaters.png',
+    image: '/theaters.png',
     title: 'Theaters',
   },
   {
-    image: '/../public/camps.png',
+    image: '/camps.png',
     title: 'Camps',
   },
   {
-    image: '/../public/tropical.png',
+    image: '/tropical.png',
     title: 'Tropical',
   },
   {
-    image: '/../public/amusements.png',
+    image: '/amusements.png',
     title: 'Amusements',
   },
   {
-    image: '/../public/meadows.png',
+    image: '/meadows.png',
     title: 'Meadows',
   },
   {
-    image: '/../public/deserts.png',
+    image: '/deserts.png',
     title: 'Deserts',
   },
   {
-    image: '/../public/shopping.png',
+    image: '/shopping.png',
     title: 'Shopping',
   },
   {
-    image: '/../public/windmills.png',
+    image: '/windmills.png',
     title: 'Windmills',
   },
   {
-    image: '/../public/museums.png',
+    image: '/museums.png',
     title: 'Museums',
   },
   {
-    image: '/../public/sailing.png',
+    image: '/sailing.png',
     title: 'Sailing',
   },
   {
-    image: '/../public/arctic.png',
+    image: '/arctic.png',
     title: 'Arctic',
   },
   {
