@@ -61,7 +61,7 @@ const fakeCategories = [
     title: 'Arctic',
   },
   {
-    image: '/../public/golfing.png',
+    image: '/golfing.png',
     title: 'Golfing',
   },
 ]
