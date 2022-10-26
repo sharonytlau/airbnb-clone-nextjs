@@ -18,7 +18,7 @@ function SearchBar({ handleShowDrawer }: SearchBarProps) {
         <SearchIcon className="text-lg text-zinc-800" />
         <div>
           <p className="font-medium text-sm">"Where to?"</p>
-          <p className="text-xs text-zinc-600">
+          <p className="text-xs text-zinc-400">
             Anywhere · Any Week · Add guests
           </p>
         </div>

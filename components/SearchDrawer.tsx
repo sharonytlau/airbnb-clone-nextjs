@@ -228,7 +228,7 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
   const getDatePillStyle = (index: number) => {
     const active =
       'bg-gray-100 outline-offset-[-2px] outline-2 outline-gray-800'
-    const inactive = 'outline-offset-[-1px] outline-gray-300'
+    const inactive = 'outline-offset-[-1px] outline-1 outline-gray-300'
 
     return activeDatePill === index ? active : inactive
   }
@@ -271,7 +271,9 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
           return ''
         }
 
-        return `${dateRangeStr} (±${DatePillTypes[activeDatePill]})`
+        return `${dateRangeStr} (${activeDatePill !== 0 ? '±' : ''}${
+          DatePillTypes[activeDatePill]
+        })`
       case 'WHO':
         return ''
     }
