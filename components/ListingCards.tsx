@@ -15,7 +15,7 @@ type ListingCardsProps = {
 
 function ListingCards({ data }: ListingCardsProps) {
   return (
-    <div className="flex-1 overflow-y-auto scrollbar-hide px-7 space-y-8 text-gray-900">
+    <div className="flex flex-col gap-10 h-full overflow-y-auto scrollbar-hide text-gray-900 py-7">
       {data.map((el) => {
         const { image, title, price, rating, distance } = el
         return (
@@ -23,17 +23,17 @@ function ListingCards({ data }: ListingCardsProps) {
             <div className="w-full h-[300px] relative rounded-3xl overflow-hidden">
               <Image src={`${image}/w=800`} layout="fill" objectFit="cover" />
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between text-[15px]">
               <div>
                 <p className="font-medium"> {title} </p>
-                <p className="text-sm"> {`${distance} miles away`} </p>
-                <p className="text-sm"> {'Oct 22 - 25'} </p>
-                <p className="mt-2 text-sm">
-                  <span className="font-bold">{`$${price}`}</span>
+                <p className="text-zinc-500"> {`${distance} miles away`} </p>
+                <p className="text-zinc-500"> {'Oct 22 - 25'} </p>
+                <p className="mt-1.5">
+                  <span className="font-semibold">{`$${price}`}</span>
                   <span> night </span>
                 </p>
               </div>
-              <div className="font-bold"> {`★ ${rating}`} </div>
+              <div> {`★ ${rating}`} </div>
             </div>
           </div>
         )

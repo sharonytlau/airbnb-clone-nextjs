@@ -194,14 +194,14 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
 
   const getAreaStyle = (title: string) => {
     const active = ''
-    const inactive = 'text-gray-500'
+    const inactive = 'text-zinc-500'
 
     return title === activeArea ? active : inactive
   }
 
   const getAreaImageStyle = (title: string) => {
-    const active = 'outline-offset-[-2px] outline outline-2 outline-gray-800'
-    const inactive = 'outline-offset-[-1px] outline outline-1 outline-gray-300'
+    const active = 'outline-offset-[-2px] outline outline-2 outline-zinc-600'
+    const inactive = 'outline-offset-[-1px] outline outline-1 outline-zinc-300'
 
     return title === activeArea ? active : inactive
   }
@@ -590,7 +590,7 @@ function SearchDrawer({ showDrawer, handleHideDrawer }: SearchDrawerProps) {
             <button>
               <span className="underline">Clear all</span>
             </button>
-            <button className="flex items-center gap-2 px-4 py-2 bg-rose-500 text-white rounded-lg">
+            <button className="flex items-center gap-2 px-4 py-2 bg-prime-400 text-white rounded-lg">
               <div className="text-lg">
                 <SearchFineIcon />
               </div>

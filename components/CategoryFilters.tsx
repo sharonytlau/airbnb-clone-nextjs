@@ -43,7 +43,7 @@ function CategoryFilters({ categories }: CategoriesProps) {
   }
 
   return (
-    <div className="flex gap-7 w-full overflow-x-auto scrollbar-hide px-5 shadow-[0_3px_3px] shadow-gray-100">
+    <div className="flex gap-7 w-full overflow-x-auto scrollbar-hide px-7 shadow-[0_3px_3px] shadow-gray-100">
       {categories.map((el) => {
         return (
           <div
@@ -52,7 +52,9 @@ function CategoryFilters({ categories }: CategoriesProps) {
             )}`}
             onClick={() => handleClick(el.title)}
           >
-            <div className={`w-6 h-6 relative ${getIconStyle(el.title)}`}>
+            <div
+              className={`w-[22px] h-[22px] relative ${getIconStyle(el.title)}`}
+            >
               <Image src={el.image} width="100%" height="100%" />
             </div>
             <div

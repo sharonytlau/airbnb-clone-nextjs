@@ -11,14 +11,14 @@ type SearchBarProps = {
 function SearchBar({ handleShowDrawer }: SearchBarProps) {
   return (
     <div
-      className="flex items-center justify-between gap-3 py-2 pl-5 pr-3 shadow-[0_2px_15px] shadow-gray-200 rounded-full mx-6  text-gray-900"
+      className="flex items-center justify-between gap-3 h-14 pl-5 pr-3 shadow-md rounded-full text-zinc-900 border-[0.5px] border-zinc-200"
       onClick={handleShowDrawer}
     >
       <div className="flex gap-4 items-center tracking-tight">
-        <SearchIcon className="text-lg text-gray-800" />
+        <SearchIcon className="text-lg text-zinc-800" />
         <div>
           <p className="font-medium text-sm">"Where to?"</p>
-          <p className="text-xs text-gray-600">
+          <p className="text-xs text-zinc-600">
             Anywhere · Any Week · Add guests
           </p>
         </div>

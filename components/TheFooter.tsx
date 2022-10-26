@@ -31,14 +31,14 @@ function TheFooter() {
   const [selectedIcon, setSelectedIcon] = useState(bottomIcons[0].text)
 
   const getIconStyle = (iconText: string) => {
-    const selected = 'fill-amber-200 text-gray-900'
+    const selected = 'fill-prime-50 text-prime-600'
     const notSelected = 'fill-white text-gray-400'
 
     return selectedIcon === iconText ? selected : notSelected
   }
 
   const getIconTextStyle = (iconText: string) => {
-    const selected = 'text-gray-900 font-medium'
+    const selected = 'text-prime-800 font-medium'
     const notSelected = 'text-gray-500'
 
     return selectedIcon === iconText ? selected : notSelected
@@ -49,7 +49,7 @@ function TheFooter() {
   }
 
   return (
-    <div className="flex items-center justify-around w-full">
+    <div className="flex items-center justify-around w-full py-2">
       {bottomIcons.map((el) => {
         return (
           <div
