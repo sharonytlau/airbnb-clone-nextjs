@@ -33,10 +33,11 @@ export function ScrollableVertical({
   }
 
   useEffect(() => {
-    if (ref.current) {
+    const refCopy = ref.current
+    if (refCopy) {
       ref.current.addEventListener('scroll', handleScroll)
 
-      return () => ref.current?.removeEventListener('scroll', handleScroll)
+      return () => refCopy?.removeEventListener('scroll', handleScroll)
     }
   }, [])
 

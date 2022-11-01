@@ -345,6 +345,7 @@ function SearchDrawer({ handleHideDrawer }: SearchDrawerProps) {
               onClick={() => {
                 setActiveTab(title)
               }}
+              key={title}
             >
               {title}
             </div>
@@ -368,6 +369,7 @@ function SearchDrawer({ handleHideDrawer }: SearchDrawerProps) {
                     ? `absolute z-30 top-[calc(8.5rem+2px)] bottom-[0.5rem] right-[0.75rem] left-[0.75rem] pb-0`
                     : ''
                 }
+                key={type}
               >
                 {/* Where */}
                 {activeCard === 'WHERE' && (
@@ -389,6 +391,7 @@ function SearchDrawer({ handleHideDrawer }: SearchDrawerProps) {
                               setActiveArea(title)
                               setActiveCard('WHEN')
                             }}
+                            key={title}
                           >
                             <div
                               className={`w-30 h-30 flex items-center rounded-2xl justify-center overflow-hidden ${getAreaImageStyle(
@@ -416,6 +419,7 @@ function SearchDrawer({ handleHideDrawer }: SearchDrawerProps) {
                               title
                             )}`}
                             onClick={() => setActiveWhenTab(title)}
+                            key={title}
                           >
                             {title}
                           </div>
@@ -431,7 +435,9 @@ function SearchDrawer({ handleHideDrawer }: SearchDrawerProps) {
                             <tbody>
                               <tr>
                                 {weekDays.map((el) => (
-                                  <td className="w-10 h-10 p-px">{el}</td>
+                                  <td className="w-10 h-10 p-px" key={el}>
+                                    {el}
+                                  </td>
                                 ))}
                               </tr>
                             </tbody>
@@ -452,13 +458,14 @@ function SearchDrawer({ handleHideDrawer }: SearchDrawerProps) {
                                     {splitArray(daysOfMonth, 7).map(
                                       (weekArr) => {
                                         return (
-                                          <tr>
+                                          <tr key={weekArr[0].toISOString()}>
                                             {weekArr.map((day) => {
                                               const { cellStyle, circleStyle } =
                                                 getDateStyle(day, m)
                                               return (
                                                 <td
                                                   className={` w-10 h-10 p-px text-sm ${cellStyle}`}
+                                                  key={day.toISOString()}
                                                 >
                                                   <button
                                                     className={`${circleStyle}`}
@@ -499,6 +506,7 @@ function SearchDrawer({ handleHideDrawer }: SearchDrawerProps) {
                                   index
                                 )}`}
                                 onClick={() => setActiveDatePill(index)}
+                                key={val}
                               >
                                 {index !== 0 && <PlusMinusIcon />}
                                 <span>{val}</span>
@@ -529,7 +537,10 @@ function SearchDrawer({ handleHideDrawer }: SearchDrawerProps) {
                 {activeCard === 'WHO' &&
                   guestChoices.map(({ title, description }) => {
                     return (
-                      <div className="flex justify-between items-center pb-3 mx-6 border-b border-b-zinc-150 last:border-b-0 last:pb-0 ">
+                      <div
+                        className="flex justify-between items-center pb-3 mx-6 border-b border-b-zinc-150 last:border-b-0 last:pb-0 "
+                        key={title}
+                      >
                         <div>
                           <p> {title} </p>
                           <p className="text-gray-500 font-normal">

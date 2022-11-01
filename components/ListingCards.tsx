@@ -18,9 +18,14 @@ function ListingCards({ data }: ListingCardsProps) {
       {data.map((el) => {
         const { image, title, price, rating, distance } = el
         return (
-          <div className="space-y-3">
+          <div className="space-y-3" key={title}>
             <div className="w-full h-[300px] relative rounded-3xl overflow-hidden">
-              <Image src={`${image}/w=800`} layout="fill" objectFit="cover" />
+              <Image
+                src={`${image}/w=800`}
+                layout="fill"
+                objectFit="cover"
+                alt={title}
+              />
             </div>
             <div className="flex justify-between text-[15px]">
               <div>

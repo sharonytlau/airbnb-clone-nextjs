@@ -44,25 +44,26 @@ function CategoryFilters({ categories }: CategoriesProps) {
 
   return (
     <div className="flex gap-7 w-full overflow-x-auto scrollbar-hide px-7 shadow-[0_3px_3px] shadow-gray-100">
-      {categories.map((el) => {
+      {categories.map(({ title, image }) => {
         return (
           <div
             className={`pb-3 flex flex-col items-center gap-2 ${getCategoryStyle(
-              el.title
+              title
             )}`}
-            onClick={() => handleClick(el.title)}
+            onClick={() => handleClick(title)}
+            key={title}
           >
             <div
-              className={`w-[22px] h-[22px] relative ${getIconStyle(el.title)}`}
+              className={`w-[22px] h-[22px] relative ${getIconStyle(title)}`}
             >
-              <Image src={el.image} width="100%" height="100%" />
+              <Image src={image} width="100%" height="100%" alt={title} />
             </div>
             <div
               className={`font-medium text-xs tracking-tight ${getTitleStyle(
-                el.title
+                title
               )}`}
             >
-              {el.title}
+              {title}
             </div>
           </div>
         )

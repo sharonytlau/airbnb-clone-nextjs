@@ -50,16 +50,15 @@ function TheFooter() {
 
   return (
     <div className="bg-white flex items-center justify-around w-full py-2">
-      {bottomIcons.map((el) => {
+      {bottomIcons.map(({ text, icon }) => {
         return (
           <div
             className="flex flex-col items-center gap-1"
-            onClick={() => handleClick(el.text)}
+            onClick={() => handleClick(text)}
+            key={text}
           >
-            <div className={`text-2xl ${getIconStyle(el.text)}`}>{el.icon}</div>
-            <div className={`text-xxs ${getIconTextStyle(el.text)}`}>
-              {el.text}
-            </div>
+            <div className={`text-2xl ${getIconStyle(text)}`}>{icon}</div>
+            <div className={`text-xxs ${getIconTextStyle(text)}`}>{text}</div>
           </div>
         )
       })}

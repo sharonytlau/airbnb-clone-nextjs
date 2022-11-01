@@ -17,9 +17,9 @@ function SearchBar({ handleShowDrawer }: SearchBarProps) {
       <div className="flex gap-4 items-center tracking-tight">
         <SearchIcon className="text-lg text-zinc-800" />
         <div>
-          <p className="font-medium text-sm">"Where to?"</p>
+          <p className="font-medium text-sm">{'Where to?'}</p>
           <p className="text-xs text-zinc-400">
-            Anywhere · Any Week · Add guests
+            {'Anywhere · Any Week · Add guests'}
           </p>
         </div>
       </div>
