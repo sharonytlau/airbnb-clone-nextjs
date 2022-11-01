@@ -3,6 +3,7 @@ import {
   add,
   daysInWeek,
   eachDayOfInterval,
+  eachMonthOfInterval,
   endOfMonth,
   endOfWeek,
   format,
@@ -43,7 +44,6 @@ const fakeAreas = [
 ]
 
 const tabs = [{ title: 'Stays' }, { title: 'Experiences' }]
-const whenTabs = [{ title: 'Choose dates' }, { title: "I'm flexible" }]
 
 const weekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
 
@@ -54,6 +54,12 @@ enum DatePillTypes {
   '3 days' = 3,
   '7days' = 7,
 }
+
+enum WhenTabTypes {
+  'Choose dates',
+  "I'm flexible",
+}
+const whenTabs = getEnumKeys(WhenTabTypes)
 
 type SearchDrawerProps = {
   // showDrawer: Boolean
@@ -82,7 +88,9 @@ function SearchDrawer({ handleHideDrawer }: SearchDrawerProps) {
   }
 
   // When
-  const [activeWhenTab, setActiveWhenTab] = useState(whenTabs[0].title)
+  const [activeWhenTab, setActiveWhenTab] = useState<keyof typeof WhenTabTypes>(
+    whenTabs[0]
+  )
   const [activeDatePill, setActiveDatePill] = useState(0)
   const [dateSelectionRange, setDateSelectionRange] =
     useState<dateSelectionRange>({
@@ -91,25 +99,24 @@ function SearchDrawer({ handleHideDrawer }: SearchDrawerProps) {
     })
   const [activeDate, setActiveDate] = useState<Date | undefined>(undefined)
 
+  const CALENDAR_MONTH_UNIT = 4
   const today = startOfToday()
   const startOfCurrentMonth = startOfMonth(today)
-  const [displayMonthFirstDays, setDisplayMonthFirstDays] = useState<Date[]>([
-    startOfCurrentMonth,
-    add(startOfCurrentMonth, { months: 1 }),
-    add(startOfCurrentMonth, { months: 2 }),
-    add(startOfCurrentMonth, { months: 3 }),
-    add(startOfCurrentMonth, { months: 4 }),
-    add(startOfCurrentMonth, { months: 5 }),
-    add(startOfCurrentMonth, { months: 6 }),
-    add(startOfCurrentMonth, { months: 7 }),
-    add(startOfCurrentMonth, { months: 8 }),
-  ])
+  const [calendarMonthNum, setCalendarMonthNum] = useState(
+    CALENDAR_MONTH_UNIT - 1
+  )
+  const displayMonthFirstDays = eachMonthOfInterval({
+    start: startOfCurrentMonth,
+    end: add(startOfCurrentMonth, { months: calendarMonthNum }),
+  })
 
   // calendar
   function getMonthCalendar(startOfTheMonth: Date) {
     const startOfTheFirstWeek = startOfWeek(startOfTheMonth)
     const endOfTheMonth = endOfMonth(startOfTheMonth)
     const endOfTheLastWeek = endOfWeek(endOfTheMonth)
+    console.log('startOfTheMonth', startOfTheMonth)
+
     const monthText = format(startOfTheMonth, 'MMMM yyyy')
     const daysOfMonth = eachDayOfInterval({
       start: startOfTheFirstWeek,
@@ -412,7 +419,7 @@ function SearchDrawer({ handleHideDrawer }: SearchDrawerProps) {
                   <div className="flex flex-col flex-grow overflow-y-hidden">
                     {/* tabs */}
                     <div className="mx-auto flex justify-between items-center p-1.5 bg-zinc-150 rounded-full w-80 mb-4">
-                      {whenTabs.map(({ title }) => {
+                      {whenTabs.map((title) => {
                         return (
                           <div
                             className={`px-5 py-2 rounded-full  flex-1 text-center ${getWhenTabStyle(
@@ -495,6 +502,16 @@ function SearchDrawer({ handleHideDrawer }: SearchDrawerProps) {
                               </>
                             )
                           })}
+                          <button
+                            className="flex border border-zinc-900 rounded-md py-3 w-[98%] mx-auto justify-center mt-4 mb-6"
+                            onClick={() =>
+                              setCalendarMonthNum(
+                                (before) => before + CALENDAR_MONTH_UNIT
+                              )
+                            }
+                          >
+                            {'Load more dates'}
+                          </button>
                         </div>
                         {/* Calendar Pills */}
                         <div className="flex gap-2 px-4 py-1.5 overflow-x-scroll scrollbar-hide border-t border-b border-gray-300">
@@ -527,6 +544,21 @@ function SearchDrawer({ handleHideDrawer }: SearchDrawerProps) {
                           >
                             <span>Next</span>
                           </button>
+                        </div>
+                      </>
+                    )}
+                    {activeWhenTab === "I'm flexible" && (
+                      <>
+                        <div className="border-t border-b border-zinc-200 py-3 mx-7">
+                          <p className="text-base font-medium">
+                            Stay for a week
+                          </p>
+                        </div>
+                        <div className="py-3">
+                          <p className="text-base font-medium mx-7">
+                            Go anytime
+                          </p>
+                          <div></div>
                         </div>
                       </>
                     )}
