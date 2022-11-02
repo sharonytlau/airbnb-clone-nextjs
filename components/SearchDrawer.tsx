@@ -24,9 +24,16 @@ import { BackIcon } from 'components/icons/BackIcon'
 import { AddIcon } from 'components/icons/AddIcon'
 import { MinusIcon } from 'components/icons/MinusIcon'
 import { PlusMinusIcon } from 'components/icons/PlusMinusIcon'
+import { CalendarIcon } from 'components/icons/CalendarIcon'
+import { CalendarCheckIcon } from 'components/icons/CalendarCheckIcon'
 import { SearchTypes, SearchCard } from 'components/SearchCard'
-import { getEnumKeys, compareDates } from 'utils/utils'
-import { splitArray } from 'utils/utils'
+import {
+  splitArray,
+  getEnumKeys,
+  compareDates,
+  includesDate,
+  popDate,
+} from 'utils/utils'
 
 const fakeAreas = [
   {
@@ -109,6 +116,13 @@ function SearchDrawer({ handleHideDrawer }: SearchDrawerProps) {
     start: startOfCurrentMonth,
     end: add(startOfCurrentMonth, { months: calendarMonthNum }),
   })
+  const flexMonthFirstDays = eachMonthOfInterval({
+    start: startOfCurrentMonth,
+    end: add(startOfCurrentMonth, { months: 11 }),
+  })
+  const [checkedFlexMonthFirstDays, setCheckedFlexMonthFirstDays] = useState<
+    Date[]
+  >([])
 
   // calendar
   function getMonthCalendar(startOfTheMonth: Date) {
@@ -233,6 +247,13 @@ function SearchDrawer({ handleHideDrawer }: SearchDrawerProps) {
     const inactive = 'outline-offset-[-1px] outline-1 outline-gray-300'
 
     return activeDatePill === index ? active : inactive
+  }
+
+  const getFlexMonthStyle = (day: Date) => {
+    const active = 'text-zinc-900 border-zinc-900 border-2 bg-zinc-50'
+    const inactive = 'text-zinc-550 border-zinc-300'
+
+    return includesDate(checkedFlexMonthFirstDays, day) ? active : inactive
   }
 
   function checkGuestMin(title: keyof typeof guestTypes) {
@@ -555,10 +576,56 @@ function SearchDrawer({ handleHideDrawer }: SearchDrawerProps) {
                           </p>
                         </div>
                         <div className="py-3">
-                          <p className="text-base font-medium mx-7">
-                            Go anytime
+                          <p className="text-base font-medium mx-7 whitespace-nowrap text-ellipsis overflow-x-hidden">
+                            {checkedFlexMonthFirstDays.length
+                              ? `Go in ${[...checkedFlexMonthFirstDays]
+                                  .sort((a, b) => (a > b ? 1 : -1))
+                                  .map((d) => format(d, 'MMMM'))
+                                  .join(', ')}`
+                              : 'Go anytime'}
                           </p>
-                          <div></div>
+                          <div className="flex gap-2 overflow-x-auto scrollbar-hide px-7 py-2">
+                            {flexMonthFirstDays.map((d) => {
+                              const m = format(d, 'MMMM')
+                              const y = format(d, 'yyyy')
+
+                              return (
+                                <button
+                                  className={`flex flex-col justify-center items-center gap-1.5 h-26 w-28 border flex-none rounded-2xl font-normal text-sm ${getFlexMonthStyle(
+                                    d
+                                  )}`}
+                                  key={d.toISOString()}
+                                  onClick={() =>
+                                    setCheckedFlexMonthFirstDays((before) => {
+                                      let newChecked = [...before]
+
+                                      if (!includesDate(before, d)) {
+                                        newChecked.push(d)
+                                      } else {
+                                        newChecked = popDate(newChecked, d)
+                                      }
+
+                                      return newChecked
+                                    })
+                                  }
+                                >
+                                  <div className="pt-2">
+                                    {checkedFlexMonthFirstDays
+                                      .map((d) => format(d, 'MMddyyyy'))
+                                      .includes(format(d, 'MMddyyyy')) ? (
+                                      <CalendarCheckIcon className="text-4xl" />
+                                    ) : (
+                                      <CalendarIcon className="text-4xl" />
+                                    )}
+                                  </div>
+                                  <div>
+                                    <p>{m}</p>
+                                    <p>{y}</p>
+                                  </div>
+                                </button>
+                              )
+                            })}
+                          </div>
                         </div>
                       </>
                     )}

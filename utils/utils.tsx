@@ -26,3 +26,22 @@ export function splitArray<T>(arr: T[], len: number) {
 export function compareDates(d1: Date, d2: Date) {
   return format(d1, 'MMddyyyy') === format(d2, 'MMddyyyy')
 }
+
+export function includesDate(dArr: Date[], d: Date) {
+  for (let d2 of dArr) {
+    if (compareDates(d, d2)) return true
+  }
+  return false
+}
+
+export function popDate(dArr: Date[], d: Date) {
+  console.log('d', d)
+  const filtered = dArr.filter((d2) => {
+    console.log('d2', d2)
+    console.log('compare', compareDates(d, d2))
+
+    return !compareDates(d, d2)
+  })
+  console.log('filtered:', filtered)
+  return filtered
+}
