@@ -54,6 +54,25 @@ const tabs = [{ title: 'Stays' }, { title: 'Experiences' }]
 
 const weekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
 
+// todo refactor
+enum FlexDatePillTypes {
+  'Weekend',
+  'Week',
+  'Month',
+}
+
+// type FlexDatePillChoice = {
+//   title: keyof typeof guestTypes
+//   description: string
+// }
+
+// const guestChoices: GuestChoice[] = [
+//   { title: 'Adults', description: 'Ages 13 or above' },
+//   { title: 'Children', description: 'Ages 2-12' },
+//   { title: 'Infant', description: 'Under 2' },
+//   { title: 'Pets', description: 'Bringing a service animal' },
+// ]
+
 enum DatePillTypes {
   'Exact dates' = 0,
   '1 day' = 1,
@@ -572,8 +591,19 @@ function SearchDrawer({ handleHideDrawer }: SearchDrawerProps) {
                       <>
                         <div className="border-t border-b border-zinc-200 py-3 mx-7">
                           <p className="text-base font-medium">
-                            Stay for a week
+                            {'Stay for a week'}
                           </p>
+
+                          <div className="flex gap-2.5 pt-2">
+                            {['Weekend', 'Week', 'Month'].map((el) => (
+                              <button
+                                className="border py-2 px-3 rounded-full font-normal"
+                                key={el}
+                              >
+                                {el}
+                              </button>
+                            ))}
+                          </div>
                         </div>
                         <div className="py-3">
                           <p className="text-base font-medium mx-7 whitespace-nowrap text-ellipsis overflow-x-hidden">
