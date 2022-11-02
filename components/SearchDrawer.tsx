@@ -32,7 +32,7 @@ import {
   getEnumKeys,
   compareDates,
   includesDate,
-  popDate,
+  filterDate,
 } from 'utils/utils'
 
 const fakeAreas = [
@@ -597,7 +597,7 @@ function SearchDrawer({ handleHideDrawer }: SearchDrawerProps) {
                           <div className="flex gap-2.5 pt-2">
                             {['Weekend', 'Week', 'Month'].map((el) => (
                               <button
-                                className="border py-2 px-3 rounded-full font-normal"
+                                className="border py-1.5 px-3 rounded-full font-normal"
                                 key={el}
                               >
                                 {el}
@@ -632,7 +632,7 @@ function SearchDrawer({ handleHideDrawer }: SearchDrawerProps) {
                                       if (!includesDate(before, d)) {
                                         newChecked.push(d)
                                       } else {
-                                        newChecked = popDate(newChecked, d)
+                                        newChecked = filterDate(newChecked, d)
                                       }
 
                                       return newChecked

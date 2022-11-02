@@ -28,20 +28,11 @@ export function compareDates(d1: Date, d2: Date) {
 }
 
 export function includesDate(dArr: Date[], d: Date) {
-  for (let d2 of dArr) {
-    if (compareDates(d, d2)) return true
-  }
-  return false
+  return dArr.some((d2) => compareDates(d, d2))
 }
 
-export function popDate(dArr: Date[], d: Date) {
-  console.log('d', d)
-  const filtered = dArr.filter((d2) => {
-    console.log('d2', d2)
-    console.log('compare', compareDates(d, d2))
-
+export function filterDate(dArr: Date[], d: Date) {
+  return dArr.filter((d2) => {
     return !compareDates(d, d2)
   })
-  console.log('filtered:', filtered)
-  return filtered
 }
