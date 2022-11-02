@@ -41,12 +41,14 @@ module.exports = {
         xl: ['1.375rem', '1.75rem'], // 22px
         '2xl': ['1.5rem', '2rem'],
         '3xl': ['1.875rem', '2.25rem'],
+        '4xl': ['2rem', '2.5rem'],
       },
       // rgba(24, 24, 27, 0.1)
       boxShadow: {
         md: '0 4px 10px 2px rgba(24, 24, 27, 0.06), 0 1px 6px -1px rgba(24, 24, 27, 0.08)',
       },
       spacing: {
+        26: '6.5rem', // 104px
         30: '7.5rem', // 120px
       },
       borderRadius: {
