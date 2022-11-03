@@ -14,12 +14,13 @@ type ListingCardsProps = {
 
 function ListingCards({ data }: ListingCardsProps) {
   return (
-    <>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6 gap-y-10 gap-x-6">
       {data.map((el) => {
         const { image, title, price, rating, distance } = el
         return (
           <div className="space-y-3" key={title}>
-            <div className="w-full h-[300px] relative rounded-3xl overflow-hidden">
+            {/* <div className="w-full h-0 pb-[95%] relative rounded-3xl overflow-hidden"> */}
+            <div className="w-full aspect-w-20 aspect-h-19 relative rounded-3xl overflow-hidden">
               <Image
                 src={`${image}/w=800`}
                 layout="fill"
@@ -42,7 +43,7 @@ function ListingCards({ data }: ListingCardsProps) {
           </div>
         )
       })}
-    </>
+    </div>
   )
 }
 

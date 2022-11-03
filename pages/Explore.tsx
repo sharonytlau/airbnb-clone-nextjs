@@ -118,7 +118,7 @@ function Explore() {
       </div>
       {/* Listings */}
       <ScrollableVertical
-        style="gap-10 text-gray-900 p-7"
+        style="text-gray-900 p-6 md:p-10 xl:px-20"
         onScroll={{
           onScrollUp() {
             console.log('upppp')

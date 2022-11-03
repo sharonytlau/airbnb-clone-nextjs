@@ -57,7 +57,7 @@ export function ScrollableVertical({
   return (
     <div className="flex flex-col overflow-y-hidden">
       <div
-        className={`flex flex-col overflow-y-auto h-full scrollbar-hide ${style}`}
+        className={`overflow-y-auto h-full scrollbar-hide ${style}`}
         ref={ref}
       >
         {children}
