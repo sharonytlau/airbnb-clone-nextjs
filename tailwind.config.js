@@ -8,6 +8,15 @@ module.exports = {
     fontFamily: {
       sans: ['Poppins'],
     },
+    screens: {
+      sm: '550px',
+      md: '744px',
+      lg: '950px',
+      xl: '1128px',
+      '2xl': '1440px',
+      '3xl': '1640px',
+      '4xl': '1880px',
+    },
 
     extend: {
       colors: {
@@ -43,7 +52,6 @@ module.exports = {
         '3xl': ['1.875rem', '2.25rem'],
         '4xl': ['2rem', '2.5rem'],
       },
-      // rgba(24, 24, 27, 0.1)
       boxShadow: {
         md: '0 4px 10px 2px rgba(24, 24, 27, 0.06), 0 1px 6px -1px rgba(24, 24, 27, 0.08)',
       },
@@ -54,8 +62,18 @@ module.exports = {
       borderRadius: {
         '4xl': '1.875rem', // 30px
       },
+      aspectRatio: {
+        19: '19',
+        20: '20',
+      },
     },
   },
+  corePlugins: {
+    aspectRatio: false,
+  },
 
-  plugins: [require('tailwind-scrollbar-hide')],
+  plugins: [
+    require('tailwind-scrollbar-hide'),
+    require('@tailwindcss/aspect-ratio'),
+  ],
 }
