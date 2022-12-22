@@ -36,3 +36,7 @@ export function filterDate(dArr: Date[], d: Date) {
     return !compareDates(d, d2)
   })
 }
+
+export function capFirst(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1)
+}

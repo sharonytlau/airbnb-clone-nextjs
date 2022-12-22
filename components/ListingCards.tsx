@@ -1,38 +1,34 @@
 import Image from 'next/image'
+import { Prisma } from '@prisma/client'
+import { ListingWithImage } from 'lib/prima'
 
-type ListingCard = {
-  image: string
-  title: string
-  price: number
-  rating: number
-  distance: number
-}
-
-type ListingCardsProps = {
-  data: ListingCard[]
-}
-
-function ListingCards({ data }: ListingCardsProps) {
+function ListingCards({ data }: { data: ListingWithImage[] }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6 gap-y-10 gap-x-6">
       {data.map((el) => {
-        const { image, title, price, rating, distance } = el
+        const {
+          listingImages = [],
+          title,
+          subtitle,
+          period,
+          price,
+          rating,
+        } = el
         return (
           <div className="space-y-3" key={title}>
             {/* <div className="w-full h-0 pb-[95%] relative rounded-3xl overflow-hidden"> */}
             <div className="w-full aspect-w-20 aspect-h-19 relative rounded-3xl overflow-hidden">
               <Image
-                src={`${image}/w=800`}
-                layout="fill"
-                objectFit="cover"
+                src={`${listingImages[0].source}/w=800`}
+                fill
                 alt={title}
               />
             </div>
             <div className="flex justify-between text-[15px]">
               <div>
                 <p className="font-medium"> {title} </p>
-                <p className="text-zinc-450"> {`${distance} miles away`} </p>
-                <p className="text-zinc-450"> {'Oct 22 - 25'} </p>
+                <p className="text-zinc-450"> {subtitle} </p>
+                <p className="text-zinc-450"> {period} </p>
                 <p className="mt-1.5">
                   <span className="font-semibold">{`$${price}`}</span>
                   <span> night </span>

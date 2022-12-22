@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum category {
+  Mountains
+  Landmarks
+  Theaters
+  Camps
+  Tropical
+  Amusements
+  Meadows
+  Deserts
+  Shopping
+  Windmills
+  Museums
+  Sailing
+  Arctic
+  Golfing
+  Urban
+}
+
+model Category {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  title     category
+  listing   Listing[]
+}
+
+model Listing {
+  id            String         @id @default(uuid())
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  title         String
+  subtitle      String
+  period        String
+  price         Int
+  rating        Float
+  listingImages ListingImage[]
+  category      Category[]
+}
+
+model ListingImage {
+  id        String  @id @default(uuid())
+  listingId String
+  listing   Listing @relation(fields: [listingId], references: [id])
+  source    String
+}
