@@ -56,7 +56,7 @@ function CategoryFilters({ categories }: CategoriesProps) {
             <div
               className={`w-[22px] h-[22px] relative ${getIconStyle(title)}`}
             >
-              <Image src={image} width="100%" height="100%" alt={title} />
+              <Image src={image} alt={title} fill />
             </div>
             <div
               className={`font-medium text-xs tracking-tight ${getTitleStyle(
