@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import { Category } from '@prisma/client'
-import { capFirst } from 'utils/utils'
 
 function CategoryFilters({ data }: { data: Category[] }) {
   const [activeCategory, setActiveCategory] = useState(data[0].title)
@@ -47,7 +46,7 @@ function CategoryFilters({ data }: { data: Category[] }) {
             <div
               className={`w-[22px] h-[22px] relative ${getIconStyle(title)}`}
             >
-              <Image src={`/${title}.png`} alt={title} fill />
+              <Image src={`/${title.toLowerCase()}.png`} alt={title} fill />
             </div>
             <div
               className={`font-medium text-xs tracking-tight ${getTitleStyle(
