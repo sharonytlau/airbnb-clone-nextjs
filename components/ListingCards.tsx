@@ -1,5 +1,13 @@
 import Image from 'next/image'
 import { ListingWithImage } from 'lib/prima'
+import Slider from 'components/Slider'
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react'
 
 function ListingCards({ data }: { data: ListingWithImage[] }) {
   return (
@@ -16,17 +24,11 @@ function ListingCards({ data }: { data: ListingWithImage[] }) {
         return (
           <div className="space-y-3" key={title}>
             {/* <div className="w-full h-0 pb-[95%] relative rounded-3xl overflow-hidden"> */}
-            <div className=" w-full aspect-w-20 aspect-h-19 rounded-3xl overflow-hidden">
-              <div className="flex">
-                {listingImages.map(({ id, source }) => {
-                  return (
-                    <div key={id} className="relative flex-[1_0_100%]">
-                      <Image src={`${source}/w=800`} fill alt={title} />
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
+            <Slider
+              data={listingImages.map(({ id, source }) => {
+                return { id, source }
+              })}
+            />
             <div className="flex justify-between text-[15px]">
               <div>
                 <p className="font-medium"> {title} </p>
