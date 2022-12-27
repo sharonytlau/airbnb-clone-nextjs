@@ -24,7 +24,7 @@ const bottomIcons = [
   {
     icon: <MoreIcon />,
     text: 'More',
-    to: '',
+    to: '/more',
   },
 ]
 

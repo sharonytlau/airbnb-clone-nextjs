@@ -4,6 +4,7 @@ type ScrollableVerticalProps = {
   style: string
   children: React.ReactNode
   onScroll?: { onScrollUp: () => void; onScrollDown: () => void }
+  onMount?: () => void
 }
 
 type ScrollDirection = 'UP' | 'DOWN' | null
@@ -12,6 +13,7 @@ export function ScrollableVertical({
   style,
   children,
   onScroll,
+  onMount,
 }: ScrollableVerticalProps) {
   const scrollThreshold = 80
   const ref = useRef<HTMLDivElement>(null)
@@ -33,6 +35,9 @@ export function ScrollableVertical({
   }
 
   useEffect(() => {
+    if (onMount) {
+      onMount()
+    }
     const refCopy = ref.current
     if (refCopy) {
       ref.current.addEventListener('scroll', handleScroll)

@@ -52,8 +52,8 @@ const Home = ({
 }) => {
   const { setShowFooter } = useContext(FooterContext)
   const router = useRouter()
-  const { query } = router
-  const activeCategory = query.category || categories[0].title
+  const activeCategory =
+    (router.query.category as string) || categories[0].title
   console.log('1111')
 
   const [showDrawer, setShowDrawer] = useState(false)
@@ -97,6 +97,10 @@ const Home = ({
               console.log('downnnn')
             },
           }}
+          onMount={() => {
+            setShowFooter(true)
+          }}
+          key={activeCategory}
         >
           <ListingCards data={listings} activeCategory={activeCategory} />
         </ScrollableVertical>

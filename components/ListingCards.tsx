@@ -1,14 +1,8 @@
 import Image from 'next/image'
 import { ListingType } from 'lib/prisma'
 import Slider from 'components/Slider'
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react'
 import format from 'date-fns/format'
+import { useEffect, useState } from 'react'
 
 function ListingCards({
   data,
@@ -17,6 +11,18 @@ function ListingCards({
   data: ListingType[]
   activeCategory: any
 }) {
+  const [showListings, setShowListings] = useState(false)
+
+  // Wait until after client-side hydration to show
+  useEffect(() => {
+    setShowListings(true)
+  }, [])
+
+  if (!showListings) {
+    // You can show some kind of placeholder UI here
+    return null
+  }
+
   console.log('active category is', activeCategory)
 
   function formatPeriod(start: Date, end: Date): string {
@@ -50,7 +56,6 @@ function ListingCards({
             rating,
             listingImages = [],
           } = el
-          console.log('element is', el)
 
           return (
             <div className="space-y-3" key={id}>
