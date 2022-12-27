@@ -3,22 +3,23 @@ import { ExploreIcon } from 'components/icons/ExploreIcon'
 import { HeartIcon } from 'components/icons/HeartIcon'
 import { MapIcon } from 'components/icons/MapIcon'
 import { MoreIcon } from 'components/icons/MoreIcon'
+import Link from 'next/link'
 
 const bottomIcons = [
   {
     icon: <ExploreIcon />,
     text: 'Explore',
-    to: '',
+    to: '/',
   },
   {
     icon: <HeartIcon />,
     text: 'Wishlists',
-    to: '',
+    to: '/wishlists',
   },
   {
     icon: <MapIcon />,
     text: 'Trips',
-    to: '',
+    to: '/trips',
   },
   {
     icon: <MoreIcon />,
@@ -50,16 +51,14 @@ function TheFooter() {
 
   return (
     <div className="bg-white flex items-center justify-around w-full py-2">
-      {bottomIcons.map(({ text, icon }) => {
+      {bottomIcons.map(({ text, icon, to }) => {
         return (
-          <div
-            className="flex flex-col items-center gap-1"
-            onClick={() => handleClick(text)}
-            key={text}
-          >
-            <div className={`text-2xl ${getIconStyle(text)}`}>{icon}</div>
-            <div className={`text-xxs ${getIconTextStyle(text)}`}>{text}</div>
-          </div>
+          <button onClick={() => handleClick(text)} key={text}>
+            <Link href={to} className="flex flex-col items-center gap-1">
+              <div className={`text-2xl ${getIconStyle(text)}`}>{icon}</div>
+              <div className={`text-xxs ${getIconTextStyle(text)}`}>{text}</div>
+            </Link>
+          </button>
         )
       })}
     </div>
