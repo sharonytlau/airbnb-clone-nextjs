@@ -21,11 +21,38 @@ enum category {
   Deserts
   Shopping
   Windmills
+  Forests
+  Beaches
+  Countryside
   Museums
   Sailing
   Arctic
+  Rainforests
+  Lakes
   Golfing
+  Cliffs
   Urban
+  Cabin
+  Coasts
+  Nature
+  Villa
+  Wooden
+  Lighthouses
+  Cottage
+  Skiing
+  Glacier
+  Hiking
+  Luxury
+  Apartment
+  Downtown
+  Architecture
+  Cathedral
+  Sunshine
+  Outdoors
+  Bay
+  Nordic
+  Minimal
+  Islands
 }
 
 model Category {
@@ -33,7 +60,7 @@ model Category {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   title     category
-  listing   Listing[]
+  listings  Listing[]
 }
 
 model Listing {
@@ -42,11 +69,14 @@ model Listing {
   updatedAt     DateTime       @updatedAt
   title         String
   subtitle      String
-  period        String
+  startDate     String
+  endDate       String
   price         Int
   rating        Float
   listingImages ListingImage[]
-  category      Category[]
+  categories    Category[]
+  // geoId         String
+  // geo           Geo            @relation(fields: [geoId], references: [id])
 }
 
 model ListingImage {
@@ -54,4 +84,14 @@ model ListingImage {
   listingId String
   listing   Listing @relation(fields: [listingId], references: [id])
   source    String
+}
+
+model Geo {
+  id        String @id @default(uuid())
+  country   String
+  state     String
+  city      String
+  latitude  Float
+  longitude Float
+  // listings  Listing[]
 }
