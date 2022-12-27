@@ -8,6 +8,7 @@
     "db:reset": "prisma migrate reset",
     "db:seed": "prisma db seed",
     "db:push": "prisma db push",
+    "db:migrate": "prisma migrate",
     "db:generate": "prisma generate",
     "db:studio": "prisma studio"
   },
@@ -23,6 +24,7 @@
     "tailwind-scrollbar-hide": "^1.1.7"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@types/node": "18.11.17",
     "@types/react": "18.0.26",
