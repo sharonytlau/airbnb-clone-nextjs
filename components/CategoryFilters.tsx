@@ -2,9 +2,15 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import { Category } from '@prisma/client'
 
-function CategoryFilters({ data }: { data: Category[] }) {
-  const [activeCategory, setActiveCategory] = useState(data[0].title)
-
+function CategoryFilters({
+  activeCategory,
+  setActiveCategory,
+  data,
+}: {
+  activeCategory: any
+  setActiveCategory: any
+  data: Category[]
+}) {
   const isActive = (title: string) => {
     return title === activeCategory
   }

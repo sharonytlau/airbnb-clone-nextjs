@@ -1,6 +1,6 @@
-import { PrismaClient, Category } from '@prisma/client'
-import { ListingWithImage } from 'lib/prima'
-import React, { useEffect, useRef, useState } from 'react'
+import { PrismaClient, Category, category } from '@prisma/client'
+import { ListingType } from 'lib/prisma'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import SearchBar from 'components/SearchBar'
 import CategoryFilters from 'components/CategoryFilters'
 import ListingCards from 'components/ListingCards'
@@ -8,6 +8,8 @@ import TheFooter from 'components/TheFooter'
 import SearchDrawer from 'components/SearchDrawer'
 import { ScrollableVertical } from 'components/ScrollableVertical'
 import { SlideIn } from 'components/SlideIn'
+import Router, { useRouter } from 'next/router'
+import FooterContext from 'context/state'
 
 const fakeListingCards = [
   {
@@ -44,11 +46,24 @@ const Home = ({
   listings,
   categories,
 }: {
-  listings: ListingWithImage[]
+  listings: ListingType[]
   categories: Category[]
+  showFooter: boolean
 }) => {
+  const { setShowFooter } = useContext(FooterContext)
+  const router = useRouter()
+  const { query } = router
+  const activeCategory = query.category || categories[0].title
+  console.log('1111')
+
   const [showDrawer, setShowDrawer] = useState(false)
-  const [showFooter, setShowFooter] = useState(true)
+
+  // const [activeCategory, setActiveCategory] = useState(categories[0].title)
+
+  function setActiveCategory(category: category) {
+    router.push(`/?category=${category}`, undefined, { shallow: true })
+  }
+
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center">
       <div className="h-full w-full flex flex-col pt-4">
@@ -63,7 +78,11 @@ const Home = ({
         </div>
         {/* Filters */}
         <div className="pt-4">
-          <CategoryFilters data={categories} />
+          <CategoryFilters
+            activeCategory={activeCategory}
+            setActiveCategory={setActiveCategory}
+            data={categories}
+          />
         </div>
         {/* Listings */}
         <ScrollableVertical
@@ -79,13 +98,8 @@ const Home = ({
             },
           }}
         >
-          <ListingCards data={listings} />
+          <ListingCards data={listings} activeCategory={activeCategory} />
         </ScrollableVertical>
-        {/* Footer */}
-        <SlideIn show={showFooter} styles={{ enter: { bottom: '0' } }}>
-          <TheFooter />
-        </SlideIn>
-        {/* {showFooter && <TheFooter />} */}
 
         {/* todo: refactor */}
         {/* SearchDrawer */}
@@ -114,6 +128,7 @@ export async function getStaticProps() {
   const listings = await prisma.listing.findMany({
     include: {
       listingImages: true,
+      categories: true,
     },
   })
 

@@ -121,6 +121,9 @@ function Slider({ data }: any) {
       <div className="w-full aspect-w-20 aspect-h-19 rounded-3xl overflow-hidden">
         <div ref={sliderRef} className="flex transition duration-300 ease-out">
           {data.map(({ id, source }: any, index: any) => {
+            const splits = source.split('/')
+            const imgId = splits[splits.length - 1]
+
             return (
               <div
                 key={id}
@@ -131,21 +134,25 @@ function Slider({ data }: any) {
                 onPointerLeave={pointerEnd}
               >
                 <Image
-                  src={`${source}/w=800`}
+                  src={`/${imgId}.jpg`}
                   fill
-                  alt={'title'}
+                  alt={'property image'}
                   draggable={false}
+                  data-source-url={source}
+                  className="object-cover object-center"
                 />
               </div>
             )
           })}
         </div>
       </div>
-      <Dots
-        count={itemCount}
-        activeIndex={dotIndex}
-        styles="absolute text-yellow-400 bottom-2 left-1/2 -translate-x-1/2 transition"
-      />
+      {itemCount > 1 && (
+        <Dots
+          count={itemCount}
+          activeIndex={dotIndex}
+          styles="absolute text-yellow-400 bottom-2 left-1/2 -translate-x-1/2 transition"
+        />
+      )}
     </div>
   )
 }

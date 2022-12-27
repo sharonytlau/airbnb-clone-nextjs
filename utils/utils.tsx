@@ -23,6 +23,10 @@ export function splitArray<T>(arr: T[], len: number) {
   }, [])
 }
 
+export function compareMonth(d1: Date, d2: Date) {
+  return format(d1, 'M') === format(d2, 'M')
+}
+
 export function compareDates(d1: Date, d2: Date) {
   return format(d1, 'MMddyyyy') === format(d2, 'MMddyyyy')
 }
