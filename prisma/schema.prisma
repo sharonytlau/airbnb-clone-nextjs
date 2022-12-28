@@ -13,44 +13,31 @@ datasource db {
 enum category {
   Mountains
   Landmarks
-  Theaters
-  Camps
+  Camping
+  Yacht
   Tropical
-  Amusements
-  Meadows
-  Deserts
-  Shopping
+  Farms
+  Desert
   Windmills
   Forests
   Beaches
   Countryside
-  Museums
   Sailing
   Arctic
   Rainforests
   Lakes
   Golfing
-  Cliffs
-  Urban
-  Cabin
+  Cabins
+  Play
   Coasts
-  Nature
-  Villa
   Wooden
+  Vineyards
   Lighthouses
-  Cottage
   Skiing
-  Glacier
-  Hiking
-  Luxury
-  Apartment
+  Luxe
+  Containers
+  Apartments
   Downtown
-  Architecture
-  Cathedral
-  Sunshine
-  Outdoors
-  Bay
-  Nordic
   Minimal
   Islands
 }

@@ -68,7 +68,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/z9LPimZfyfo' }],
     },
-    categories: ['Camps', 'Forests'],
+    categories: ['Camping', 'Forests'],
   },
   {
     title: 'Niederbauen-Chulm, Emmetten, Switzerland',
@@ -80,7 +80,7 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/re2LZOB2XvY' },
       ],
     },
-    categories: ['Camps', 'Mountains', 'Outdoors'],
+    categories: ['Camping', 'Mountains'],
   },
   {
     title: 'Cucamonga Peak, United States',
@@ -88,7 +88,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/gvkdncTaZu8' }],
     },
-    categories: ['Camps', 'Outdoors'],
+    categories: ['Camping'],
   },
   {
     title: 'Marzola, Trento, Italy',
@@ -99,7 +99,7 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/YndHL7gQIJE' },
       ],
     },
-    categories: ['Camps', 'Outdoors', 'Nature', 'Mountains'],
+    categories: ['Camping', 'Mountains'],
   },
   {
     title: 'Flaming Gorge Reservoir, United States',
@@ -110,7 +110,7 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/GZ1hc6Jvbrg' },
       ],
     },
-    categories: ['Camps', 'Outdoors', 'Nature', 'Mountains', 'Lakes'],
+    categories: ['Camping', 'Mountains', 'Lakes'],
   },
   {
     title: 'Sandy Lake, BC, Canada',
@@ -118,7 +118,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/F4fH5dAfZnE' }],
     },
-    categories: ['Camps', 'Outdoors', 'Nature', 'Mountains', 'Lakes'],
+    categories: ['Camping', 'Mountains', 'Lakes'],
   },
   {
     title: 'Korlai Fort, Korlai, India',
@@ -126,7 +126,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/yBgC-qVCxMg' }],
     },
-    categories: ['Camps', 'Outdoors', 'Nature', 'Mountains', 'Lakes', 'Hiking'],
+    categories: ['Camping', 'Mountains', 'Lakes'],
   },
   {
     title: 'Los Angeles, United States',
@@ -137,7 +137,7 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/dfOAVQvFWAA' },
       ],
     },
-    categories: ['Apartment'],
+    categories: ['Apartments'],
   },
   {
     title: 'Spain',
@@ -145,7 +145,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/4ojhpgKpS68' }],
     },
-    categories: ['Apartment', 'Luxury', 'Minimal', 'Villa'],
+    categories: ['Apartments', 'Luxe', 'Minimal', 'Luxe'],
   },
   {
     title: 'Exuma, The Bahamas',
@@ -153,7 +153,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/AhiUnolb7cg' }],
     },
-    categories: ['Villa', 'Cottage'],
+    categories: ['Luxe'],
   },
   {
     title: 'Balboa Island, Newport Beach, United States',
@@ -161,7 +161,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/nEvzSXBIhiU' }],
     },
-    categories: ['Islands', 'Beaches', 'Cottage'],
+    categories: ['Islands', 'Beaches'],
   },
   {
     title: 'Louvain-la-Neuve, Ottignies-Louvain-la-Neuve, Belgium',
@@ -169,7 +169,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/KqOLr8OiQLU' }],
     },
-    categories: ['Wooden', 'Urban'],
+    categories: ['Wooden'],
   },
   {
     title: 'Gili Air, Indonesia',
@@ -204,7 +204,7 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/IgE49g4qbCk' },
       ],
     },
-    categories: ['Cottage', 'Tropical', 'Nature'],
+    categories: ['Tropical'],
   },
   {
     title: 'Indonesia',
@@ -215,7 +215,7 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/m7r1BVoWTAk' },
       ],
     },
-    categories: ['Villa'],
+    categories: ['Luxe'],
   },
   {
     title: 'Encuentro Guadalupe, El Porvenir, Mexico',
@@ -226,7 +226,7 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/m7r1BVoWTAk' },
       ],
     },
-    categories: ['Luxury', 'Mountains'],
+    categories: ['Luxe', 'Mountains'],
   },
   {
     title: 'Oia, Greece',
@@ -238,15 +238,7 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/p-2CwpMtvN4' },
       ],
     },
-    categories: ['Villa', 'Coasts'],
-  },
-  {
-    title: 'Imerovigli, Greece',
-    subtitle: '2218 km away',
-    listingImages: {
-      create: [{ source: 'https://source.unsplash.com/yB6WFHbkX40' }],
-    },
-    categories: ['Outdoors'],
+    categories: ['Luxe', 'Coasts'],
   },
   {
     title: 'Bocas del Toro, Panama',
@@ -254,7 +246,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/lHlsrGJMH1A' }],
     },
-    categories: ['Outdoors', 'Coasts', 'Cabin'],
+    categories: ['Coasts', 'Cabins'],
   },
   {
     title: 'Philippines',
@@ -262,7 +254,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/688Nj6fVPXU' }],
     },
-    categories: ['Outdoors', 'Coasts', 'Countryside', 'Tropical'],
+    categories: ['Coasts', 'Countryside', 'Tropical'],
   },
   {
     title: 'Seabrook Island, United States',
@@ -274,7 +266,7 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/cGvRMx-p7u0' },
       ],
     },
-    categories: ['Islands', 'Coasts', 'Countryside', 'Outdoors', 'Cottage'],
+    categories: ['Islands', 'Coasts', 'Countryside'],
   },
   {
     title: 'Quebec, Canada',
@@ -282,7 +274,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/XoM0eYSXWMs' }],
     },
-    categories: ['Camps', 'Outdoors', 'Nature', 'Mountains', 'Forests'],
+    categories: ['Camping', 'Mountains', 'Forests'],
   },
   {
     title: 'Canggu, Indonesia',
@@ -293,7 +285,7 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/HHWwqWV6d5k' },
       ],
     },
-    categories: ['Tropical', 'Outdoors'],
+    categories: ['Tropical'],
   },
   {
     title: 'Oregon, United States',
@@ -301,7 +293,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/TcgASSD5G04' }],
     },
-    categories: ['Camps', 'Mountains', 'Outdoors', 'Hiking'],
+    categories: ['Camping', 'Mountains'],
   },
   {
     title: 'Arches National Park, Moab, United States',
@@ -309,7 +301,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/qelGaL2OLyE' }],
     },
-    categories: ['Camps', 'Outdoors'],
+    categories: ['Camping'],
   },
   {
     title: 'Hovden, Norway',
@@ -368,7 +360,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/Yd59eQJVYAo' }],
     },
-    categories: ['Mountains', 'Camps'],
+    categories: ['Mountains', 'Camping'],
   },
   {
     title: 'Sedona, AZ, USA',
@@ -384,7 +376,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/8EkdijWGHTI' }],
     },
-    categories: ['Mountains', 'Deserts'],
+    categories: ['Mountains', 'Desert'],
   },
   {
     title: 'Zakopane, Tatry, Poland',
@@ -392,7 +384,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/xin4oHO4FFQ' }],
     },
-    categories: ['Mountains', 'Outdoors', 'Nature'],
+    categories: ['Mountains'],
   },
   {
     title: 'Harbor Springs, MI, USA',
@@ -400,7 +392,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/0_N6VO_DAN4' }],
     },
-    categories: ['Mountains', 'Outdoors', 'Nature'],
+    categories: ['Mountains'],
   },
   {
     title: 'Zakopane, Tatry, Poland',
@@ -456,7 +448,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/6eP8EMpTbA4' }],
     },
-    categories: ['Villa', 'Urban'],
+    categories: ['Luxe'],
   },
   {
     title: 'Lisbon, Portugal',
@@ -464,7 +456,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/8saVYOMHFzU' }],
     },
-    categories: ['Villa', 'Urban'],
+    categories: ['Luxe'],
   },
   {
     title: 'Paris, France',
@@ -472,7 +464,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/PRFiPHhFwQA' }],
     },
-    categories: ['Villa', 'Urban'],
+    categories: ['Luxe'],
   },
   {
     title: 'Paris, France',
@@ -480,7 +472,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/xUZye7XNxuM' }],
     },
-    categories: ['Cottage'],
+    categories: ['Countryside'],
   },
   {
     title: 'Paris, France',
@@ -491,7 +483,7 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/junWGhkueds' },
       ],
     },
-    categories: ['Apartment', 'Urban'],
+    categories: ['Apartments'],
   },
   {
     title: 'Montmartre, Paris, France',
@@ -507,7 +499,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/dTDLVlVDic4' }],
     },
-    categories: ['Architecture', 'Cathedral'],
+    categories: ['Landmarks'],
   },
   {
     title: 'Paris, France',
@@ -518,7 +510,7 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/zgGShCZeBT4' },
       ],
     },
-    categories: ['Apartment'],
+    categories: ['Apartments'],
   },
   {
     title: 'Paris, France',
@@ -529,7 +521,7 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/888-NfA8Tfo' },
       ],
     },
-    categories: ['Urban', 'Landmarks'],
+    categories: ['Landmarks'],
   },
   {
     title: 'Paris, France',
@@ -561,7 +553,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/GnIGPt3sCR0' }],
     },
-    categories: ['Countryside', 'Cottage'],
+    categories: ['Countryside'],
   },
   {
     title: 'Clackamas County, OR, USA',
@@ -573,7 +565,7 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/B4qBdlNIuS0' },
       ],
     },
-    categories: ['Outdoors', 'Mountains', 'Nature'],
+    categories: ['Mountains'],
   },
   {
     title: 'Berlin',
@@ -581,7 +573,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/BSQq5dRT_KU' }],
     },
-    categories: ['Countryside', 'Nature'],
+    categories: ['Countryside'],
   },
   {
     title: 'Byxelkrok, Sweden',
@@ -589,7 +581,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/teX7sZeTQd8' }],
     },
-    categories: ['Outdoors', 'Cabin', 'Countryside', 'Nature', 'Cottage'],
+    categories: ['Cabins', 'Countryside'],
   },
   {
     title: 'Norge',
@@ -597,7 +589,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/mu2qJIIMvFg' }],
     },
-    categories: ['Outdoors', 'Cabin', 'Nature', 'Cottage'],
+    categories: ['Cabins'],
   },
   {
     title: 'Lapland, Finland',
@@ -608,7 +600,7 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/gThfDnqgfMw' },
       ],
     },
-    categories: ['Forests', 'Outdoors', 'Nature'],
+    categories: ['Forests'],
   },
   {
     title: 'Lapland, Finland',
@@ -624,7 +616,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/6UnSrZnHe0M' }],
     },
-    categories: ['Nature', 'Forests', 'Mountains'],
+    categories: ['Forests', 'Mountains'],
   },
   {
     title: 'Norway',
@@ -632,7 +624,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/vgrv9z8yLtY' }],
     },
-    categories: ['Cabin', 'Coasts', 'Cliffs'],
+    categories: ['Cabins', 'Coasts'],
   },
   {
     title: 'Jomsom, Nepal',
@@ -640,7 +632,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/bBKmwEtc1nk' }],
     },
-    categories: ['Deserts', 'Nature', 'Mountains', 'Cottage', 'Countryside'],
+    categories: ['Desert', 'Mountains', 'Countryside'],
   },
 
   {
@@ -649,7 +641,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/bCTMjQTpDNg' }],
     },
-    categories: ['Nordic', 'Mountains'],
+    categories: ['Arctic', 'Mountains'],
   },
   {
     title: 'Solitude Nordic Center, United States',
@@ -661,7 +653,7 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/j1F-WyKgr28' },
       ],
     },
-    categories: ['Cabin'],
+    categories: ['Cabins'],
   },
   {
     title: 'Lofoten, Norway',
@@ -669,7 +661,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/VKPcxvSdvVs' }],
     },
-    categories: ['Countryside', 'Cottage', 'Cabin', 'Mountains', 'Glacier'],
+    categories: ['Countryside', 'Cabins', 'Mountains'],
   },
   {
     title: 'Tranøy, Norway',
@@ -677,7 +669,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/jGP-HVay63M' }],
     },
-    categories: ['Arctic', 'Nature', 'Countryside', 'Outdoors'],
+    categories: ['Arctic', 'Countryside'],
   },
   {
     title: 'Framnes, Dalvik, Iceland',
@@ -685,7 +677,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/-90kxRqKSmc' }],
     },
-    categories: ['Lakes', 'Arctic', 'Nature', 'Outdoors', 'Minimal'],
+    categories: ['Lakes', 'Arctic', 'Minimal'],
   },
   {
     title: 'Norway',
@@ -693,7 +685,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/yQoAlbuxb48' }],
     },
-    categories: ['Cabin', 'Lakes', 'Outdoors', 'Countryside'],
+    categories: ['Cabins', 'Lakes', 'Countryside'],
   },
   {
     title: 'Iceland',
@@ -701,7 +693,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/PoOXSW9eYgc' }],
     },
-    categories: ['Cabin', 'Mountains', 'Glacier', 'Countryside'],
+    categories: ['Cabins', 'Mountains', 'Countryside'],
   },
   {
     title: 'Aasiaat, Greenland',
@@ -709,18 +701,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/KdbzxiFT7VI' }],
     },
-    categories: ['Arctic', 'Nature', 'Outdoors', 'Countryside'],
-  },
-  {
-    title: 'Henningsvær, Norwegen',
-    subtitle: '263km away',
-    listingImages: {
-      create: [
-        { source: 'https://source.unsplash.com/zRANx1FoW2U' },
-        { source: 'https://source.unsplash.com/Y4_j8ZwrO9c' },
-      ],
-    },
-    categories: ['Islands', 'Arctic', 'Nature', 'Outdoors', 'Minimal'],
+    categories: ['Arctic', 'Countryside'],
   },
   {
     title: 'Greenland',
@@ -728,14 +709,7 @@ export const listings: (Omit<
     listingImages: {
       create: [{ source: 'https://source.unsplash.com/gPuujrp4PZ0' }],
     },
-    categories: [
-      'Arctic',
-      'Nature',
-      'Outdoors',
-      'Countryside',
-      'Cabin',
-      'Cottage',
-    ],
+    categories: ['Arctic', 'Countryside', 'Cabins'],
   },
   {
     title: 'Drøbak, Norway',
@@ -746,13 +720,6 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/vWYbHqzayhA' },
       ],
     },
-    categories: [
-      'Arctic',
-      'Coasts',
-      'Nature',
-      'Outdoors',
-      'Countryside',
-      'Cottage',
-    ],
+    categories: ['Arctic', 'Coasts', 'Countryside'],
   },
 ]
