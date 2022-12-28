@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import { Category } from '@prisma/client'
+import CategorySlider from 'components/ImageSlider'
 
 function CategoryFilters({
   activeCategory,
@@ -37,34 +38,43 @@ function CategoryFilters({
   }
 
   return (
-    <div className="flex gap-7 w-full overflow-x-auto scrollbar-hide px-7 shadow-[0_3px_3px] shadow-gray-100">
-      {data.map(({ title }) => {
-        return (
-          <div
-            className={`pb-3 flex flex-col items-center gap-2 ${getCategoryStyle(
-              title
-            )}`}
-            onClick={() => {
-              setActiveCategory(title)
-            }}
-            key={title}
-          >
-            <div
-              className={`w-[22px] h-[22px] relative ${getIconStyle(title)}`}
-            >
-              <Image src={`/${title.toLowerCase()}.png`} alt={title} fill />
-            </div>
-            <div
-              className={`font-medium text-xs tracking-tight ${getTitleStyle(
-                title
-              )}`}
-            >
-              {title}
-            </div>
-          </div>
-        )
+    <CategorySlider
+      data={data.map(({ title }) => {
+        return {
+          id: title,
+          path: `/${title.toLowerCase()}.png`,
+        }
       })}
-    </div>
+    />
+    // {/* <div className="flex gap-7 w-full overflow-x-auto scrollbar-hide px-7 shadow-[0_3px_3px] shadow-gray-100"> */}
+    // {data.map(({ title }) => {
+    //   return (
+    //     <div
+    //       className={`pb-3 flex flex-col items-center gap-2 ${getCategoryStyle(
+    //         title
+    //       )}`}
+    //       onClick={() => {
+    //         setActiveCategory(title)
+    //       }}
+    //       key={title}
+    //     >
+    //       <div
+    //         className={`w-[22px] h-[22px] relative ${getIconStyle(title)}`}
+    //       >
+    //         <Image src={`/${title.toLowerCase()}.png`} alt={title} fill />
+    //       </div>
+    //       <div
+    //         className={`font-medium text-xs tracking-tight ${getTitleStyle(
+    //           title
+    //         )}`}
+    //       >
+    //         {title}
+    //       </div>
+    //     </div>
+    //   )
+    // })}
+    // {/* </div> */}
+    // {/* </Slider> */}
   )
 }
 

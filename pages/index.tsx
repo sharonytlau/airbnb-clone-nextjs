@@ -1,8 +1,8 @@
 import { PrismaClient, Category, category } from '@prisma/client'
 import { ListingType } from 'lib/prisma'
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import SearchBar from 'components/SearchBar'
-import CategoryFilters from 'components/CategoryFilters'
+import CategorySlider from 'components/CategorySlider'
 import ListingCards from 'components/ListingCards'
 import TheFooter from 'components/TheFooter'
 import SearchDrawer from 'components/SearchDrawer'
@@ -54,15 +54,16 @@ const Home = ({
   const router = useRouter()
   const activeCategory =
     (router.query.category as string) || categories[0].title
-  console.log('1111')
 
   const [showDrawer, setShowDrawer] = useState(false)
-
-  // const [activeCategory, setActiveCategory] = useState(categories[0].title)
 
   function setActiveCategory(category: category) {
     router.push(`/?category=${category}`, undefined, { shallow: true })
   }
+
+  const resetFooter = useCallback(() => {
+    setShowFooter(true)
+  }, [setShowFooter])
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center">
@@ -77,8 +78,8 @@ const Home = ({
           />
         </div>
         {/* Filters */}
-        <div className="pt-4">
-          <CategoryFilters
+        <div className="pt-4 md:px-10 xl:px-20">
+          <CategorySlider
             activeCategory={activeCategory}
             setActiveCategory={setActiveCategory}
             data={categories}
@@ -97,9 +98,7 @@ const Home = ({
               console.log('downnnn')
             },
           }}
-          onMount={() => {
-            setShowFooter(true)
-          }}
+          onMount={resetFooter}
           key={activeCategory}
         >
           <ListingCards data={listings} activeCategory={activeCategory} />

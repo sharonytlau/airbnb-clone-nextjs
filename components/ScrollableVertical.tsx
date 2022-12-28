@@ -44,7 +44,7 @@ export function ScrollableVertical({
 
       return () => refCopy?.removeEventListener('scroll', handleScroll)
     }
-  }, [])
+  }, [onMount])
 
   useEffect(() => {
     console.log('effect scroll run **************')

@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { ListingType } from 'lib/prisma'
-import Slider from 'components/Slider'
+import ImageSlider from 'components/ImageSlider'
 import format from 'date-fns/format'
 import { useEffect, useState } from 'react'
 
@@ -60,9 +60,13 @@ function ListingCards({
           return (
             <div className="space-y-3" key={id}>
               {/* <div className="w-full h-0 pb-[95%] relative rounded-3xl overflow-hidden"> */}
-              <Slider
+              <ImageSlider
                 data={listingImages.map(({ id, source }) => {
-                  return { id, source }
+                  const splits = source.split('/')
+                  const imgId = splits[splits.length - 1]
+                  const path = `/${imgId}.jpg`
+
+                  return { id, path, url: source }
                 })}
               />
               <div className="flex justify-between text-[15px]">

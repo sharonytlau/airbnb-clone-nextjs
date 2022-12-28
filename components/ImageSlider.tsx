@@ -1,5 +1,4 @@
 import clsx from 'clsx'
-import { setDefaultOptions } from 'date-fns'
 import Image from 'next/image'
 import React, {
   useState,
@@ -9,7 +8,7 @@ import React, {
   useCallback,
 } from 'react'
 
-function Slider({ data }: any) {
+export default function ImageSlider({ data }: any) {
   const [dotIndex, setDotIndex] = useState(0)
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
   const sliderRef = useRef<HTMLDivElement>(null)
@@ -18,7 +17,7 @@ function Slider({ data }: any) {
   const prevTranslate = useRef(0)
   const startX = useRef(0)
   const animationRef = useRef<number | null>(null)
-  const dragging = useRef(false)
+  const isDragging = useRef(false)
   const threshHold = 60
   const itemCount = data.length
 
@@ -38,21 +37,22 @@ function Slider({ data }: any) {
 
   function animation() {
     setSliderPosition()
-    if (dragging.current) window.requestAnimationFrame(animation)
+    if (isDragging.current) window.requestAnimationFrame(animation)
   }
 
   function pointerStart(index: number) {
-    return function (event: React.PointerEvent) {
+    return function (e: React.PointerEvent) {
       currentIndex.current = index
-      startX.current = event.pageX
-      dragging.current = true
+      startX.current = e.pageX
+      isDragging.current = true
       animationRef.current = requestAnimationFrame(animation)
     }
   }
 
-  function pointerMove(event: React.PointerEvent) {
-    if (dragging.current) {
-      const moveBy = event.pageX - startX.current
+  function pointerMove(e: React.PointerEvent) {
+    e.preventDefault()
+    if (isDragging.current) {
+      const moveBy = e.pageX - startX.current
       const newTranslate = prevTranslate.current + moveBy
 
       if (moveBy < 0) {
@@ -69,7 +69,7 @@ function Slider({ data }: any) {
 
   function pointerEnd() {
     cancelAnimationFrame(animationRef.current!)
-    dragging.current = false
+    isDragging.current = false
 
     const movedBy = currentTranslate.current - prevTranslate.current
 
@@ -118,12 +118,13 @@ function Slider({ data }: any) {
 
   return (
     <div className="relative">
+      <button className="absolute top-1/2 -translate-y-1/2 left-0 text-7xl text-white z-10">
+        {'‹'}
+      </button>
+
       <div className="w-full aspect-w-20 aspect-h-19 rounded-3xl overflow-hidden">
         <div ref={sliderRef} className="flex transition duration-300 ease-out">
-          {data.map(({ id, source }: any, index: any) => {
-            const splits = source.split('/')
-            const imgId = splits[splits.length - 1]
-
+          {data.map(({ id, path, url }: any, index: any) => {
             return (
               <div
                 key={id}
@@ -134,11 +135,11 @@ function Slider({ data }: any) {
                 onPointerLeave={pointerEnd}
               >
                 <Image
-                  src={`/${imgId}.jpg`}
+                  src={path}
                   fill
                   alt={'property image'}
                   draggable={false}
-                  data-source-url={source}
+                  data-source-url={url}
                   className="object-cover object-center"
                 />
               </div>
@@ -153,6 +154,9 @@ function Slider({ data }: any) {
           styles="absolute text-yellow-400 bottom-2 left-1/2 -translate-x-1/2 transition"
         />
       )}
+      <button className="absolute top-1/2 -translate-y-1/2 right-0 text-7xl text-white">
+        {'›'}
+      </button>
     </div>
   )
 }
@@ -184,5 +188,3 @@ function Dots({
     </ul>
   )
 }
-
-export default Slider
