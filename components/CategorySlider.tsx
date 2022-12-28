@@ -10,6 +10,7 @@ import React, {
   useEffect,
   useCallback,
 } from 'react'
+import useMediaQuery from 'hooks/useMediaQuery'
 
 export default function CategorySlider({
   data,
@@ -23,70 +24,19 @@ export default function CategorySlider({
   const sliderRef = useRef<HTMLDivElement>(null)
   const innerSliderRef = useRef<HTMLDivElement>(null)
   const startX = useRef(0)
-  const walkX = useRef(0)
-  const pageX = useRef(0)
-  const animationRef = useRef<number | null>(null)
   const isDragging = useRef(false)
   const sliderWidth = useRef(0)
   const [showNavButton, setShowNavButton] = useState({
     left: false,
     right: true,
   })
+  const isLargeScreen = useMediaQuery('(min-width: 550px)')
 
   useLayoutEffect(() => {
     if (sliderRef.current) {
       sliderWidth.current = sliderRef.current.clientWidth
     }
   }, [])
-
-  function setSliderPosition() {
-    if (!sliderRef.current) return
-    if (walkX.current) {
-      sliderRef.current.scrollLeft =
-        sliderRef.current.scrollLeft - walkX.current
-      startX.current = pageX.current
-      walkX.current = 0
-    }
-  }
-
-  function animation() {
-    setSliderPosition()
-    if (isDragging.current) window.requestAnimationFrame(animation)
-  }
-
-  function pointerStart(e: React.PointerEvent) {
-    if (!sliderRef.current) return
-
-    isDragging.current = true
-
-    // startX.current = e.pageX - sliderRef.current.getBoundingClientRect().x
-    startX.current = e.pageX
-
-    animationRef.current = requestAnimationFrame(animation)
-  }
-
-  function pointerMove(e: React.PointerEvent) {
-    if (!sliderRef.current) return
-
-    e.preventDefault()
-
-    if (isDragging.current) {
-      innerSliderRef.current?.classList.add('pointer-events-none')
-      pageX.current = e.pageX
-
-      walkX.current = (e.pageX - startX.current) * 1
-    }
-  }
-
-  function pointerEnd() {
-    if (!sliderRef.current) return
-    isDragging.current = false
-
-    innerSliderRef.current?.classList.remove('pointer-events-none')
-
-    cancelAnimationFrame(animationRef.current!)
-    // scrollLeft.current = sliderRef.current.scrollLeft
-  }
 
   useEffect(() => {
     if (!sliderRef.current) return
@@ -101,10 +51,17 @@ export default function CategorySlider({
 
     function onScroll() {
       if (!sliderRef.current) return
-      console.log('scrolling')
       const isAtEnd =
         sliderRef.current.scrollLeft + sliderRef.current.offsetWidth >=
-        sliderRef.current.scrollWidth
+        sliderRef.current.scrollWidth - 1
+
+      console.log({
+        isAtEnd,
+        add: sliderRef.current.scrollLeft + sliderRef.current.offsetWidth,
+        scrollWidth: sliderRef.current.scrollWidth,
+        scrollLeft: sliderRef.current.scrollLeft,
+        offsetWidth: sliderRef.current.offsetWidth,
+      })
 
       const isAtStart = sliderRef.current.scrollLeft === 0
       setShowNavButton({ left: !isAtStart, right: !isAtEnd })
@@ -112,7 +69,6 @@ export default function CategorySlider({
   }, [])
 
   function scrollToLeft() {
-    console.log('clicked')
     if (sliderRef.current)
       sliderRef.current.scrollBy({
         left: -sliderWidth.current,
@@ -121,8 +77,6 @@ export default function CategorySlider({
   }
 
   function scrollToRight() {
-    console.log('clicked')
-
     if (sliderRef.current)
       sliderRef.current.scrollBy({
         left: sliderWidth.current,
@@ -135,7 +89,7 @@ export default function CategorySlider({
   }
 
   const getCategoryStyle = (title: string) => {
-    const active = 'border-b-2 border-gray-900'
+    const active = 'border-b-[3px] border-gray-900'
     const inactive = ''
 
     return isActive(title) ? active : inactive
@@ -156,26 +110,16 @@ export default function CategorySlider({
   }
 
   return (
-    <div className="relative w-full overflow-hidden flex-center">
-      {
+    <div className="relative w-full overflow-hidden flex-center shadow-[0_8px_4px_-4px_rgba(0,0,0,0.04),0_3px_2px_-2px_rgba(0,0,0,0.06)] ">
+      {isLargeScreen && (
         <NavButton
           direction="left"
           onClick={scrollToLeft}
           visible={showNavButton}
         />
-      }
-      <div
-        className="w-full overflow-auto py-7 px-7 shadow-[0_3px_3px] shadow-gray-100 touch-pan-y scrollbar-hide"
-        ref={sliderRef}
-        onTouchStart={() => {
-          console.log('touch !!!')
-        }}
-        onPointerDown={pointerStart}
-        onPointerMove={pointerMove}
-        onPointerUp={pointerEnd}
-        onPointerLeave={pointerEnd}
-      >
-        <div className=" flex gap-7" ref={innerSliderRef}>
+      )}
+      <div className="w-full overflow-auto px-7 scrollbar-hide" ref={sliderRef}>
+        <div className=" flex gap-4 sm:gap-7" ref={innerSliderRef}>
           {data.map(({ title }) => {
             return (
               <button
@@ -187,7 +131,7 @@ export default function CategorySlider({
               >
                 <div
                   className={clsx(
-                    'flex flex-col items-center gap-2 ',
+                    'flex flex-col items-center gap-2 pt-1 pb-3 md:py-7',
                     getCategoryStyle(title)
                   )}
                 >
@@ -217,13 +161,13 @@ export default function CategorySlider({
           })}
         </div>
       </div>
-      {
+      {isLargeScreen && (
         <NavButton
           direction="right"
           onClick={scrollToRight}
           visible={showNavButton}
         />
-      }
+      )}
     </div>
   )
 }

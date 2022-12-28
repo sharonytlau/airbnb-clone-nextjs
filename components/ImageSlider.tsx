@@ -118,9 +118,9 @@ export default function ImageSlider({ data }: any) {
 
   return (
     <div className="relative">
-      <button className="absolute top-1/2 -translate-y-1/2 left-0 text-7xl text-white z-10">
+      {/* <button className="absolute top-1/2 -translate-y-1/2 left-0 text-7xl text-white z-10">
         {'‹'}
-      </button>
+      </button> */}
 
       <div className="w-full aspect-w-20 aspect-h-19 rounded-3xl overflow-hidden">
         <div ref={sliderRef} className="flex transition duration-300 ease-out">
@@ -154,9 +154,9 @@ export default function ImageSlider({ data }: any) {
           styles="absolute text-yellow-400 bottom-2 left-1/2 -translate-x-1/2 transition"
         />
       )}
-      <button className="absolute top-1/2 -translate-y-1/2 right-0 text-7xl text-white">
+      {/* <button className="absolute top-1/2 -translate-y-1/2 right-0 text-7xl text-white">
         {'›'}
-      </button>
+      </button> */}
     </div>
   )
 }
