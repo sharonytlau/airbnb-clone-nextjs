@@ -4,59 +4,58 @@ import { HeartIcon } from 'components/icons/HeartIcon'
 import { MapIcon } from 'components/icons/MapIcon'
 import { MoreIcon } from 'components/icons/MoreIcon'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 const bottomIcons = [
   {
     icon: <ExploreIcon />,
     text: 'Explore',
-    to: '/',
+    path: '/',
   },
   {
     icon: <HeartIcon />,
     text: 'Wishlists',
-    to: '/wishlists',
+    path: '/wishlists',
   },
   {
     icon: <MapIcon />,
     text: 'Trips',
-    to: '/trips',
+    path: '/trips',
   },
   {
     icon: <MoreIcon />,
     text: 'More',
-    to: '/more',
+    path: '/more',
   },
 ]
 
 function TheFooter() {
-  const [selectedIcon, setSelectedIcon] = useState(bottomIcons[0].text)
+  const router = useRouter()
+  console.log('route in footer', router)
 
-  const getIconStyle = (iconText: string) => {
-    const selected = 'fill-prime-50 text-prime-600'
-    const notSelected = 'fill-white text-gray-400'
+  const pathName = router.pathname
 
-    return selectedIcon === iconText ? selected : notSelected
+  const getIconStyle = (path: string) => {
+    const active = 'fill-prime-50 text-prime-600'
+    const inactive = 'fill-white text-gray-400'
+    return pathName === path ? active : inactive
   }
 
-  const getIconTextStyle = (iconText: string) => {
-    const selected = 'text-prime-800 font-medium'
-    const notSelected = 'text-gray-500'
+  const getIconTextStyle = (path: string) => {
+    const active = 'text-prime-800 font-medium'
+    const inactive = 'text-gray-500'
 
-    return selectedIcon === iconText ? selected : notSelected
-  }
-
-  const handleClick = (iconText: string) => {
-    setSelectedIcon(iconText)
+    return pathName === path ? active : inactive
   }
 
   return (
     <div className="bg-white flex items-center justify-around w-full py-2">
-      {bottomIcons.map(({ text, icon, to }) => {
+      {bottomIcons.map(({ text, icon, path }) => {
         return (
-          <button onClick={() => handleClick(text)} key={text}>
-            <Link href={to} className="flex flex-col items-center gap-1">
-              <div className={`text-2xl ${getIconStyle(text)}`}>{icon}</div>
-              <div className={`text-xxs ${getIconTextStyle(text)}`}>{text}</div>
+          <button key={text}>
+            <Link href={path} className="flex flex-col items-center gap-1">
+              <div className={`text-2xl ${getIconStyle(path)}`}>{icon}</div>
+              <div className={`text-xxs ${getIconTextStyle(path)}`}>{text}</div>
             </Link>
           </button>
         )
