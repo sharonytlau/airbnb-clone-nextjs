@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import MediaContext from 'context/MediaContext'
 import Image from 'next/image'
 import React, {
   useState,
@@ -6,9 +7,11 @@ import React, {
   useLayoutEffect,
   useEffect,
   useCallback,
+  useContext,
 } from 'react'
 
 export default function ImageSlider({ data }: any) {
+  const { isLargeScreen } = useContext(MediaContext)
   const [dotIndex, setDotIndex] = useState(0)
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
   const sliderRef = useRef<HTMLDivElement>(null)
@@ -129,10 +132,10 @@ export default function ImageSlider({ data }: any) {
               <div
                 key={id}
                 className="relative flex-[1_0_100%] touch-pan-y "
-                onPointerDown={pointerStart(index)}
-                onPointerMove={pointerMove}
-                onPointerUp={pointerEnd}
-                onPointerLeave={pointerEnd}
+                onPointerDown={!isLargeScreen ? pointerStart(index) : undefined}
+                onPointerMove={!isLargeScreen ? pointerMove : undefined}
+                onPointerUp={!isLargeScreen ? pointerEnd : undefined}
+                onPointerLeave={!isLargeScreen ? pointerEnd : undefined}
               >
                 <Image
                   src={path}

@@ -9,38 +9,7 @@ import SearchDrawer from 'components/SearchDrawer'
 import { ScrollableVertical } from 'components/ScrollableVertical'
 import { SlideIn } from 'components/SlideIn'
 import Router, { useRouter } from 'next/router'
-import FooterContext from 'context/state'
-
-const fakeListingCards = [
-  {
-    image: 'https://source.unsplash.com/hBh9JbyeCtg',
-    title: 'New England',
-    price: 80,
-    rating: 4.99,
-    distance: 200,
-  },
-  {
-    image: 'https://source.unsplash.com/gvephxIoMYg',
-    title: 'Gianyar',
-    price: 100,
-    rating: 4.8,
-    distance: 270,
-  },
-  {
-    image: 'https://source.unsplash.com/nSy6EkPBwe8',
-    title: 'Chiang Mai',
-    price: 120,
-    rating: 4.9,
-    distance: 180,
-  },
-  {
-    image: 'https://source.unsplash.com/lIvqoCl6h-A',
-    title: 'Stowe',
-    price: 70,
-    rating: 4.85,
-    distance: 60,
-  },
-]
+import FooterContext from 'context/FooterContext'
 
 const Home = ({
   listings,

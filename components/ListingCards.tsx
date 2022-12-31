@@ -3,6 +3,7 @@ import { ListingType } from 'lib/prisma'
 import ImageSlider from 'components/ImageSlider'
 import format from 'date-fns/format'
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 
 function ListingCards({
   data,
@@ -58,7 +59,7 @@ function ListingCards({
           } = el
 
           return (
-            <div className="space-y-3" key={id}>
+            <Link className="space-y-3" key={id} href={`/listing/${id}`}>
               {/* <div className="w-full h-0 pb-[95%] relative rounded-3xl overflow-hidden"> */}
               <ImageSlider
                 data={listingImages.map(({ id, source }) => {
@@ -83,7 +84,7 @@ function ListingCards({
                 </div>
                 <div> {`★ ${rating}`} </div>
               </div>
-            </div>
+            </Link>
           )
         })}
     </div>

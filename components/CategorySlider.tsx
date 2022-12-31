@@ -9,8 +9,9 @@ import React, {
   useLayoutEffect,
   useEffect,
   useCallback,
+  useContext,
 } from 'react'
-import useMediaQuery from 'hooks/useMediaQuery'
+import MediaContext from 'context/MediaContext'
 
 export default function CategorySlider({
   data,
@@ -22,15 +23,12 @@ export default function CategorySlider({
   setActiveCategory: Function
 }) {
   const sliderRef = useRef<HTMLDivElement>(null)
-  const innerSliderRef = useRef<HTMLDivElement>(null)
-  const startX = useRef(0)
-  const isDragging = useRef(false)
   const sliderWidth = useRef(0)
   const [showNavButton, setShowNavButton] = useState({
     left: false,
     right: true,
   })
-  const isLargeScreen = useMediaQuery('(min-width: 550px)')
+  const { isLargeScreen } = useContext(MediaContext)
 
   useLayoutEffect(() => {
     if (sliderRef.current) {
@@ -118,48 +116,45 @@ export default function CategorySlider({
           visible={showNavButton}
         />
       )}
-      <div className="w-full overflow-auto px-7 scrollbar-hide" ref={sliderRef}>
-        <div className=" flex gap-4 sm:gap-7" ref={innerSliderRef}>
-          {data.map(({ title }) => {
-            return (
-              <button
-                key={title}
-                className="flex-[0_0_4rem]  flex-center"
-                onClick={() => {
-                  setActiveCategory(title)
-                }}
+      <div
+        className="w-full overflow-auto px-7 scrollbar-hide flex gap-4 sm:gap-7"
+        ref={sliderRef}
+      >
+        {data.map(({ title }) => {
+          return (
+            <button
+              key={title}
+              className="flex-[0_0_4rem]  flex-center"
+              onClick={() => {
+                setActiveCategory(title)
+              }}
+            >
+              <div
+                className={clsx(
+                  'flex flex-col items-center gap-2 pt-1 pb-3 md:py-7',
+                  getCategoryStyle(title)
+                )}
               >
                 <div
                   className={clsx(
-                    'flex flex-col items-center gap-2 pt-1 pb-3 md:py-7',
-                    getCategoryStyle(title)
+                    'w-[22px] h-[22px] relative',
+                    getIconStyle(title)
                   )}
                 >
-                  <div
-                    className={clsx(
-                      'w-[22px] h-[22px] relative',
-                      getIconStyle(title)
-                    )}
-                  >
-                    <Image
-                      src={`/${title.toLowerCase()}.png`}
-                      alt={title}
-                      fill
-                    />
-                  </div>
-                  <div
-                    className={clsx(
-                      'font-medium text-xs tracking-tight',
-                      getTitleStyle(title)
-                    )}
-                  >
-                    {title}
-                  </div>
+                  <Image src={`/${title.toLowerCase()}.png`} alt={title} fill />
                 </div>
-              </button>
-            )
-          })}
-        </div>
+                <div
+                  className={clsx(
+                    'font-medium text-xs tracking-tight',
+                    getTitleStyle(title)
+                  )}
+                >
+                  {title}
+                </div>
+              </div>
+            </button>
+          )
+        })}
       </div>
       {isLargeScreen && (
         <NavButton
