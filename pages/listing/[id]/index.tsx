@@ -2,23 +2,23 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { ListingType } from 'lib/prisma'
 import { useEffect, useState } from 'react'
+import { getListing } from 'lib/getListing'
 
-export default function ListingDetail() {
+export default function ListingDetail({
+  listings,
+}: {
+  listings: ListingType[]
+}) {
   const router = useRouter()
   const id = router.query.id as string
   const [data, setData] = useState<ListingType | null>(null)
 
   useEffect(() => {
-    try {
-      fetch(`/api/listing/${id}`)
-        .then((res) => res.json())
-        .then((data) => setData(data))
-    } catch (err: any) {
-      throw new Error(err)
-    }
-  }, [id])
+    const data = listings.find((listing) => listing.id === id) || null
+    setData(data)
+  }, [id, listings])
 
-  if (!data) return <div>Loading...</div>
+  if (!data) return <div>Error: no data</div>
 
   return (
     <>
@@ -42,7 +42,7 @@ export default function ListingDetail() {
       <div className="px-3">
         <h2 className="text-lg font-medium">What this place offers</h2>
         <div>
-          {data.listingAmenities.map((el) => (
+          {data.listingAmenities?.map((el) => (
             <div key={el.id}>{el.title}</div>
           ))}
         </div>
@@ -52,4 +52,36 @@ export default function ListingDetail() {
       </div>
     </>
   )
+}
+
+export async function getStaticProps() {
+  const listings = await getListing()
+  return {
+    props: {
+      listings,
+    },
+  }
+}
+
+export async function getStaticPaths() {
+  const listings = await getListing()
+  console.log(
+    'listings in [id]',
+    typeof listings,
+    listings.length,
+    listings.map
+  )
+
+  const paths = listings.map((listing: ListingType) => {
+    return {
+      params: {
+        id: listing.id,
+      },
+    }
+  })
+
+  return {
+    paths,
+    fallback: true,
+  }
 }

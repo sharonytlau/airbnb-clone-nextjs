@@ -11,6 +11,7 @@ import { ScrollableVertical } from 'components/ScrollableVertical'
 import { SlideIn } from 'components/SlideIn'
 import Router, { useRouter } from 'next/router'
 import FooterContext from 'context/FooterContext'
+import { getListing } from 'lib/getListing'
 
 const Home = ({
   listings,
@@ -96,18 +97,13 @@ const Home = ({
 export default Home
 
 export async function getStaticProps() {
-  const listings = await prisma.listing.findMany({
-    include: {
-      listingImages: true,
-      categories: true,
-    },
-  })
+  const listings = await getListing()
 
   const categories = await prisma.category.findMany()
 
   return {
     props: {
-      listings: JSON.parse(JSON.stringify(listings)),
+      listings,
       categories: JSON.parse(JSON.stringify(categories)),
     },
   }
