@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum category {
+enum CategoryEnum {
   Mountains
   Landmarks
   Camping
@@ -43,25 +43,26 @@ enum category {
 }
 
 model Category {
-  id        String    @id @default(uuid())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  title     category
+  id        String       @id @default(uuid())
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  title     CategoryEnum
   listings  Listing[]
 }
 
 model Listing {
-  id            String         @id @default(uuid())
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  title         String
-  subtitle      String
-  startDate     String
-  endDate       String
-  price         Int
-  rating        Float
-  listingImages ListingImage[]
-  categories    Category[]
+  id               String           @id @unique @default(uuid())
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  title            String
+  subtitle         String
+  startDate        String
+  endDate          String
+  price            Int
+  rating           Float
+  listingImages    ListingImage[]
+  categories       Category[]
+  listingAmenities ListingAmenity[]
   // geoId         String
   // geo           Geo            @relation(fields: [geoId], references: [id])
 }
@@ -73,6 +74,22 @@ model ListingImage {
   source    String
 }
 
+model ListingAmenity {
+  id           String              @id @default(uuid())
+  title        String
+  icon         String
+  description  String
+  categoryCode AmenityCategoryEnum
+  category     AmenityCategory     @relation(fields: [categoryCode], references: [code])
+  listings     Listing[]
+}
+
+model AmenityCategory {
+  code       AmenityCategoryEnum @unique
+  title      String
+  amentities ListingAmenity[]
+}
+
 model Geo {
   id        String @id @default(uuid())
   country   String
@@ -81,4 +98,19 @@ model Geo {
   latitude  Float
   longitude Float
   // listings  Listing[]
+}
+
+enum AmenityCategoryEnum {
+  bathroom
+  bedroom
+  family
+  heating
+  safety
+  internet
+  dining
+  outdoor
+  parking
+  services
+  views
+  entertainment
 }

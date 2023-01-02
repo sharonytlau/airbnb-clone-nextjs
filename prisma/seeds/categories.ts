@@ -1,7 +1,9 @@
-import { category } from '@prisma/client'
+import { CategoryEnum, Prisma } from '@prisma/client'
 
-export const categories = Object.keys(category).map((title) => {
+export const categories: Prisma.CategoryCreateInput[] = Object.keys(
+  CategoryEnum
+).map((title) => {
   return {
-    title,
+    title: title as CategoryEnum,
   }
 })

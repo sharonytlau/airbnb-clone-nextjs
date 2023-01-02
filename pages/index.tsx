@@ -1,4 +1,5 @@
-import { PrismaClient, Category, category } from '@prisma/client'
+import { Category, CategoryEnum } from '@prisma/client'
+import prisma from 'lib/prisma'
 import { ListingType } from 'lib/prisma'
 import React, { useCallback, useContext, useState } from 'react'
 import SearchBar from 'components/SearchBar'
@@ -26,7 +27,7 @@ const Home = ({
 
   const [showDrawer, setShowDrawer] = useState(false)
 
-  function setActiveCategory(category: category) {
+  function setActiveCategory(category: CategoryEnum) {
     router.push(`/?category=${category}`, undefined, { shallow: true })
   }
 
@@ -95,8 +96,6 @@ const Home = ({
 export default Home
 
 export async function getStaticProps() {
-  const prisma = new PrismaClient()
-
   const listings = await prisma.listing.findMany({
     include: {
       listingImages: true,

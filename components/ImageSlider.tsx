@@ -125,7 +125,7 @@ export default function ImageSlider({ data }: any) {
         {'‹'}
       </button> */}
 
-      <div className="w-full aspect-w-20 aspect-h-19 rounded-3xl overflow-hidden">
+      <div className="w-full aspect-w-20 aspect-h-19 rounded-3xl overflow-auto scrollbar-hide">
         <div ref={sliderRef} className="flex transition duration-300 ease-out">
           {data.map(({ id, path, url }: any, index: any) => {
             return (
@@ -136,6 +136,7 @@ export default function ImageSlider({ data }: any) {
                 onPointerMove={!isLargeScreen ? pointerMove : undefined}
                 onPointerUp={!isLargeScreen ? pointerEnd : undefined}
                 onPointerLeave={!isLargeScreen ? pointerEnd : undefined}
+                // onScroll={pointerEnd}
               >
                 <Image
                   src={path}

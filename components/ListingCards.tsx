@@ -60,7 +60,6 @@ function ListingCards({
 
           return (
             <Link className="space-y-3" key={id} href={`/listing/${id}`}>
-              {/* <div className="w-full h-0 pb-[95%] relative rounded-3xl overflow-hidden"> */}
               <ImageSlider
                 data={listingImages.map(({ id, source }) => {
                   const splits = source.split('/')
