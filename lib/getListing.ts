@@ -3,9 +3,10 @@ import prisma from 'lib/prisma'
 export async function getListing() {
   const listings = await prisma.listing.findMany({
     include: {
-      listingAmenities: true,
-      listingImages: true,
+      amenities: true,
+      images: true,
       categories: true,
+      homeDetails: true,
     },
   })
 

@@ -4,7 +4,15 @@ import { categories } from './seeds/categories'
 import { amenities } from './seeds/amenities'
 import { listings } from './seeds/listings'
 import { amenityCategories } from './seeds/amenities'
-import { decimalAdjust, getRandomNumber, getRandomPeriod } from './seeds/utils'
+import {
+  decimalAdjust,
+  getRandomNumber,
+  getRandomPeriod,
+  getRandomHome,
+  getRandomHost,
+  getRandomPlaceType,
+  getRandomListingName,
+} from './seeds/utils'
 
 const prisma = new PrismaClient()
 
@@ -43,14 +51,6 @@ async function main() {
   for (const listing of listings) {
     const [startDate, endDate] = getRandomPeriod()
 
-    // console.log('1111 data', {
-    //   connect: listing.listingAmenities.map((amenity) => {
-    //     return {
-    //       id: fetchedAmenities.find((el) => el.title === amenity)?.id,
-    //     }
-    //   }),
-    // })
-
     await prisma.listing.create({
       data: {
         ...listing,
@@ -61,8 +61,8 @@ async function main() {
             }
           }),
         },
-        listingAmenities: {
-          connect: listing.listingAmenities.map((amenity) => {
+        amenities: {
+          connect: listing.amenities.map((amenity) => {
             return {
               id: fetchedAmenities.find((el) => el.title === amenity)?.id,
             }
@@ -72,6 +72,12 @@ async function main() {
         endDate: format(endDate, 'yyyy-MM-dd'),
         price: decimalAdjust(getRandomNumber(80, 200)),
         rating: decimalAdjust(getRandomNumber(4.7, 5.0), -2),
+        homeDetails: {
+          create: getRandomHome(),
+        },
+        ...getRandomHost(Math.random()),
+        placeType: getRandomPlaceType(),
+        name: getRandomListingName(listing.categories),
       },
     })
     console.log(`Created listing`)

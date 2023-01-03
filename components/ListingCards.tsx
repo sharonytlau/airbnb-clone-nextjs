@@ -49,19 +49,19 @@ function ListingCards({
         .map((el) => {
           const {
             id,
-            title,
+            location,
             subtitle,
             startDate,
             endDate,
             price,
             rating,
-            listingImages = [],
+            images = [],
           } = el
 
           return (
             <Link className="space-y-3" key={id} href={`/listing/${id}`}>
               <ImageSlider
-                data={listingImages.map(({ id, source }) => {
+                data={images.map(({ id, source }) => {
                   const splits = source.split('/')
                   const imgId = splits[splits.length - 1]
                   const path = `/${imgId}.jpg`
@@ -71,7 +71,7 @@ function ListingCards({
               />
               <div className="flex justify-between text-[15px]">
                 <div>
-                  <p className="font-medium"> {title} </p>
+                  <p className="font-medium"> {location} </p>
                   <p className="text-zinc-450"> {subtitle} </p>
                   <p className="text-zinc-450">
                     {formatPeriod(new Date(startDate), new Date(endDate))}

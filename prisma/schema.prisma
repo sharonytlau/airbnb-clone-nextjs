@@ -51,20 +51,46 @@ model Category {
 }
 
 model Listing {
-  id               String           @id @unique @default(uuid())
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
-  title            String
-  subtitle         String
-  startDate        String
-  endDate          String
-  price            Int
-  rating           Float
-  listingImages    ListingImage[]
-  categories       Category[]
-  listingAmenities ListingAmenity[]
+  id          String              @id @unique @default(uuid())
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  location    String
+  subtitle    String
+  startDate   String
+  endDate     String
+  price       Int
+  rating      Float
+  images      ListingImage[]
+  categories  Category[]
+  name        String
+  placeType   String
+  hostName    String
+  hostAvatar  String
+  homeDetails ListingHomeDetail[]
+  amenities   ListingAmenity[]
   // geoId         String
   // geo           Geo            @relation(fields: [geoId], references: [id])
+}
+
+enum HomeDetailEnum {
+  guest
+  bedroom
+  bed
+  bathroom
+}
+
+model Host {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+}
+
+model ListingHomeDetail {
+  id        String         @id @default(uuid())
+  listingId String
+  listing   Listing        @relation(fields: [listingId], references: [id])
+  quantity  Int
+  type      HomeDetailEnum
 }
 
 model ListingImage {

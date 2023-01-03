@@ -11,8 +11,8 @@ const handler: NextApiHandler = async function (req, res) {
         id,
       },
       include: {
-        listingAmenities: true,
-        listingImages: true,
+        amenities: true,
+        images: true,
       },
     })
 

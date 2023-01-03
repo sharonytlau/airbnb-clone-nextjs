@@ -20,6 +20,12 @@ export default function ListingDetail({
 
   if (!data) return <div>Error: no data</div>
 
+  console.log('listing data is ', data)
+
+  function formatDetail(quantity: number, type: string) {
+    return quantity > 1 ? `${quantity} ${type}s` : `${quantity} ${type}`
+  }
+
   return (
     <>
       {/* listing summary */}
@@ -33,16 +39,15 @@ export default function ListingDetail({
       {/* rooms */}
       <h2>Entire villa hosted by Wayan </h2>
       <div>
-        <span>4 guests</span>
-        <span>2 bedrooms</span>
-        <span>2 beds</span>
-        <span>2 baths</span>
+        {data.homeDetails.map(({ id, type, quantity }) => (
+          <span key={id}>{formatDetail(quantity, type)}</span>
+        ))}
       </div>
       {/* amenities */}
       <div className="px-3">
         <h2 className="text-lg font-medium">What this place offers</h2>
         <div>
-          {data.listingAmenities?.map((el) => (
+          {data.amenities?.map((el) => (
             <div key={el.id}>{el.title}</div>
           ))}
         </div>
