@@ -44,3 +44,18 @@ export function filterDate(dArr: Date[], d: Date) {
 export function capFirst(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
+
+export function decimalAdjust(value: number, exp: number = 0) {
+  if (exp % 1 !== 0 || Number.isNaN(value)) {
+    return NaN
+  } else if (exp === 0) {
+    return Math.floor(value)
+  }
+  const [magnitude, exponent = 0] = value.toString().split('e')
+  const adjustedValue = Math.floor(
+    parseFloat(`${magnitude}e${(exponent as number) - exp}`)
+  )
+  // Shift back
+  const [newMagnitude, newExponent = 0] = adjustedValue.toString().split('e')
+  return Number(`${newMagnitude}e${+newExponent + exp}`)
+}

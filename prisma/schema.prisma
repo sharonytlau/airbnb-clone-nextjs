@@ -59,17 +59,28 @@ model Listing {
   startDate   String
   endDate     String
   price       Int
-  rating      Float
   images      ListingImage[]
   categories  Category[]
   name        String
   placeType   String
-  hostName    String
-  hostAvatar  String
+  hostId      String
+  host        User                @relation(fields: [hostId], references: [id])
   homeDetails ListingHomeDetail[]
   amenities   ListingAmenity[]
+  reviews     ListingReview[]
   // geoId         String
   // geo           Geo            @relation(fields: [geoId], references: [id])
+}
+
+model ListingReview {
+  id         String   @id @default(uuid())
+  createdAt  DateTime @default(now())
+  listingId  String
+  listing    Listing  @relation(fields: [listingId], references: [id])
+  reviewerId String
+  reviewer   User     @relation(fields: [reviewerId], references: [id])
+  rating     Int
+  review     String
 }
 
 enum HomeDetailEnum {
@@ -79,10 +90,15 @@ enum HomeDetailEnum {
   bathroom
 }
 
-model Host {
-  id        String   @id @default(uuid())
-  name      String
-  createdAt DateTime @default(now())
+model User {
+  id            String          @id @default(uuid())
+  createdAt     DateTime        @default(now())
+  name          String
+  avatar        String
+  ListingReview ListingReview[]
+  isHost        Boolean
+  isSuperhost   Boolean
+  Listing       Listing[]
 }
 
 model ListingHomeDetail {

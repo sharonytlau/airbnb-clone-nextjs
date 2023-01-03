@@ -6,12 +6,10 @@ export const listings: (Omit<
   | 'endDate'
   | 'category'
   | 'price'
-  | 'rating'
   | 'homeDetails'
   | 'name'
   | 'placeType'
-  | 'hostName'
-  | 'hostAvatar'
+  | 'host'
 > & {
   categories: CategoryEnum[]
   amenities: String[]

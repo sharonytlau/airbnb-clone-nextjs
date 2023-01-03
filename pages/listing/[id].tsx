@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { ListingType } from 'lib/prisma'
 import { useEffect, useState } from 'react'
 import { getListing } from 'lib/getListing'
+import ImageSlider from 'components/ImageSlider'
 
 export default function ListingDetail({
   listings,
@@ -29,15 +30,26 @@ export default function ListingDetail({
   return (
     <>
       {/* listing summary */}
-      <h1>Listing: {id}</h1>
-      <div>
-        <span>{data.rating}</span>
-        <span>156 reviews</span>
-        <span>Superhost</span>
+
+      <div className="w-[300px]">
+        <ImageSlider
+          data={data.images.map(({ id, source }) => {
+            const splits = source.split('/')
+            const imgId = splits[splits.length - 1]
+            const path = `/${imgId}.jpg`
+            return { id, path, url: source }
+          })}
+        ></ImageSlider>
       </div>
-      <div>Bali, Indonesia</div>
+      <h1 className="text-lg font-medium"> {data.name}</h1>
+      <div className="space-x-2">
+        {data.rating != null && <span>{data.rating}</span>}
+        <span>{data.reviews.length} reviews</span>
+        {data.host.isSuperhost && <span>Superhost</span>}
+      </div>
+      <div>{data.location}</div>
       {/* rooms */}
-      <h2>Entire villa hosted by Wayan </h2>
+      <h2>{`${data.placeType} hosted by ${data.host.name}`}</h2>
       <div>
         {data.homeDetails.map(({ id, type, quantity }) => (
           <span key={id}>{formatDetail(quantity, type)}</span>

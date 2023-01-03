@@ -2,13 +2,13 @@ import { faker } from '@faker-js/faker'
 import { CategoryEnum, ListingHomeDetail, Prisma } from '@prisma/client'
 import { add } from 'date-fns'
 
-export function getRandomHost(rand: number) {
-  const gender = rand >= 0.5 ? 'female' : 'male'
+export function getRandomUser(genderInput?: 'female' | 'male') {
+  const gender = genderInput || (Math.random() >= 0.5 ? 'female' : 'male')
   const randAvatarIndex = getRandomInt(1, 3)
 
   return {
-    hostName: faker.name.firstName(gender),
-    hostAvatar: `${gender}-${randAvatarIndex}`,
+    name: faker.name.firstName(gender),
+    avatar: `${gender}-${randAvatarIndex}`,
   }
 }
 
@@ -137,28 +137,13 @@ export function getRandomPeriod() {
 }
 
 // inclusive
-function getRandomInt(min: number, max: number) {
+export function getRandomInt(min: number, max: number) {
   const range = max - min + 1
   return Math.floor(Math.random() * range) + min
 }
 
 export function getRandomNumber(min: number, max: number) {
   return Math.random() * (max - min) + min
-}
-
-export function decimalAdjust(value: number, exp: number = 0) {
-  if (exp % 1 !== 0 || Number.isNaN(value)) {
-    return NaN
-  } else if (exp === 0) {
-    return Math.floor(value)
-  }
-  const [magnitude, exponent = 0] = value.toString().split('e')
-  const adjustedValue = Math.floor(
-    parseFloat(`${magnitude}e${(exponent as number) - exp}`)
-  )
-  // Shift back
-  const [newMagnitude, newExponent = 0] = adjustedValue.toString().split('e')
-  return Number(`${newMagnitude}e${+newExponent + exp}`)
 }
 
 export function getRandomHome() {
@@ -175,4 +160,26 @@ export function getRandomHome() {
   ]
 
   return homeDetails
+}
+
+export const randomReivews = [
+  'We absolutely loved our stay at this place! The host was so welcoming and the space was even better than the pictures. It was clean, comfortable, and had all the amenities we needed. We would highly recommend this listing to anyone visiting the area.',
+  'This was our first Airbnb experience and we were blown away by how great it was. The host was incredibly friendly and accommodating, and the space was clean and cozy. We highly recommend this listing to anyone looking for a comfortable place to stay.',
+  'This place was a true gem! The host was very welcoming and the space was spotless. It was also located in a great area. We highly recommend this listing to anyone looking for a wonderful vacation.',
+  'We had a fantastic stay at this place. The host was very helpful and the space was exactly as described. We would definitely recommend this listing to anyone visiting the area.',
+  'This place exceeded all of our expectations. We had a great time exploring the area and were so grateful to have such a comfortable place to come back to at the end of each day.',
+  'We had a wonderful time at this place. The location was perfect for us, as it was close to everything we wanted. We would highly recommend this listing to anyone looking for a great place to stay in the area.',
+  'We were so impressed with this place. We had a great time exploring the area and would highly recommend this listing to anyone visiting the area.',
+  'This place was a true delight!  We highly recommend this listing.',
+]
+
+export function getRandomNoRepeat(arr: string[]) {
+  const copyArr = arr.slice(0)
+
+  return function () {
+    const index = Math.floor(Math.random() * copyArr.length)
+    const item = copyArr[index]
+    copyArr.splice(index, 1)
+    return item
+  }
 }

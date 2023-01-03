@@ -1,16 +1,37 @@
 import prisma from 'lib/prisma'
+import { decimalAdjust } from 'utils/utils'
 
 export async function getListing() {
-  const listings = await prisma.listing.findMany({
+  const fetchedListings = await prisma.listing.findMany({
     include: {
       amenities: true,
       images: true,
       categories: true,
       homeDetails: true,
+      host: true,
+      reviews: true,
     },
   })
 
-  console.log('get listing *****', typeof listings, listings.length)
+  const data = fetchedListings.map((listing) => {
+    const reviewsWithRating = listing.reviews.filter((el) => el.rating)
 
-  return JSON.parse(JSON.stringify(listings))
+    return {
+      ...listing,
+      rating:
+        reviewsWithRating.length > 3
+          ? decimalAdjust(
+              reviewsWithRating.reduce(
+                (total, next) => total + next.rating,
+                0
+              ) / reviewsWithRating.length,
+              -2
+            )
+          : null,
+    }
+  })
+
+  console.log('get listing *****', typeof data, data.length)
+
+  return JSON.parse(JSON.stringify(data))
 }

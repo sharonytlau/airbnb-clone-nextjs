@@ -81,7 +81,7 @@ function ListingCards({
                     <span> night </span>
                   </p>
                 </div>
-                <div> {`★ ${rating}`} </div>
+                {rating != null && <div> {`★ ${rating}`} </div>}
               </div>
             </Link>
           )

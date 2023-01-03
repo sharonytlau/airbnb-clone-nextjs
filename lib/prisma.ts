@@ -5,6 +5,8 @@ import {
   Category,
   ListingAmenity,
   ListingHomeDetail,
+  User,
+  ListingReview,
 } from '@prisma/client'
 
 let prisma: PrismaClient
@@ -24,8 +26,11 @@ if (process.env.NODE_ENV === 'production') {
 export default prisma
 
 export type ListingType = Listing & {
+  amenities: ListingAmenity[]
   images: ListingImage[]
   categories: Category[]
-  amenities: ListingAmenity[]
   homeDetails: ListingHomeDetail[]
+  host: User
+  reviews: ListingReview[]
+  rating: number | null
 }
