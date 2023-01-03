@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { CategoryEnum, ListingHomeDetail, Prisma } from '@prisma/client'
 import { add } from 'date-fns'
+import { amenities, amenityCategories } from './amenities'
 
 export function getRandomUser(genderInput?: 'female' | 'male') {
   const gender = genderInput || (Math.random() >= 0.5 ? 'female' : 'male')
@@ -8,7 +9,7 @@ export function getRandomUser(genderInput?: 'female' | 'male') {
 
   return {
     name: faker.name.firstName(gender),
-    avatar: `${gender}-${randAvatarIndex}`,
+    avatarUrl: `/${gender}-avatar-${randAvatarIndex}.png`,
   }
 }
 
@@ -182,4 +183,44 @@ export function getRandomNoRepeat(arr: string[]) {
     copyArr.splice(index, 1)
     return item
   }
+}
+
+export function decimalAdjust(value: number, exp: number = 0) {
+  if (exp % 1 !== 0 || Number.isNaN(value)) {
+    return NaN
+  } else if (exp === 0) {
+    return Math.floor(value)
+  }
+  const [magnitude, exponent = 0] = value.toString().split('e')
+  const adjustedValue = Math.floor(
+    parseFloat(`${magnitude}e${(exponent as number) - exp}`)
+  )
+  // Shift back
+  const [newMagnitude, newExponent = 0] = adjustedValue.toString().split('e')
+  return Number(`${newMagnitude}e${+newExponent + exp}`)
+}
+
+export function getRandomAmenities() {
+  let randomAmenities: string[] = []
+  const amenityCategoryCodes = amenityCategories.map((el) => el.code)
+
+  for (let code of amenityCategoryCodes) {
+    const amenitiesOfCategory = amenities
+      .filter((el) => el.category === code)
+      .map((el) => el.title)
+    const getRandomAmenity = getRandomNoRepeat(amenitiesOfCategory)
+
+    const randomAmenityNum = getRandomInt(
+      2,
+      Math.min(amenitiesOfCategory.length, 6)
+    )
+
+    for (let i = 0; i < randomAmenityNum; i++) {
+      const amenity = getRandomAmenity()
+
+      randomAmenities.push(amenity)
+    }
+  }
+
+  return randomAmenities
 }

@@ -1,9 +1,10 @@
 import { useRouter } from 'next/router'
-import Link from 'next/link'
+import Image from 'next/image'
 import { ListingType } from 'lib/prisma'
 import { useEffect, useState } from 'react'
 import { getListing } from 'lib/getListing'
 import ImageSlider from 'components/ImageSlider'
+import clsx from 'clsx'
 
 export default function ListingDetail({
   listings,
@@ -13,6 +14,8 @@ export default function ListingDetail({
   const router = useRouter()
   const id = router.query.id as string
   const [data, setData] = useState<ListingType | null>(null)
+
+  const titleClass = 'text-2xl font-medium'
 
   useEffect(() => {
     const data = listings.find((listing) => listing.id === id) || null
@@ -31,7 +34,7 @@ export default function ListingDetail({
     <>
       {/* listing summary */}
 
-      <div className="w-[300px]">
+      <div className="relative">
         <ImageSlider
           data={data.images.map(({ id, source }) => {
             const splits = source.split('/')
@@ -39,34 +42,58 @@ export default function ListingDetail({
             const path = `/${imgId}.jpg`
             return { id, path, url: source }
           })}
+          page="detail"
         ></ImageSlider>
+        <button
+          className="rounded-full bg-white w-12 h-12 absolute top-2 left-2 text-3xl"
+          onClick={() => router.back()}
+        >
+          {'<'}
+        </button>
       </div>
-      <h1 className="text-lg font-medium"> {data.name}</h1>
-      <div className="space-x-2">
-        {data.rating != null && <span>{data.rating}</span>}
-        <span>{data.reviews.length} reviews</span>
-        {data.host.isSuperhost && <span>Superhost</span>}
-      </div>
-      <div>{data.location}</div>
-      {/* rooms */}
-      <h2>{`${data.placeType} hosted by ${data.host.name}`}</h2>
-      <div>
-        {data.homeDetails.map(({ id, type, quantity }) => (
-          <span key={id}>{formatDetail(quantity, type)}</span>
-        ))}
-      </div>
+      <DetailSection className="space-y-2">
+        <h1 className={titleClass}> {data.name}</h1>
+        <div className="space-x-2 font-medium text-sm">
+          {data.rating != null && <span>{data.rating}</span>}
+          <span className="underline">{data.reviews.length} reviews</span>
+          {data.host.isSuperhost && <span>Superhost</span>}
+        </div>
+        <div className="font-medium text-sm underline">{data.location}</div>
+      </DetailSection>
+      {/* home details */}
+      <DetailSection>
+        <div className="flex justify-between">
+          <div className="flex flex-col justify-between">
+            <h2
+              className={titleClass}
+            >{`${data.placeType} hosted by ${data.host.name}`}</h2>
+            <div className="space-x-1">
+              {data.homeDetails.map(({ id, type, quantity }) => (
+                <span key={id}>{formatDetail(quantity, type)}</span>
+              ))}
+            </div>
+          </div>
+          <Image
+            src={data.host.avatarUrl}
+            alt={data.name}
+            width="56"
+            height="56"
+            className="self-start"
+          />
+        </div>
+      </DetailSection>
       {/* amenities */}
-      <div className="px-3">
-        <h2 className="text-lg font-medium">What this place offers</h2>
-        <div>
-          {data.amenities?.map((el) => (
+      <DetailSection>
+        <h2 className={titleClass}>What this place offers</h2>
+        <div className="font-medium my-4 space-y-4">
+          {data.amenities?.slice(0, 6).map((el) => (
             <div key={el.id}>{el.title}</div>
           ))}
         </div>
         <button className="border border-black font-medium w-full rounded-lg py-2">
-          Show all 20 amenities
+          {`Show all ${data.amenities.length} amenities`}
         </button>
-      </div>
+      </DetailSection>
     </>
   )
 }
@@ -101,4 +128,18 @@ export async function getStaticPaths() {
     paths,
     fallback: true,
   }
+}
+
+function DetailSection({
+  children,
+  className,
+}: {
+  children: React.ReactNode
+  className?: string
+}) {
+  return (
+    <div className={clsx('py-8 mx-6 border-b-2  border-zinc-200', className)}>
+      {children}
+    </div>
+  )
 }

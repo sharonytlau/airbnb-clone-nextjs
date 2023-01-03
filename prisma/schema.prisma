@@ -94,7 +94,7 @@ model User {
   id            String          @id @default(uuid())
   createdAt     DateTime        @default(now())
   name          String
-  avatar        String
+  avatarUrl     String
   ListingReview ListingReview[]
   isHost        Boolean
   isSuperhost   Boolean

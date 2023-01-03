@@ -8,7 +8,7 @@ import { useMediaQuery } from 'hooks/useMediaQuery'
 import MediaContext from 'context/MediaContext'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  const [showFooter, setShowFooter] = useState(true)
+  const [showFooter, setShowFooter] = useState(false)
   const isLargeScreen = useMediaQuery('(min-width: 950px)')
 
   return (

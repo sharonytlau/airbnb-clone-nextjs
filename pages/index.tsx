@@ -1,7 +1,7 @@
 import { Category, CategoryEnum } from '@prisma/client'
 import prisma from 'lib/prisma'
 import { ListingType } from 'lib/prisma'
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useCallback, useContext, useState, useEffect } from 'react'
 import SearchBar from 'components/SearchBar'
 import CategorySlider from 'components/CategorySlider'
 import ListingCards from 'components/ListingCards'
@@ -34,6 +34,12 @@ const Home = ({
 
   const resetFooter = useCallback(() => {
     setShowFooter(true)
+  }, [setShowFooter])
+
+  useEffect(() => {
+    return () => {
+      setShowFooter(false)
+    }
   }, [setShowFooter])
 
   return (

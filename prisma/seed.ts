@@ -1,10 +1,10 @@
 import { PrismaClient, Prisma, AmenityCategoryEnum } from '@prisma/client'
 import format from 'date-fns/format'
 import { categories } from './seeds/categories'
-import { amenities } from './seeds/amenities'
 import { listings } from './seeds/listings'
-import { amenityCategories } from './seeds/amenities'
+import { amenityCategories, amenities } from './seeds/amenities'
 import {
+  decimalAdjust,
   getRandomNumber,
   getRandomPeriod,
   getRandomHome,
@@ -15,8 +15,8 @@ import {
   getRandomInt,
   randomReivews,
   getRandomNoRepeat,
+  getRandomAmenities,
 } from './seeds/utils'
-import { decimalAdjust } from 'utils/utils'
 
 const prisma = new PrismaClient()
 
@@ -98,6 +98,8 @@ async function main() {
 
   for (const listing of listings) {
     const [startDate, endDate] = getRandomPeriod()
+    const listingAmenities = getRandomAmenities()
+    console.log('random amenities', listingAmenities)
 
     await prisma.listing.create({
       data: {
@@ -110,7 +112,7 @@ async function main() {
           }),
         },
         amenities: {
-          connect: listing.amenities.map((amenity) => {
+          connect: listingAmenities.map((amenity) => {
             return {
               id: fetchedAmenities.find((el) => el.title === amenity)?.id,
             }

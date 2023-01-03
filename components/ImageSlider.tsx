@@ -10,7 +10,7 @@ import React, {
   useContext,
 } from 'react'
 
-export default function ImageSlider({ data }: any) {
+export default function ImageSlider({ data, page = 'explore' }: any) {
   const { isLargeScreen } = useContext(MediaContext)
   const [dotIndex, setDotIndex] = useState(0)
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
@@ -120,12 +120,18 @@ export default function ImageSlider({ data }: any) {
   }, [setPositionByIndex])
 
   return (
-    <div className="relative">
+    <div className={clsx('relative')}>
       {/* <button className="absolute top-1/2 -translate-y-1/2 left-0 text-7xl text-white z-10">
         {'‹'}
       </button> */}
 
-      <div className="w-full aspect-w-20 aspect-h-19 rounded-3xl overflow-auto scrollbar-hide">
+      <div
+        className={clsx(
+          'w-full overflow-auto scrollbar-hide',
+          { 'aspect-w-20 aspect-h-19 rounded-3xl': page === 'explore' },
+          { 'aspect-w-3 aspect-h-2': page === 'detail' }
+        )}
+      >
         <div ref={sliderRef} className="flex transition duration-300 ease-out">
           {data.map(({ id, path, url }: any, index: any) => {
             return (

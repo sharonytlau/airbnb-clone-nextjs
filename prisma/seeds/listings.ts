@@ -12,7 +12,6 @@ export const listings: (Omit<
   | 'host'
 > & {
   categories: CategoryEnum[]
-  amenities: String[]
 })[] = [
   {
     location: 'Iseltwald, Switzerland',
@@ -20,7 +19,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/JT-RUtO2sfs' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Mountains'],
   },
   {
@@ -29,7 +27,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/1E-0mLMqAQ8' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Mountains'],
   },
   {
@@ -42,7 +39,6 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/Oeatf3IQp7w' },
       ],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Mountains'],
   },
   {
@@ -54,7 +50,6 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/iKQbaUgkEf0' },
       ],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Mountains'],
   },
 
@@ -64,7 +59,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/QPKyEU_oEFI' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Mountains'],
   },
   {
@@ -73,7 +67,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/thOIOTA6NHI' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Mountains'],
   },
   {
@@ -82,7 +75,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/z9LPimZfyfo' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Camping', 'Forests'],
   },
   {
@@ -95,7 +87,6 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/re2LZOB2XvY' },
       ],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Camping', 'Mountains'],
   },
   {
@@ -104,7 +95,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/gvkdncTaZu8' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Camping'],
   },
   {
@@ -116,7 +106,6 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/YndHL7gQIJE' },
       ],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Camping', 'Mountains'],
   },
   {
@@ -128,7 +117,6 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/GZ1hc6Jvbrg' },
       ],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Camping', 'Mountains', 'Lakes'],
   },
   {
@@ -137,7 +125,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/F4fH5dAfZnE' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Camping', 'Mountains', 'Lakes'],
   },
   {
@@ -146,7 +133,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/yBgC-qVCxMg' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Camping', 'Mountains', 'Lakes'],
   },
   {
@@ -158,7 +144,6 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/dfOAVQvFWAA' },
       ],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Apartments'],
   },
   {
@@ -167,7 +152,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/4ojhpgKpS68' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Apartments', 'Luxe', 'Minimal', 'Luxe'],
   },
   {
@@ -176,7 +160,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/AhiUnolb7cg' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Luxe'],
   },
   {
@@ -185,7 +168,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/nEvzSXBIhiU' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Islands', 'Beaches'],
   },
   {
@@ -194,7 +176,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/KqOLr8OiQLU' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Wooden'],
   },
   {
@@ -207,7 +188,6 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/PibraWHb4h8' },
       ],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Tropical'],
   },
   {
@@ -219,7 +199,6 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/5SLUtE1PMuM' },
       ],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Beaches', 'Islands'],
   },
   {
@@ -232,7 +211,6 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/IgE49g4qbCk' },
       ],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Tropical'],
   },
   {
@@ -244,7 +222,6 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/m7r1BVoWTAk' },
       ],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Luxe'],
   },
   {
@@ -256,7 +233,6 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/m7r1BVoWTAk' },
       ],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Luxe', 'Mountains'],
   },
   {
@@ -269,7 +245,6 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/p-2CwpMtvN4' },
       ],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Luxe', 'Coasts'],
   },
   {
@@ -278,7 +253,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/lHlsrGJMH1A' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Coasts', 'Cabins'],
   },
   {
@@ -287,7 +261,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/688Nj6fVPXU' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Coasts', 'Countryside', 'Tropical'],
   },
   {
@@ -300,7 +273,6 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/cGvRMx-p7u0' },
       ],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Islands', 'Coasts', 'Countryside'],
   },
   {
@@ -309,7 +281,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/XoM0eYSXWMs' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Camping', 'Mountains', 'Forests'],
   },
   {
@@ -321,7 +292,6 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/HHWwqWV6d5k' },
       ],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Tropical'],
   },
   {
@@ -330,7 +300,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/TcgASSD5G04' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Camping', 'Mountains'],
   },
   {
@@ -339,7 +308,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/qelGaL2OLyE' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Camping'],
   },
   {
@@ -348,7 +316,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/FzthdgL6vBI' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Mountains'],
   },
   {
@@ -357,7 +324,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/DOmnnuarfRI' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Mountains'],
   },
   {
@@ -366,7 +332,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/8MhejqEghLk' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Mountains'],
   },
   {
@@ -375,7 +340,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/7MH4ped6_Mo' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Mountains'],
   },
   {
@@ -387,7 +351,6 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/Z6r_SkZq_fw' },
       ],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Rainforests', 'Tropical'],
   },
   {
@@ -396,7 +359,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/OgcJIKRnRC8' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Mountains'],
   },
   {
@@ -405,7 +367,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/Yd59eQJVYAo' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Mountains', 'Camping'],
   },
   {
@@ -414,7 +375,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/tNaDwQ698tM' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Mountains'],
   },
   {
@@ -423,7 +383,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/8EkdijWGHTI' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Mountains', 'Desert'],
   },
   {
@@ -432,7 +391,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/xin4oHO4FFQ' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Mountains'],
   },
   {
@@ -441,7 +399,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/0_N6VO_DAN4' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Mountains'],
   },
   {
@@ -450,7 +407,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/xin4oHO4FFQ' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Tropical'],
   },
   {
@@ -459,7 +415,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/inns24xeXXM' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Mountains'],
   },
   {
@@ -468,7 +423,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/TkkYD1hyVRo' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Mountains'],
   },
   {
@@ -477,7 +431,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/WNntEI6JT6Y' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Mountains', 'Countryside'],
   },
   {
@@ -486,7 +439,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/1opHGv8iXvg' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Mountains'],
   },
   {
@@ -495,7 +447,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/cf6UhTW9tSs' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Mountains'],
   },
   {
@@ -504,7 +455,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/6eP8EMpTbA4' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Luxe'],
   },
   {
@@ -513,7 +463,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/8saVYOMHFzU' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Luxe'],
   },
   {
@@ -522,7 +471,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/PRFiPHhFwQA' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Luxe'],
   },
   {
@@ -531,7 +479,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/xUZye7XNxuM' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Countryside'],
   },
   {
@@ -543,7 +490,6 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/junWGhkueds' },
       ],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Apartments'],
   },
   {
@@ -552,7 +498,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/fbcG6KCfaM4' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Downtown'],
   },
   {
@@ -561,7 +506,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/dTDLVlVDic4' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Landmarks'],
   },
   {
@@ -573,7 +517,6 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/zgGShCZeBT4' },
       ],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Apartments'],
   },
   {
@@ -585,7 +528,6 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/888-NfA8Tfo' },
       ],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Landmarks'],
   },
   {
@@ -594,7 +536,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/DXuxHw3S5ak' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Downtown', 'Landmarks'],
   },
   {
@@ -603,7 +544,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/olpYWcO2kHw' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Downtown'],
   },
   {
@@ -612,7 +552,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/nBuiLbz_j4A' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Mountains'],
   },
   {
@@ -621,7 +560,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/GnIGPt3sCR0' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Countryside'],
   },
   {
@@ -634,7 +572,6 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/B4qBdlNIuS0' },
       ],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Mountains'],
   },
   {
@@ -643,7 +580,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/BSQq5dRT_KU' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Countryside'],
   },
   {
@@ -652,7 +588,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/teX7sZeTQd8' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Cabins', 'Countryside'],
   },
   {
@@ -661,7 +596,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/mu2qJIIMvFg' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Cabins'],
   },
   {
@@ -673,7 +607,6 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/gThfDnqgfMw' },
       ],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Forests'],
   },
   {
@@ -682,7 +615,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/MRX-unYU1dc' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Skiing', 'Arctic'],
   },
   {
@@ -691,7 +623,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/6UnSrZnHe0M' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Forests', 'Mountains'],
   },
   {
@@ -700,7 +631,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/vgrv9z8yLtY' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Cabins', 'Coasts'],
   },
   {
@@ -709,7 +639,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/bBKmwEtc1nk' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Desert', 'Mountains', 'Countryside'],
   },
 
@@ -719,7 +648,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/bCTMjQTpDNg' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Arctic', 'Mountains'],
   },
   {
@@ -732,7 +660,6 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/j1F-WyKgr28' },
       ],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Cabins'],
   },
   {
@@ -741,7 +668,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/VKPcxvSdvVs' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Countryside', 'Cabins', 'Mountains'],
   },
   {
@@ -750,7 +676,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/jGP-HVay63M' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Arctic', 'Countryside'],
   },
   {
@@ -759,7 +684,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/-90kxRqKSmc' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Lakes', 'Arctic', 'Minimal'],
   },
   {
@@ -768,7 +692,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/yQoAlbuxb48' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Cabins', 'Lakes', 'Countryside'],
   },
   {
@@ -777,7 +700,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/PoOXSW9eYgc' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Cabins', 'Mountains', 'Countryside'],
   },
   {
@@ -786,7 +708,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/KdbzxiFT7VI' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Arctic', 'Countryside'],
   },
   {
@@ -795,7 +716,6 @@ export const listings: (Omit<
     images: {
       create: [{ source: 'https://source.unsplash.com/gPuujrp4PZ0' }],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Arctic', 'Countryside', 'Cabins'],
   },
   {
@@ -807,7 +727,6 @@ export const listings: (Omit<
         { source: 'https://source.unsplash.com/vWYbHqzayhA' },
       ],
     },
-    amenities: ['Cleaning products', 'Hot water'],
     categories: ['Arctic', 'Coasts', 'Countryside'],
   },
 ]

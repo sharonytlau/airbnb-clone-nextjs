@@ -5,9 +5,7 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "db:reset": "prisma migrate reset",
-    "db:seed": "prisma db seed",
-    "db:push": "prisma db push",
+    "db:seed": "prisma db push --force-reset && prisma db seed",
     "db:migrate": "prisma migrate",
     "db:generate": "prisma generate",
     "db:studio": "prisma studio"
