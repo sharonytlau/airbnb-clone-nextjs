@@ -200,6 +200,7 @@ export function decimalAdjust(value: number, exp: number = 0) {
   return Number(`${newMagnitude}e${+newExponent + exp}`)
 }
 
+// get random amenities from each amenity category
 export function getRandomAmenities() {
   let randomAmenities: string[] = []
   const amenityCategoryCodes = amenityCategories.map((el) => el.code)
@@ -210,6 +211,7 @@ export function getRandomAmenities() {
       .map((el) => el.title)
     const getRandomAmenity = getRandomNoRepeat(amenitiesOfCategory)
 
+    // pick 2-6 amenities in each category
     const randomAmenityNum = getRandomInt(
       2,
       Math.min(amenitiesOfCategory.length, 6)
@@ -223,4 +225,30 @@ export function getRandomAmenities() {
   }
 
   return randomAmenities
+}
+
+export function getFakeCustomers(num: number): Prisma.FakeUserCreateInput[] {
+  return Array(num)
+    .fill(1)
+    .map(() => ({
+      ...getRandomUser(),
+      isHost: false,
+      isSuperhost: false,
+    }))
+}
+
+export function getFakeHosts(num: number): Prisma.FakeUserCreateInput[] {
+  let data: Prisma.FakeUserCreateInput[] = []
+  const genders = ['male', 'female'] as const
+
+  for (let gender of genders) {
+    for (let i = 0; i <= num / 2; i++) {
+      data.push({
+        ...getRandomUser(gender),
+        isHost: true,
+        isSuperhost: Math.random() >= 0.5 ? true : false,
+      })
+    }
+  }
+  return data
 }

@@ -16,6 +16,8 @@ import {
   randomReivews,
   getRandomNoRepeat,
   getRandomAmenities,
+  getFakeCustomers,
+  getFakeHosts,
 } from './seeds/utils'
 
 const prisma = new PrismaClient()
@@ -52,34 +54,18 @@ async function main() {
 
   console.log(`Created amenities`)
 
-  for (let gender of ['male', 'female']) {
-    for (let i = 0; i <= 3; i++) {
-      await prisma.fakeUser.create({
-        data: {
-          ...getRandomUser(gender as 'male' | 'female'),
-          isHost: true,
-          isSuperhost: Math.random() >= 0.5 ? true : false,
-        },
-      })
-    }
-  }
+  await prisma.fakeUser.createMany({
+    data: getFakeHosts(6),
+  })
 
   console.log(`Created hosts`)
 
-  for (let i = 0; i < 500; i++) {
-    await prisma.fakeUser.create({
-      data: {
-        ...getRandomUser(),
-        isHost: false,
-        isSuperhost: false,
-      },
-    })
-  }
+  await prisma.fakeUser.createMany({
+    data: getFakeCustomers(500),
+  })
 
   console.log(`Created customers`)
 
-  const fetchedCategories = await prisma.category.findMany()
-  const fetchedAmenities = await prisma.listingAmenity.findMany()
   const fetchedHosts = await prisma.fakeUser.findMany({
     where: {
       isHost: true,
@@ -104,16 +90,14 @@ async function main() {
       data: {
         ...listing,
         categories: {
-          connect: listing.categories.map((category) => {
-            return {
-              id: fetchedCategories.find((el) => el.title === category)?.id,
-            }
-          }),
+          connect: listing.categories.map((category) => ({
+            title: category,
+          })),
         },
         amenities: {
           connect: listingAmenities.map((amenity) => {
             return {
-              id: fetchedAmenities.find((el) => el.title === amenity)?.id,
+              title: amenity,
             }
           }),
         },
@@ -140,8 +124,8 @@ async function main() {
     })
   ).map((el) => el.id)
 
-  for (let id of fetchedListingIds) {
-    const reviewNum = getRandomInt(20, 100)
+  for (let listingId of fetchedListingIds) {
+    const reviewNum = getRandomInt(4, 8)
     const getRandomReviewerId = getRandomNoRepeat(fetchedCustomerIds)
 
     for (let i = 0; i <= reviewNum; i++) {
@@ -149,7 +133,7 @@ async function main() {
         data: {
           listing: {
             connect: {
-              id,
+              id: listingId,
             },
           },
           reviewer: {
@@ -157,7 +141,7 @@ async function main() {
               id: getRandomReviewerId(),
             },
           },
-          rating: Math.random() >= 0.5 ? 4 : 5,
+          rating: getRandomNumber(0.4, 1) >= 0.5 ? 4 : 5,
           review: getRandomItem(randomReivews),
         },
       })

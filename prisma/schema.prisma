@@ -108,7 +108,7 @@ model Category {
   id        String       @id @default(uuid())
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
-  title     CategoryEnum
+  title     CategoryEnum @unique
   listings  Listing[]
 }
 
@@ -181,7 +181,7 @@ model ListingImage {
 
 model ListingAmenity {
   id           String              @id @default(uuid())
-  title        String
+  title        String              @unique
   icon         String
   description  String
   categoryCode AmenityCategoryEnum
@@ -191,7 +191,7 @@ model ListingAmenity {
 
 model AmenityCategory {
   code       AmenityCategoryEnum @unique
-  title      String
+  title      String              @unique
   amentities ListingAmenity[]
 }
 
