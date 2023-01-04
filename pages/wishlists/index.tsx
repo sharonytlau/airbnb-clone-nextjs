@@ -1,3 +1,4 @@
+import { Listing } from '@prisma/client'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 
@@ -8,11 +9,23 @@ export default function Wishlists() {
   console.log('session?.user?.email', session?.user?.email)
 
   useEffect(() => {
-    const wishlist = fetch(`/api/wishlists/get?userEmail=${userEmail}`)
-      .then((res) => res.json())
-      .then((res) => console.log('wishlist data', res))
-    setData(wishlist)
+    if (userEmail) {
+      fetch(`/api/wishlists/get?userEmail=${userEmail}`)
+        .then((res) => res.json())
+        .then((res) => {
+          console.log('wishlist data is', res)
+          setData(res)
+        })
+    }
   }, [userEmail])
 
-  return <div>Wishlists</div>
+  return (
+    <div>
+      <div>Wishlists</div>
+      {!!data?.length &&
+        data.map(({ listing }: { listing: Listing }) => (
+          <div key={listing.id}>{listing.location}</div>
+        ))}
+    </div>
+  )
 }
