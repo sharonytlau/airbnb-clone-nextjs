@@ -40,13 +40,14 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String     @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?    @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
+  UserWish      UserWish[]
 }
 
 model VerificationToken {
@@ -55,6 +56,18 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+// User data
+model UserWish {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  listingId String
+  listing   Listing  @relation(fields: [listingId], references: [id])
+
+  @@unique([userId, listingId])
 }
 
 // App data
@@ -119,6 +132,7 @@ model Listing {
   reviews     ListingReview[]
   // geoId         String
   // geo           Geo            @relation(fields: [geoId], references: [id])
+  UserWish    UserWish[]
 }
 
 model ListingReview {

@@ -12,4 +12,5 @@ export default NextAuth({
   ],
   secret: process.env.AUTH_SECRET,
   adapter: PrismaAdapter(prisma),
+  debug: true,
 })

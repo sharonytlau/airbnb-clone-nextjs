@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { useSession } from 'next-auth/react'
 import { ListingType } from 'lib/prisma'
 import ImageSlider from 'components/ImageSlider'
 import format from 'date-fns/format'
@@ -12,6 +13,10 @@ function ListingCards({
   data: ListingType[]
   activeCategory: any
 }) {
+  const { data: session } = useSession()
+  const userEmail = session?.user?.email
+  console.log('session user', session?.user)
+
   const [showListings, setShowListings] = useState(false)
 
   // Wait until after client-side hydration to show
@@ -34,6 +39,23 @@ function ListingCards({
       : `${format(start, 'MMM. d')} — ${format(end, 'MMM. d')}`
 
     return dateStr
+  }
+
+  async function handleAddToWishlist(listingId: string) {
+    const body = {
+      listingId,
+      userEmail,
+    }
+
+    console.log('*** request body client', body)
+
+    const response = await fetch('/api/wishlists/add', {
+      method: 'POST',
+      body: JSON.stringify(body),
+    })
+
+    const result = await response.json()
+    console.log('***response listing card', result)
   }
 
   return (
@@ -59,7 +81,11 @@ function ListingCards({
           } = el
 
           return (
-            <Link className="space-y-3" key={id} href={`/listing/${id}`}>
+            <Link
+              className=" relative space-y-3"
+              key={id}
+              href={`/listing/${id}`}
+            >
               <ImageSlider
                 data={images.map(({ id, source }) => {
                   const splits = source.split('/')
@@ -83,6 +109,15 @@ function ListingCards({
                 </div>
                 {rating != null && <div> {`★ ${rating}`} </div>}
               </div>
+              <button
+                className="absolute w-8 h-8 rounded-full bg-white top-0 right-2"
+                onClick={(e) => {
+                  e.preventDefault()
+                  handleAddToWishlist(id)
+                }}
+              >
+                fav
+              </button>
             </Link>
           )
         })}
