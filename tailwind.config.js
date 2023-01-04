@@ -24,6 +24,7 @@ module.exports = {
           25: '#fbfbfb',
           75: '#f8f8f8',
           150: '#eeeeef',
+          250: '#dbdbdf',
           350: '#c2c2c8',
           450: '#85858f',
           550: '#64646d',
@@ -52,6 +53,10 @@ module.exports = {
         '3xl': ['1.875rem', '2.25rem'],
         '4xl': ['2rem', '2.5rem'],
       },
+      // borderWidth: {
+      //   DEFAULT: '1.5px',
+      //   1: '1px',
+      // },
       boxShadow: {
         md: '0 4px 10px 2px rgba(24, 24, 27, 0.06), 0 1px 6px -1px rgba(24, 24, 27, 0.08)',
       },

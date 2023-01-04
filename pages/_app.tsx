@@ -4,23 +4,23 @@ import FooterContext from 'context/FooterContext'
 import TheFooter from 'components/TheFooter'
 import { SlideIn } from 'components/SlideIn'
 import { useState } from 'react'
-import { useMediaQuery } from 'hooks/useMediaQuery'
-import MediaContext from 'context/MediaContext'
+import { useWindowWidth } from 'hooks/useWindowWidth'
+import WindowWidthContext from 'context/WindowWidthContext'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [showFooter, setShowFooter] = useState(false)
-  const isLargeScreen = useMediaQuery('(min-width: 950px)')
+  const windowWidth = useWindowWidth()
 
   return (
     <>
-      <MediaContext.Provider value={{ isLargeScreen }}>
+      <WindowWidthContext.Provider value={windowWidth}>
         <FooterContext.Provider value={{ setShowFooter }}>
           <Component {...pageProps} />
           <SlideIn show={showFooter} styles={{ enter: { bottom: '0' } }}>
             <TheFooter />
           </SlideIn>
         </FooterContext.Provider>
-      </MediaContext.Provider>
+      </WindowWidthContext.Provider>
     </>
   )
 }

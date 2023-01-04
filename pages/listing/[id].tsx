@@ -1,16 +1,21 @@
 import { useRouter } from 'next/router'
 import Image from 'next/image'
-import { ListingType } from 'lib/prisma'
-import { useEffect, useState } from 'react'
+import { ListingType, ReviewType } from 'lib/prisma'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { getListing } from 'lib/getListing'
 import ImageSlider from 'components/ImageSlider'
 import clsx from 'clsx'
+import { ListingReview } from '@prisma/client'
+import { format } from 'date-fns'
+import { useHasMounted } from 'hooks/useHasMounted'
+import { useWindowWidth } from 'hooks/useWindowWidth'
 
 export default function ListingDetail({
   listings,
 }: {
   listings: ListingType[]
 }) {
+  const hasMounted = useHasMounted()
   const router = useRouter()
   const id = router.query.id as string
   const [data, setData] = useState<ListingType | null>(null)
@@ -23,8 +28,6 @@ export default function ListingDetail({
   }, [id, listings])
 
   if (!data) return <div>Error: no data</div>
-
-  console.log('listing data is ', data)
 
   function formatDetail(quantity: number, type: string) {
     return quantity > 1 ? `${quantity} ${type}s` : `${quantity} ${type}`
@@ -94,6 +97,25 @@ export default function ListingDetail({
           {`Show all ${data.amenities.length} amenities`}
         </button>
       </DetailSection>
+      {/* reviews */}
+      <DetailSection>
+        <h2 className={clsx(titleClass, 'mb-7')}>
+          <span> {`🟊 ${data.rating} ·`} </span>
+          <span> {`${data.reviews.length} reviews`}</span>
+        </h2>
+        {hasMounted && (
+          <>
+            <div className="flex gap-8 overflow-x-auto scrollbar-hide mb-6">
+              {data.reviews.slice(0, 3).map((el) => (
+                <ReviewCard key={el.id} data={el} />
+              ))}
+            </div>
+            <button className="border border-black font-medium w-full rounded-lg py-2">
+              {`Show all ${data.reviews.length} reviews`}
+            </button>
+          </>
+        )}
+      </DetailSection>
     </>
   )
 }
@@ -138,8 +160,47 @@ function DetailSection({
   className?: string
 }) {
   return (
-    <div className={clsx('py-8 mx-6 border-b-2  border-zinc-200', className)}>
+    <div className={clsx('py-8 mx-6 border-b  border-zinc-250', className)}>
       {children}
+    </div>
+  )
+}
+
+function ReviewCard({ data }: { data: ReviewType }) {
+  const cardTextRef = useRef<HTMLDivElement | null>(null)
+  const [hasMore, setHasMore] = useState(false)
+  const windowWidth = useWindowWidth()
+
+  useLayoutEffect(() => {
+    if (!cardTextRef.current) return
+
+    const overflowed =
+      cardTextRef.current.scrollHeight > cardTextRef.current.offsetHeight
+    setHasMore(overflowed ? true : false)
+  }, [windowWidth, setHasMore])
+
+  return (
+    <div className="border border-zinc-250 rounded-3xl w-[85%] h-60 flex-none space-y-4 p-5">
+      <div className="flex items-center gap-3">
+        <Image
+          src={data.reviewer.avatarUrl}
+          alt={data.reviewer.name}
+          width="40"
+          height="40"
+        />
+        <div>
+          <div className="font-medium leading-5"> {data.reviewer.name}</div>
+          <div className="text-sm text-zinc-500">
+            {format(new Date(data.createdAt), 'MMMM yyyy')}
+          </div>
+        </div>
+      </div>
+      <div ref={cardTextRef} className="text-zinc-700 multiline-ellipsis">
+        {data.review}
+      </div>
+      {hasMore && (
+        <button className="font-medium underline"> Show more </button>
+      )}
     </div>
   )
 }

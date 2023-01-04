@@ -11,7 +11,7 @@ import React, {
   useCallback,
   useContext,
 } from 'react'
-import MediaContext from 'context/MediaContext'
+import WindowWidthContext from 'context/WindowWidthContext'
 
 export default function CategorySlider({
   data,
@@ -28,7 +28,8 @@ export default function CategorySlider({
     left: false,
     right: true,
   })
-  const { isLargeScreen } = useContext(MediaContext)
+  const windowWidth = useContext(WindowWidthContext)
+  const isLargeScreen = windowWidth > 950
 
   useLayoutEffect(() => {
     if (sliderRef.current) {

@@ -25,12 +25,17 @@ if (process.env.NODE_ENV === 'production') {
 
 export default prisma
 
+export type ReviewType = Omit<ListingReview, 'createdAt'> & {
+  reviewer: User
+  createdAt: string
+}
+
 export type ListingType = Listing & {
   amenities: ListingAmenity[]
   images: ListingImage[]
   categories: Category[]
   homeDetails: ListingHomeDetail[]
   host: User
-  reviews: ListingReview[]
+  reviews: ReviewType[]
   rating: number | null
 }

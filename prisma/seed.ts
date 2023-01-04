@@ -99,7 +99,6 @@ async function main() {
   for (const listing of listings) {
     const [startDate, endDate] = getRandomPeriod()
     const listingAmenities = getRandomAmenities()
-    console.log('random amenities', listingAmenities)
 
     await prisma.listing.create({
       data: {

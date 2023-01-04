@@ -9,7 +9,11 @@ export async function getListing() {
       categories: true,
       homeDetails: true,
       host: true,
-      reviews: true,
+      reviews: {
+        include: {
+          reviewer: true,
+        },
+      },
     },
   })
 

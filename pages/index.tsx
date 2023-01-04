@@ -12,6 +12,7 @@ import { SlideIn } from 'components/SlideIn'
 import Router, { useRouter } from 'next/router'
 import FooterContext from 'context/FooterContext'
 import { getListing } from 'lib/getListing'
+import { useHasMounted } from 'hooks/useHasMounted'
 
 const Home = ({
   listings,
@@ -21,6 +22,7 @@ const Home = ({
   categories: Category[]
   showFooter: boolean
 }) => {
+  const { hasMounted } = useHasMounted()
   const { setShowFooter } = useContext(FooterContext)
   const router = useRouter()
   const activeCategory =
@@ -56,11 +58,13 @@ const Home = ({
         </div>
         {/* Filters */}
         <div className="pt-4 md:px-10 xl:px-20">
-          <CategorySlider
-            activeCategory={activeCategory}
-            setActiveCategory={setActiveCategory}
-            data={categories}
-          />
+          {hasMounted && (
+            <CategorySlider
+              activeCategory={activeCategory}
+              setActiveCategory={setActiveCategory}
+              data={categories}
+            />
+          )}
         </div>
         {/* Listings */}
         <ScrollableVertical

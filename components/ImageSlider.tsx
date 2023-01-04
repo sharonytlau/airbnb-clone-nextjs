@@ -1,5 +1,6 @@
 import clsx from 'clsx'
-import MediaContext from 'context/MediaContext'
+import WindowWidthContext from 'context/WindowWidthContext'
+import { useIsomorphicLayoutEffect } from 'hooks/useIsomorphicLayoutEffect'
 import Image from 'next/image'
 import React, {
   useState,
@@ -11,9 +12,10 @@ import React, {
 } from 'react'
 
 export default function ImageSlider({ data, page = 'explore' }: any) {
-  const { isLargeScreen } = useContext(MediaContext)
+  const windowWidth = useContext(WindowWidthContext)
+  const isLargeScreen = windowWidth > 950
   const [dotIndex, setDotIndex] = useState(0)
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
+  const [imageWidth, setImageWidth] = useState(0)
   const sliderRef = useRef<HTMLDivElement>(null)
   const currentTranslate = useRef(0)
   const currentIndex = useRef(0)
@@ -30,12 +32,12 @@ export default function ImageSlider({ data, page = 'explore' }: any) {
   }
 
   const setPositionByIndex = useCallback(
-    (w = dimensions.width) => {
+    (w = imageWidth) => {
       currentTranslate.current = currentIndex.current! * -w
       prevTranslate.current = currentTranslate.current
       setSliderPosition()
     },
-    [dimensions.width]
+    [imageWidth]
   )
 
   function animation() {
@@ -60,7 +62,7 @@ export default function ImageSlider({ data, page = 'explore' }: any) {
 
       if (moveBy < 0) {
         currentTranslate.current = Math.max(
-          -(itemCount - 1) * dimensions.width,
+          -(itemCount - 1) * imageWidth,
           newTranslate
         )
       }
@@ -88,36 +90,22 @@ export default function ImageSlider({ data, page = 'explore' }: any) {
     setDotIndex(currentIndex.current)
   }
 
-  function getElementDimensions(element: HTMLDivElement) {
-    const width = element.clientWidth
-    const height = element.clientHeight
-    return { width, height }
+  function getElementWidth(element: HTMLDivElement) {
+    return element.clientWidth
   }
 
-  useEffect(() => {
-    // reset dimension if window resizes
+  // reset dimension if window resizes
+  useIsomorphicLayoutEffect(() => {
     const handleResize = () => {
       if (sliderRef.current) {
-        const { width, height } = getElementDimensions(sliderRef.current)
-
-        setDimensions({ width, height })
+        const width = getElementWidth(sliderRef.current)
+        setImageWidth(width)
         setPositionByIndex(width)
       }
     }
 
-    window.addEventListener('resize', handleResize)
-
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [setPositionByIndex])
-
-  useLayoutEffect(() => {
-    if (sliderRef.current) {
-      setDimensions(getElementDimensions(sliderRef.current))
-      setPositionByIndex(getElementDimensions(sliderRef.current).width)
-    }
-  }, [setPositionByIndex])
+    handleResize()
+  }, [windowWidth, setPositionByIndex])
 
   return (
     <div className={clsx('relative')}>
