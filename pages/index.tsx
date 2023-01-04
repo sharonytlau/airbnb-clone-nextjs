@@ -79,7 +79,6 @@ const Home = ({
               console.log('downnnn')
             },
           }}
-          onMount={resetFooter}
           key={activeCategory}
         >
           <ListingCards data={listings} activeCategory={activeCategory} />

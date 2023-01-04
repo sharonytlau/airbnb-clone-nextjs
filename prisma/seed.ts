@@ -54,7 +54,7 @@ async function main() {
 
   for (let gender of ['male', 'female']) {
     for (let i = 0; i <= 3; i++) {
-      await prisma.user.create({
+      await prisma.fakeUser.create({
         data: {
           ...getRandomUser(gender as 'male' | 'female'),
           isHost: true,
@@ -67,7 +67,7 @@ async function main() {
   console.log(`Created hosts`)
 
   for (let i = 0; i < 500; i++) {
-    await prisma.user.create({
+    await prisma.fakeUser.create({
       data: {
         ...getRandomUser(),
         isHost: false,
@@ -80,13 +80,13 @@ async function main() {
 
   const fetchedCategories = await prisma.category.findMany()
   const fetchedAmenities = await prisma.listingAmenity.findMany()
-  const fetchedHosts = await prisma.user.findMany({
+  const fetchedHosts = await prisma.fakeUser.findMany({
     where: {
       isHost: true,
     },
   })
   const fetchedCustomerIds = (
-    await prisma.user.findMany({
+    await prisma.fakeUser.findMany({
       where: {
         isHost: false,
       },

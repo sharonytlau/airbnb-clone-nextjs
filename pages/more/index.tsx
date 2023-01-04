@@ -1,3 +1,5 @@
+import SignInForm from 'components/SignInForm'
+
 export default function More() {
-  return <div>more</div>
+  return <SignInForm />
 }

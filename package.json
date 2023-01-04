@@ -11,12 +11,14 @@
     "db:studio": "prisma studio"
   },
   "dependencies": {
+    "@next-auth/prisma-adapter": "^1.0.5",
     "@prisma/client": "^4.8.0",
     "@react-spring/web": "^9.6.1",
     "@supabase/supabase-js": "^2.2.1",
     "clsx": "^1.2.1",
     "date-fns": "^2.29.3",
     "next": "latest",
+    "next-auth": "^4.18.7",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "swr": "^2.0.0",

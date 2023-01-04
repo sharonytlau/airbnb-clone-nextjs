@@ -5,7 +5,7 @@ import {
   Category,
   ListingAmenity,
   ListingHomeDetail,
-  User,
+  FakeUser,
   ListingReview,
 } from '@prisma/client'
 
@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === 'production') {
 export default prisma
 
 export type ReviewType = Omit<ListingReview, 'createdAt'> & {
-  reviewer: User
+  reviewer: FakeUser
   createdAt: string
 }
 
@@ -35,7 +35,7 @@ export type ListingType = Listing & {
   images: ListingImage[]
   categories: Category[]
   homeDetails: ListingHomeDetail[]
-  host: User
+  host: FakeUser
   reviews: ReviewType[]
   rating: number | null
 }
