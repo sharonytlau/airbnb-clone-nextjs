@@ -1,6 +1,6 @@
 import { Category, CategoryEnum } from '@prisma/client'
-import prisma from 'lib/prisma'
-import { ListingType } from 'lib/prisma'
+import prisma from 'lib/prisma/prisma'
+import { ListingType } from 'lib/prisma/prisma'
 import React, { useCallback, useContext, useState, useEffect } from 'react'
 import SearchBar from 'components/SearchBar'
 import CategorySlider from 'components/CategorySlider'
@@ -11,18 +11,18 @@ import { ScrollableVertical } from 'components/ScrollableVertical'
 import { SlideIn } from 'components/SlideIn'
 import Router, { useRouter } from 'next/router'
 import FooterContext from 'context/FooterContext'
-import { getListing } from 'lib/getListing'
-import { useHasMounted } from 'hooks/useHasMounted'
+import { useListings } from 'lib/swr/useListings'
+import SkeletonElement from 'components/SkeletonElement'
+import ListingGrid from 'components/ListingGrid'
+import ListingSkeleton from 'components/ListingSkeleton'
 
 const Home = ({
-  listings,
   categories,
 }: {
-  listings: ListingType[]
   categories: Category[]
   showFooter: boolean
 }) => {
-  const { hasMounted } = useHasMounted()
+  const { listings, isLoading, isError } = useListings()
   const { setShowFooter } = useContext(FooterContext)
   const router = useRouter()
   const activeCategory =
@@ -56,17 +56,16 @@ const Home = ({
             }}
           />
         </div>
-        {/* Filters */}
+        {/* Categories */}
         <div className="pt-4 md:px-10 xl:px-20">
-          {hasMounted && (
-            <CategorySlider
-              activeCategory={activeCategory}
-              setActiveCategory={setActiveCategory}
-              data={categories}
-            />
-          )}
+          <CategorySlider
+            activeCategory={activeCategory}
+            setActiveCategory={setActiveCategory}
+            data={categories}
+          />
         </div>
         {/* Listings */}
+
         <ScrollableVertical
           style="text-gray-900 p-6 md:p-10 xl:px-20"
           onScroll={{
@@ -81,7 +80,15 @@ const Home = ({
           }}
           key={activeCategory}
         >
-          <ListingCards data={listings} activeCategory={activeCategory} />
+          <ListingGrid>
+            {isLoading &&
+              Array(30)
+                .fill(1)
+                .map((el, i) => <ListingSkeleton key={i} />)}
+            {!isLoading && listings && (
+              <ListingCards data={listings} activeCategory={activeCategory} />
+            )}
+          </ListingGrid>
         </ScrollableVertical>
 
         {/* todo: refactor */}
@@ -106,13 +113,10 @@ const Home = ({
 export default Home
 
 export async function getStaticProps() {
-  const listings = await getListing()
-
   const categories = await prisma.category.findMany()
 
   return {
     props: {
-      listings,
       categories: JSON.parse(JSON.stringify(categories)),
     },
   }

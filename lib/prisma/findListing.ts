@@ -1,7 +1,7 @@
-import prisma from 'lib/prisma'
+import prisma from 'lib/prisma/prisma'
 import { decimalAdjust } from 'utils/utils'
 
-export async function getListing() {
+export async function findAllListings() {
   const fetchedListings = await prisma.listing.findMany({
     include: {
       amenities: true,

@@ -1,5 +1,5 @@
 import { eachWeekOfInterval } from 'date-fns'
-import prisma from 'lib/prisma'
+import prisma from 'lib/prisma/prisma'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(

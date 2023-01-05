@@ -12,6 +12,8 @@ import React, {
   useContext,
 } from 'react'
 import WindowWidthContext from 'context/WindowWidthContext'
+import { useIsomorphicLayoutEffect } from 'hooks/useIsomorphicLayoutEffect'
+import { ImageWrapper } from './ImageWrapper'
 
 export default function CategorySlider({
   data,
@@ -31,7 +33,7 @@ export default function CategorySlider({
   const windowWidth = useContext(WindowWidthContext)
   const isLargeScreen = windowWidth > 950
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (sliderRef.current) {
       sliderWidth.current = sliderRef.current.clientWidth
     }
@@ -142,7 +144,13 @@ export default function CategorySlider({
                     getIconStyle(title)
                   )}
                 >
-                  <Image src={`/${title.toLowerCase()}.png`} alt={title} fill />
+                  <ImageWrapper
+                    src={`/${title.toLowerCase()}.png`}
+                    alt={title}
+                    width="48"
+                    height="48"
+                    className="w-full h-auto"
+                  />
                 </div>
                 <div
                   className={clsx(

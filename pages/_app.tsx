@@ -9,6 +9,30 @@ import WindowWidthContext from 'context/WindowWidthContext'
 import { SessionProvider } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import BouncingLoader from 'components/BouncingLoader'
+
+import localFont from '@next/font/local'
+
+const sans = localFont({
+  src: [
+    {
+      path: '../fonts/poppins-v20-latin-regular.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../fonts/poppins-v20-latin-500.woff2',
+      weight: '500',
+      style: 'normal',
+    },
+    {
+      path: '../fonts/poppins-v20-latin-600.woff2',
+      weight: '600',
+      style: 'normal',
+    },
+  ],
+  variable: '--font-sans',
+})
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [showFooter, setShowFooter] = useState(false)
@@ -22,9 +46,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     }
   }, [router, setShowFooter])
 
+  // app loading state
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    console.log('router is', router)
+
     const handleStart = () => setLoading(true)
     const handleComplete = () => setLoading(false)
 
@@ -39,13 +66,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     }
   }, [router])
 
-  if (loading)
-    return (
-      loading && <div className="w-screen h-screen flex-center">Loading...</div>
-    )
-
   return (
-    <>
+    <main className={sans.variable}>
       <SessionProvider session={pageProps.session}>
         <WindowWidthContext.Provider value={windowWidth}>
           <FooterContext.Provider value={{ setShowFooter }}>
@@ -56,6 +78,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           </FooterContext.Provider>
         </WindowWidthContext.Provider>
       </SessionProvider>
-    </>
+      {/*  */}
+      {loading && (
+        <div className="fixed top-0 right-0 w-screen h-screen bg-white bg-opacity-5 z-40 flex-center  ">
+          <BouncingLoader />
+        </div>
+      )}
+    </main>
   )
 }

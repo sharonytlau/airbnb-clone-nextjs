@@ -1,7 +1,8 @@
-import prisma from 'lib/prisma'
+import prisma from 'lib/prisma/prisma'
 import type { NextApiHandler } from 'next'
 
 // GET /api/listing?id=:id
+// return listing of id
 const handler: NextApiHandler = async function (req, res) {
   if (req.method === 'GET') {
     const id = req.query.id as string

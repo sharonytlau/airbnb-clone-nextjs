@@ -10,6 +10,7 @@ import React, {
   useCallback,
   useContext,
 } from 'react'
+import { ImageWrapper } from './ImageWrapper'
 
 export default function ImageSlider({ data, page = 'explore' }: any) {
   const windowWidth = useContext(WindowWidthContext)
@@ -116,7 +117,7 @@ export default function ImageSlider({ data, page = 'explore' }: any) {
       <div
         className={clsx(
           'w-full overflow-auto scrollbar-hide',
-          { 'aspect-w-20 aspect-h-19 rounded-3xl': page === 'explore' },
+          { 'aspect-w-20 aspect-h-19 rounded-xl': page === 'explore' },
           { 'aspect-w-3 aspect-h-2': page === 'detail' }
         )}
       >
@@ -132,13 +133,14 @@ export default function ImageSlider({ data, page = 'explore' }: any) {
                 onPointerLeave={!isLargeScreen ? pointerEnd : undefined}
                 // onScroll={pointerEnd}
               >
-                <Image
+                <ImageWrapper
                   src={path}
                   fill
                   alt={'property image'}
                   draggable={false}
                   data-source-url={url}
                   className="object-cover object-center"
+                  shape="square"
                 />
               </div>
             )

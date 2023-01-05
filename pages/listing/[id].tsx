@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router'
 import Image from 'next/image'
-import { ListingType, ReviewType } from 'lib/prisma'
+import { ListingType, ReviewType } from 'lib/prisma/prisma'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { getListing } from 'lib/getListing'
+import { findAllListings } from 'lib/prisma/findListing'
 import ImageSlider from 'components/ImageSlider'
 import clsx from 'clsx'
 import { ListingReview } from '@prisma/client'
@@ -121,7 +121,7 @@ export default function ListingDetail({
 }
 
 export async function getStaticProps() {
-  const listings = await getListing()
+  const listings = await findAllListings()
   return {
     props: {
       listings,
@@ -130,7 +130,7 @@ export async function getStaticProps() {
 }
 
 export async function getStaticPaths() {
-  const listings = await getListing()
+  const listings = await findAllListings()
   console.log(
     'listings in [id]',
     typeof listings,

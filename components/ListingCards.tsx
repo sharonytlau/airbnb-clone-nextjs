@@ -1,10 +1,12 @@
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
-import { ListingType } from 'lib/prisma'
+import { ListingType } from 'lib/prisma/prisma'
 import ImageSlider from 'components/ImageSlider'
 import format from 'date-fns/format'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { FavIcon } from 'components/icons/FavIcon'
+import { HeartIcon } from './icons/HeartIcon'
 
 function ListingCards({
   data,
@@ -59,7 +61,7 @@ function ListingCards({
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6 gap-y-10 gap-x-6">
+    <>
       {data
         .filter((el) => {
           return el.categories
@@ -110,18 +112,18 @@ function ListingCards({
                 {rating != null && <div> {`★ ${rating}`} </div>}
               </div>
               <button
-                className="absolute w-8 h-8 rounded-full bg-white top-0 right-2"
+                className="absolute w-7 h-7 top-1 right-4 flex-center"
                 onClick={(e) => {
                   e.preventDefault()
                   handleAddToWishlist(id)
                 }}
               >
-                fav
+                <HeartIcon className="w-full h-full text-white opacity-60" />
               </button>
             </Link>
           )
         })}
-    </div>
+    </>
   )
 }
 
