@@ -59,3 +59,23 @@ export function decimalAdjust(value: number, exp: number = 0) {
   const [newMagnitude, newExponent = 0] = adjustedValue.toString().split('e')
   return Number(`${newMagnitude}e${+newExponent + exp}`)
 }
+
+export function clamp({
+  num,
+  min,
+  max,
+}: {
+  num: number
+  min: number
+  max: number
+}) {
+  return Math.min(Math.max(num, min), max)
+}
+
+export function checkInRange(
+  v1: number,
+  v2: number,
+  diviation: number
+): boolean {
+  return Math.abs(v1 - v2) < diviation
+}

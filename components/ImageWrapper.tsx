@@ -16,7 +16,7 @@ export const ImageWrapper = ({
       <Image
         {...props}
         onLoadingComplete={(img) => {
-          console.log('has loaded set ***')
+          // console.log('has loaded set ***')
           setHasLoaded(true)
         }}
         className={clsx(props.className, { 'opacity-0': !hasLoaded })}
