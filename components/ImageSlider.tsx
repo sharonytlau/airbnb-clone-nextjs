@@ -145,23 +145,14 @@ export default function ImageSlider({ data, page = 'explore' }: any) {
           {data.map(({ id, path, url }: any, index: any) => {
             return (
               <div key={id} className="relative flex-[1_0_100%]">
-                <ImageWrapper
+                <Image
                   src={path}
                   fill
                   alt={'property image'}
                   draggable={false}
                   data-source-url={url}
-                  className="object-cover object-center"
-                  shape="square"
+                  className="object-cover object-center bg-neutral-300"
                 />
-                {/* <Image
-                  src={path}
-                  fill
-                  alt={'property image'}
-                  draggable={false}
-                  data-source-url={url}
-                  className="object-cover object-center"
-                /> */}
               </div>
             )
           })}
