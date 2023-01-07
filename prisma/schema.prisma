@@ -40,14 +40,14 @@ model Session {
 }
 
 model User {
-  id            String     @id @default(cuid())
+  id            String         @id @default(cuid())
   name          String?
-  email         String?    @unique
+  email         String?        @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
-  UserWish      UserWish[]
+  UserWishList  UserWishList[]
 }
 
 model VerificationToken {
@@ -59,15 +59,13 @@ model VerificationToken {
 }
 
 // User data
-model UserWish {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
+model UserWishList {
+  id        String    @id @unique @default(uuid())
+  createdAt DateTime  @default(now())
+  name      String
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  listingId String
-  listing   Listing  @relation(fields: [listingId], references: [id])
-
-  @@unique([userId, listingId])
+  user      User      @relation(fields: [userId], references: [id])
+  listing   Listing[]
 }
 
 // App data
@@ -113,26 +111,26 @@ model Category {
 }
 
 model Listing {
-  id          String              @id @unique @default(uuid())
-  createdAt   DateTime            @default(now())
-  updatedAt   DateTime            @updatedAt
-  location    String
-  subtitle    String
-  startDate   String
-  endDate     String
-  price       Int
-  images      ListingImage[]
-  categories  Category[]
-  name        String
-  placeType   String
-  hostId      String
-  host        FakeUser            @relation(fields: [hostId], references: [id])
-  homeDetails ListingHomeDetail[]
-  amenities   ListingAmenity[]
-  reviews     ListingReview[]
+  id           String              @id @unique @default(uuid())
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+  location     String
+  subtitle     String
+  startDate    String
+  endDate      String
+  price        Int
+  images       ListingImage[]
+  categories   Category[]
+  name         String
+  placeType    String
+  hostId       String
+  host         FakeUser            @relation(fields: [hostId], references: [id])
+  homeDetails  ListingHomeDetail[]
+  amenities    ListingAmenity[]
+  reviews      ListingReview[]
   // geoId         String
   // geo           Geo            @relation(fields: [geoId], references: [id])
-  UserWish    UserWish[]
+  UserWishList UserWishList[]
 }
 
 model ListingReview {

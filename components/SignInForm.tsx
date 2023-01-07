@@ -20,7 +20,9 @@ export default function SignInForm() {
   return (
     <>
       <p>Not signed in.</p>
-      <button onClick={() => signIn()}>Sign in</button>
+      <button className="bg-black text-white" onClick={() => signIn()}>
+        Sign in
+      </button>
     </>
   )
 }

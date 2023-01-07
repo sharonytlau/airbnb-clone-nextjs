@@ -35,7 +35,7 @@ const sans = localFont({
 })
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  const [showFooter, setShowFooter] = useState(false)
+  const [showFooter, setShowFooter] = useState(true)
   const windowWidth = useWindowWidth()
   console.log('app rerender')
   const size =

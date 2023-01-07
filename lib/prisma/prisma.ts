@@ -7,6 +7,7 @@ import {
   ListingHomeDetail,
   FakeUser,
   ListingReview,
+  UserWishList,
 } from '@prisma/client'
 
 let prisma: PrismaClient
@@ -38,4 +39,8 @@ export type ListingType = Listing & {
   host: FakeUser
   reviews: ReviewType[]
   rating: number | null
+}
+
+export type WishlistType = UserWishList & {
+  listing: ListingType[]
 }

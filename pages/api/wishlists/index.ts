@@ -22,7 +22,7 @@ export default async function handler(
 
     if (!userId) return res.status(404).json({ error: 'User not found' })
 
-    const result = await prisma.userWish.findMany({
+    const result = await prisma.userWishList.findMany({
       where: {
         userId,
       },

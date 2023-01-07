@@ -8,19 +8,15 @@ export default async function handler(
 ) {
   try {
     if (req.method === 'POST') {
-      const { userEmail, listingId } = JSON.parse(req.body)
+      const { userEmail, name } = JSON.parse(req.body)
       console.log('***req body is', JSON.parse(req.body))
 
-      const result = await prisma.userWish.create({
+      const result = await prisma.userWishList.create({
         data: {
+          name,
           user: {
             connect: {
               email: userEmail,
-            },
-          },
-          listing: {
-            connect: {
-              id: listingId,
             },
           },
         },
@@ -28,7 +24,7 @@ export default async function handler(
 
       console.log('*** add result ', result)
 
-      return res.status(200).json({ message: `Listing added to the wishlist` })
+      return res.status(200).json({ message: `Wishlist created` })
     }
   } catch (err) {
     return res.status(500).json({ error: err })

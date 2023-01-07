@@ -3,11 +3,11 @@ import { useSession } from 'next-auth/react'
 import { ListingType } from 'lib/prisma/prisma'
 import ImageSlider from 'components/ImageSlider'
 import format from 'date-fns/format'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { FavIcon } from 'components/icons/FavIcon'
 import { HeartIcon } from './icons/HeartIcon'
 import { useRouter } from 'next/router'
+import { useWishlists } from 'lib/swr/useWishLists'
 
 function ListingCards({
   data,
@@ -18,8 +18,11 @@ function ListingCards({
 }) {
   const router = useRouter()
   const { data: session } = useSession()
-  const userEmail = session?.user?.email
+  const userEmail = session?.user?.email || ''
+  const [showModal, setShowModal] = useState(false)
   console.log('session user', session?.user)
+  const { wishlists, isLoading, isError } = useWishlists(userEmail)
+  const listingIdRef = useRef<string | null>(null)
 
   const [showListings, setShowListings] = useState(false)
 
@@ -45,15 +48,18 @@ function ListingCards({
     return dateStr
   }
 
-  async function handleAddToWishlist(listingId: string) {
+  function handleAddToWishlist(listingId: string) {
+    setShowModal(true)
+    listingIdRef.current = listingId
+  }
+
+  async function addToWishlistReq(wishListId: string) {
+    setShowModal(false)
     const body = {
-      listingId,
-      userEmail,
+      listingId: listingIdRef.current,
     }
 
-    console.log('*** request body client', body)
-
-    const response = await fetch('/api/wishlists/add', {
+    const response = await fetch(`/api/wishlists/${wishListId}/add`, {
       method: 'POST',
       body: JSON.stringify(body),
     })
@@ -127,6 +133,25 @@ function ListingCards({
               >
                 <HeartIcon className="w-full h-full text-white opacity-60" />
               </button>
+              {showModal && (
+                <div
+                  className="fixed z-50 top-0 left-0 right-0 bottom-0 bg-zinc-300 bg-opacity-5 flex-center"
+                  onClick={() => setShowModal(false)}
+                >
+                  <div className="flex flex-col gap-3">
+                    {wishlists &&
+                      wishlists.map(({ id, name }) => (
+                        <button
+                          key={id}
+                          className="bg-blue-600 w-fit text-white p-3"
+                          onClick={() => addToWishlistReq(id)}
+                        >
+                          {name}
+                        </button>
+                      ))}
+                  </div>
+                </div>
+              )}
             </div>
           )
         })}
