@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { FavIcon } from 'components/icons/FavIcon'
 import { HeartIcon } from './icons/HeartIcon'
+import { useRouter } from 'next/router'
 
 function ListingCards({
   data,
@@ -15,6 +16,7 @@ function ListingCards({
   data: ListingType[]
   activeCategory: any
 }) {
+  const router = useRouter()
   const { data: session } = useSession()
   const userEmail = session?.user?.email
   console.log('session user', session?.user)
@@ -83,36 +85,41 @@ function ListingCards({
           } = el
 
           return (
-            <Link
-              className=" relative space-y-3"
-              key={id}
-              href={`/listing/${id}`}
-            >
-              <ImageSlider
-                data={images.map(({ id, source }) => {
-                  const splits = source.split('/')
-                  const imgId = splits[splits.length - 1]
-                  const path = `/${imgId}.jpg`
+            <div className="relative" key={id}>
+              <Link href={`/listing/${id}`}>
+                <ImageSlider
+                  data={images.map(({ id, source }) => {
+                    const splits = source.split('/')
+                    const imgId = splits[splits.length - 1]
+                    const path = `/${imgId}.jpg`
 
-                  return { id, path, url: source }
-                })}
-              />
-              <div className="flex justify-between text-[15px]">
-                <div>
-                  <p className="font-medium"> {location} </p>
-                  <p className="text-zinc-450"> {subtitle} </p>
-                  <p className="text-zinc-450">
-                    {formatPeriod(new Date(startDate), new Date(endDate))}
-                  </p>
-                  <p className="mt-1.5">
-                    <span className="font-semibold">{`$${price}`}</span>
-                    <span> night </span>
-                  </p>
+                    return { id, path, url: source }
+                  })}
+                  onTap={() => router.push(`/listing/${id}`)}
+                />
+                {/* <Link
+                href={`/listing/${id}`}
+                className="mt-3 flex justify-between text-[15px]"
+              > */}
+                <div className="mt-3 flex justify-between text-[15px]">
+                  <div>
+                    <p className="font-medium"> {location} </p>
+                    <p className="text-zinc-450"> {subtitle} </p>
+                    <p className="text-zinc-450">
+                      {formatPeriod(new Date(startDate), new Date(endDate))}
+                    </p>
+                    <p className="mt-1.5">
+                      <span className="font-semibold">{`$${price}`}</span>
+                      <span> night </span>
+                    </p>
+                  </div>
+                  {rating != null && (
+                    <div className="whitespace-nowrap"> {`★ ${rating}`} </div>
+                  )}
                 </div>
-                {rating != null && <div> {`★ ${rating}`} </div>}
-              </div>
+              </Link>
               <button
-                className="absolute w-7 h-7 top-1 right-4 flex-center"
+                className="absolute w-7 h-7 top-4 right-4 flex-center"
                 onClick={(e) => {
                   e.preventDefault()
                   handleAddToWishlist(id)
@@ -120,7 +127,7 @@ function ListingCards({
               >
                 <HeartIcon className="w-full h-full text-white opacity-60" />
               </button>
-            </Link>
+            </div>
           )
         })}
     </>

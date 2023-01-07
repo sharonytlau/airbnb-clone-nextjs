@@ -1,163 +1,219 @@
 import clsx from 'clsx'
 import WindowWidthContext from 'context/WindowWidthContext'
-import { useIsomorphicLayoutEffect } from 'hooks/useIsomorphicLayoutEffect'
 import Image from 'next/image'
-import React, {
-  useState,
-  useRef,
-  useLayoutEffect,
-  useEffect,
-  useCallback,
-  useContext,
-} from 'react'
+import React, { useRef, useEffect, useCallback, useContext } from 'react'
 
-import { useScroll } from '@use-gesture/react'
-import { ImageWrapper } from './ImageWrapper'
-import { checkInRange, clamp } from 'utils/utils'
-import { motion, useAnimationControls } from 'framer-motion'
+import { useGesture } from '@use-gesture/react'
+import { clamp } from 'utils/utils'
+import {
+  motion,
+  useAnimationControls,
+  useMotionValue,
+  AnimationControls,
+} from 'framer-motion'
 import { LeftChevronIcon } from './icons/LeftChevronIcon'
 import { RightChevronIcon } from './icons/RightChevronIcon'
 
-const scrollThreshHold = 60
-
-export default function ImageSlider({ data, page = 'explore' }: any) {
+export default function ImageSlider({ data, page = 'explore', onTap }: any) {
   const windowWidth = useContext(WindowWidthContext)
-  const isLargeScreen = windowWidth > 950
-  const [currentIndex, setCurrentIndex] = useState(0)
   const sliderRef = useRef<HTMLDivElement>(null)
-  const startX = useRef(0)
-  const animationRef = useRef<number | null>(null)
-  const isScrolling = useRef(false)
-  const currentX = useRef(0)
-  const indexRef = useRef(0)
+  const wrapperRef = useRef<HTMLDivElement>(null)
   const controls = useAnimationControls()
+  const x = useMotionValue(0)
+  const opacityLeftButton = useMotionValue(0)
+  const opacityRightButton = useMotionValue(0)
+  const buttonVisible = useMotionValue('hidden')
+  const indexRef = useRef(0)
+  const widthRef = useRef(0)
 
   const itemCount = data.length
 
-  const bind = useScroll((event) => {
-    if (!sliderRef.current) return
+  function toX() {
+    const closestIndex = -Math.round(-x.get() / widthRef.current)
+    setX(closestIndex * widthRef.current)
+  }
 
-    const scrolling = event.scrolling
-    const sliderWidth = sliderRef.current.offsetWidth
+  const clampIndex = useCallback(
+    function (num: number) {
+      return clamp(num, 0, itemCount - 1)
+    },
+    [itemCount]
+  )
 
-    const hasScrollEnded = isScrolling.current && !scrolling
+  const clampX = useCallback(
+    function (num: number) {
+      return clamp(num, -(itemCount - 1) * widthRef.current, 0)
+    },
+    [itemCount]
+  )
 
-    const scrollX = event.offset[0]
-    console.log('scrollX is', scrollX)
-    console.log('sliderWidth is', sliderWidth)
+  let setX = useCallback(
+    function (newX: number) {
+      // change the translate value according to gesture
+      x.set(clampX(newX))
 
-    controls.start((i) => {
-      if (i === Math.round(scrollX / sliderWidth)) {
-        return {
-          opacity: 1,
+      // reset dots and buttons styles according to current index
+      const index = clampIndex(Math.ceil(-x.get() / widthRef.current))
+      controls.set((i) => ({
+        opacity: i === index ? 1 : 0.6,
+        scale: i === index ? 1.2 : 1,
+      }))
+      opacityLeftButton.set(index ? 0.9 : 0)
+      opacityRightButton.set(index === itemCount - 1 ? 0 : 0.8)
+
+      // store the index
+      indexRef.current = index
+    },
+    [
+      controls,
+      x,
+      opacityLeftButton,
+      opacityRightButton,
+      itemCount,
+      clampIndex,
+      clampX,
+    ]
+  )
+
+  useGesture(
+    {
+      onDrag: (state) => {
+        if (!sliderRef.current) return
+
+        // disable drag on desktop devices
+        if ('pointerType' in state.event && state.event.pointerType === 'mouse')
+          return
+
+        // call event handler on tap
+        if (state.tap) {
+          onTap()
+          return
         }
-      } else {
-        return {
-          opacity: 0.6,
+        // swipe event (will fire after several drag events if conditions were met, state.active is always `false`)
+        if (state.swipe[0]) {
+          const width = widthRef.current
+          const initial = x.get() + state.delta[0]
+          console.log('initial is', initial)
+
+          const prevIndex = Math.round(-x.get() / width)
+          const newX = (prevIndex - state.swipe[0]) * -width
+          setX(newX)
+          return
         }
-      }
-    })
 
-    const movementX = event.movement[0]
+        // damp the value on swift drag gesture
+        const newDelta =
+          state.velocity[0] < 1
+            ? state.delta[0]
+            : state.delta[0] / state.velocity[0]
+        const newX = x.get() + newDelta
+        setX(newX)
 
-    if (hasScrollEnded) {
-      console.log('scroll stopped')
+        if (!state.active) {
+          toX()
+        }
+      },
+      onWheel: (state) => {
+        if (!sliderRef.current) return
 
-      if (checkInRange(scrollX, currentX.current, 1)) {
-        return
-      }
+        // horizontal scroll or vertical scroll with shiftKey down
+        const isHorizontal =
+          (state.shiftKey && state.axis === 'y') ||
+          (!state.shiftKey && state.axis === 'x')
+        if (!isHorizontal) return
 
-      const moveByIndex =
-        movementX < 0
-          ? Math.floor((movementX + scrollThreshHold) / sliderWidth)
-          : Math.ceil((movementX - scrollThreshHold) / sliderWidth)
+        const wheelOffset = state.axis === 'y' ? state.delta[1] : state.delta[0]
+        const newX = x.get() - wheelOffset
+        setX(newX)
 
-      const newX = (indexRef.current + moveByIndex) * sliderWidth
-
-      scrollToPosition(newX)
+        if (!state.active) {
+          toX()
+        }
+      },
+    },
+    {
+      target: sliderRef,
+      drag: {
+        axis: 'x',
+        preventScroll: true,
+        keys: false,
+        // make it easier to swipe on mobile devices
+        swipe: {
+          distance: [30, 30],
+          velocity: [0.3, 0.3],
+          duration: 400,
+        },
+      },
     }
-    isScrolling.current = scrolling ?? false
-  })
+  )
 
-  //scrollByX: number
-  function scrollToPosition(offsetX: number) {
+  // control button opacity
+  useGesture(
+    {
+      onHover: (state) => {
+        buttonVisible.set(state.active ? 'visible' : 'hidden'),
+          console.log('!!!hover state', state)
+      },
+    },
+    { target: wrapperRef }
+  )
+
+  // effect on resize
+  useEffect(() => {
     if (!sliderRef.current) return
-    // console.log('scroll to position ***', offsetX)
-    sliderRef.current.scrollTo({
-      left: offsetX,
-      behavior: 'smooth',
-    })
-    currentX.current = offsetX
-    indexRef.current = offsetX / sliderRef.current.offsetWidth
-    setCurrentIndex(indexRef.current)
-  }
 
-  function scrollToPrevious(
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) {
-    e.preventDefault()
-    if (!sliderRef.current) return
-    const offsetX = (indexRef.current - 1) * sliderRef.current.offsetWidth
-    scrollToPosition(offsetX)
-  }
-  function scrollToNext(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    e.preventDefault()
-    if (!sliderRef.current) return
-    const offsetX = (indexRef.current + 1) * sliderRef.current.offsetWidth
-    scrollToPosition(offsetX)
-  }
+    const currentWidth = sliderRef.current.offsetWidth
+    widthRef.current = currentWidth
 
-  // const setPositionByIndex = useCallback(
-  //   (w = sliderWidth) => {
-  //     currentTranslate.current = currentIndex.current! * -w
-  //     prevTranslate.current = currentTranslate.current
-  //     setSliderPosition()
-  //   },
-  //   [sliderWidth]
-  // )
+    setX(-indexRef.current * currentWidth)
+  }, [windowWidth, setX])
 
-  function getElementWidth(element: HTMLDivElement) {
-    return element.clientWidth
-  }
+  const buttonClasses =
+    'absolute top-1/2 -translate-y-1/2 text-md rounded-full bg-white text-zinc-800 z-50 w-7 h-7 flex-center transition duration-300'
 
   return (
-    <div className="relative">
-      <button
-        className={clsx(
-          'absolute top-1/2 -translate-y-1/2 left-0 text-7xl text-white z-10 w-10 h-10 flex-center transition duration-300',
-          currentIndex > 0 ? 'opacity-100' : 'opacity-0'
-        )}
-        onClick={(e) => scrollToPrevious(e)}
+    <div className="relative" ref={wrapperRef}>
+      <motion.button
+        className={clsx('left-2', buttonClasses)}
+        style={{ opacity: opacityLeftButton, visibility: buttonVisible }}
+        onClick={(e) => {
+          e.preventDefault()
+          setX(-(indexRef.current - 1) * widthRef.current)
+        }}
       >
         <LeftChevronIcon />
-      </button>
-      {/* <button onClick={scrollToPosition}> click me </button> */}
+      </motion.button>
       <div
         ref={sliderRef}
         className={clsx(
-          'w-full overflow-auto scrollbar-hide',
+          'w-full overflow-hidden',
           { 'aspect-w-20 aspect-h-19 rounded-xl': page === 'explore' },
           { 'aspect-w-3 aspect-h-2': page === 'detail' }
         )}
-        {...bind()}
       >
-        <div className="flex">
-          {data.map(({ id, path, url }: any, index: any) => {
-            return (
-              <div key={id} className="relative flex-[1_0_100%]">
-                <Image
-                  src={path}
-                  fill
-                  alt={'property image'}
-                  draggable={false}
-                  data-source-url={url}
-                  className="object-cover object-center bg-neutral-300"
-                />
-              </div>
-            )
-          })}
-        </div>
+        <motion.div
+          className="flex touch-pan-y transition ease-out"
+          style={{ x }}
+        >
+          {data.map(
+            ({ id, path, url }: { id: string; path: string; url: string }) => {
+              return (
+                <div key={id} className="relative flex-[1_0_100%]">
+                  <Image
+                    src={path}
+                    fill
+                    alt={'property image'}
+                    draggable={false}
+                    data-source-url={url}
+                    className="object-cover object-center bg-neutral-300"
+                  />
+                </div>
+              )
+            }
+          )}
+        </motion.div>
       </div>
+      {/* only show dots when there is more than one image */}
       {itemCount > 1 && (
         <Dots
           count={itemCount}
@@ -165,15 +221,16 @@ export default function ImageSlider({ data, page = 'explore' }: any) {
           controls={controls}
         />
       )}
-      <button
-        className={clsx(
-          'absolute top-1/2 -translate-y-1/2 right-0 text-7xl text-white z-10 w-10 h-10 flex-center transition duration-300',
-          currentIndex === itemCount - 1 ? 'opacity-0' : 'opacity-100'
-        )}
-        onClick={(e) => scrollToNext(e)}
+      <motion.button
+        className={clsx('right-2', buttonClasses)}
+        style={{ opacity: opacityRightButton, visibility: buttonVisible }}
+        onClick={(e) => {
+          e.preventDefault()
+          setX(-(indexRef.current + 1) * widthRef.current)
+        }}
       >
         <RightChevronIcon />
-      </button>
+      </motion.button>
     </div>
   )
 }
@@ -185,7 +242,7 @@ function Dots({
 }: {
   count: number
   styles: string
-  controls: any
+  controls: AnimationControls
 }) {
   return (
     <ul className={clsx('flex space-x-1.5', styles)}>
@@ -193,11 +250,10 @@ function Dots({
         .fill(1)
         .map((el, i) => {
           return (
-            <li key={i}>
+            <li key={i} data-key={i}>
               <motion.div
                 className={clsx(
-                  'rounded w-1.5 h-1.5 bg-white',
-                  i === 0 ? 'opacity-100' : 'opacity-60'
+                  'rounded w-1.5 h-1.5 bg-white transition duration-100'
                 )}
                 custom={i}
                 animate={controls}

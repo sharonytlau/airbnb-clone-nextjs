@@ -60,15 +60,7 @@ export function decimalAdjust(value: number, exp: number = 0) {
   return Number(`${newMagnitude}e${+newExponent + exp}`)
 }
 
-export function clamp({
-  num,
-  min,
-  max,
-}: {
-  num: number
-  min: number
-  max: number
-}) {
+export function clamp(num: number, min: number, max: number) {
   return Math.min(Math.max(num, min), max)
 }
 

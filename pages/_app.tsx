@@ -37,6 +37,9 @@ const sans = localFont({
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [showFooter, setShowFooter] = useState(false)
   const windowWidth = useWindowWidth()
+  console.log('app rerender')
+  const size =
+    windowWidth < 550 ? 'small' : windowWidth < 750 ? 'medium' : 'large'
 
   const router = useRouter()
 
@@ -69,7 +72,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <main className={sans.variable}>
       <SessionProvider session={pageProps.session}>
-        <WindowWidthContext.Provider value={windowWidth}>
+        <WindowWidthContext.Provider value={windowWidth} key={size}>
           <FooterContext.Provider value={{ setShowFooter }}>
             <Component {...pageProps} />
             <SlideIn show={showFooter} styles={{ enter: { bottom: '0' } }}>
