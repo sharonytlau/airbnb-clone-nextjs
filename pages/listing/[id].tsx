@@ -5,6 +5,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { findAllListings } from 'lib/prisma/findListing'
 import ImageSlider from 'components/ImageSlider'
 import clsx from 'clsx'
+import { StarIcon } from 'components/icons/StarIcon'
 import { ListingReview } from '@prisma/client'
 import { format } from 'date-fns'
 import { useHasMounted } from 'hooks/useHasMounted'
@@ -55,9 +56,13 @@ export default function ListingDetail({
         </button>
       </div>
       <DetailSection className="space-y-2">
-        <h1 className={titleClass}> {data.name}</h1>
-        <div className="space-x-2 font-medium text-sm">
-          {data.rating != null && <span>{data.rating}</span>}
+        <div className="flex items-center gap-2 font-medium text-sm">
+          {data.rating != null && (
+            <>
+              <StarIcon className="text-[0.85em] relative bottom-[0.15em] inline" />
+              <span>{data.rating}</span>
+            </>
+          )}
           <span className="underline">{data.reviews.length} reviews</span>
           {data.host.isSuperhost && <span>Superhost</span>}
         </div>
@@ -78,7 +83,7 @@ export default function ListingDetail({
           </div>
           <Image
             src={data.host.avatarUrl}
-            alt={data.name}
+            alt={`${data.host.name} avatar image`}
             width="56"
             height="56"
             className="self-start"
@@ -99,10 +104,12 @@ export default function ListingDetail({
       </DetailSection>
       {/* reviews */}
       <DetailSection>
-        <h2 className={clsx(titleClass, 'mb-7')}>
-          <span> {`🟊 ${data.rating} ·`} </span>
-          <span> {`${data.reviews.length} reviews`}</span>
-        </h2>
+        <div className={clsx(titleClass, 'flex items-center mb-7 gap-2')}>
+          <StarIcon className="text-[0.85em] relative bottom-[0.05em]" />
+          <span> {data.rating} </span>
+          <span> {'·'} </span>
+          <h2> {`${data.reviews.length} reviews`}</h2>
+        </div>
         {hasMounted && (
           <>
             <div className="flex gap-8 overflow-x-auto scrollbar-hide mb-6">
@@ -195,7 +202,7 @@ function ReviewCard({ data }: { data: ReviewType }) {
           </div>
         </div>
       </div>
-      <div ref={cardTextRef} className="text-zinc-700 multiline-ellipsis">
+      <div ref={cardTextRef} className="text-zinc-700 line-clamp-5">
         {data.review}
       </div>
       {hasMore && (

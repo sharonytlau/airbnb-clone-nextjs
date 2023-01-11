@@ -18,7 +18,7 @@ export default function ImageSlider({ data, page = 'explore', onTap }: any) {
   const windowWidth = useContext(WindowWidthContext)
   const sliderRef = useRef<HTMLDivElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
-  const controls = useAnimationControls()
+  const dotControls = useAnimationControls()
   const x = useMotionValue(0)
   const opacityLeftButton = useMotionValue(0)
   const opacityRightButton = useMotionValue(0)
@@ -54,7 +54,7 @@ export default function ImageSlider({ data, page = 'explore', onTap }: any) {
 
       // reset dots and buttons styles according to current index
       const index = clampIndex(Math.ceil(-x.get() / widthRef.current))
-      controls.set((i) => ({
+      dotControls.set((i) => ({
         opacity: i === index ? 1 : 0.6,
         scale: i === index ? 1.2 : 1,
       }))
@@ -65,7 +65,7 @@ export default function ImageSlider({ data, page = 'explore', onTap }: any) {
       indexRef.current = index
     },
     [
-      controls,
+      dotControls,
       x,
       opacityLeftButton,
       opacityRightButton,
@@ -218,7 +218,7 @@ export default function ImageSlider({ data, page = 'explore', onTap }: any) {
         <Dots
           count={itemCount}
           styles="absolute text-yellow-400 bottom-2 left-1/2 -translate-x-1/2 transition"
-          controls={controls}
+          controls={dotControls}
         />
       )}
       <motion.button

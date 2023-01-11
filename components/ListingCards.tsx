@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { HeartIcon } from './icons/HeartIcon'
 import { useRouter } from 'next/router'
 import { useWishlists } from 'lib/swr/useWishLists'
+import { StarIcon } from './icons/StarIcon'
 
 function ListingCards({
   data,
@@ -120,7 +121,10 @@ function ListingCards({
                     </p>
                   </div>
                   {rating != null && (
-                    <div className="whitespace-nowrap"> {`★ ${rating}`} </div>
+                    <div className="self-start flex gap-1.5 flex-nowrap items-center">
+                      <StarIcon className="text-[0.85em] relative bottom-[0.08em]" />
+                      <span>{rating}</span>
+                    </div>
                   )}
                 </div>
               </Link>

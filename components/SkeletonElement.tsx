@@ -1,8 +1,7 @@
 import clsx from 'clsx'
 import React from 'react'
 
-const variantConst = ['circle', 'square', 'paragraph', 'text'] as const
-type variant = typeof variantConst[number]
+type variant = 'circle' | 'square' | 'paragraph' | 'text'
 
 const skeletonClasses = 'animate-pulse bg-neutral-300 mb-2.5 last:mb-0'
 

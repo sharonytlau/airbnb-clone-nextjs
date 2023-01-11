@@ -78,6 +78,7 @@ const Home = ({
               console.log('downnnn')
             },
           }}
+          // remount component on category change
           key={activeCategory}
         >
           <ListingGrid>
