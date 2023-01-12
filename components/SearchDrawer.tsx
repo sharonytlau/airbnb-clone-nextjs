@@ -371,7 +371,7 @@ function SearchDrawer({ handleHideDrawer }: SearchDrawerProps) {
   return (
     <div
       id="SEARCH_DRAWER"
-      className="flex flex-col bg-zinc-100 h-full z-25 text-sm font-medium text-gray-900"
+      className="flex flex-col bg-zinc-100 h-full text-sm font-medium text-gray-900"
     >
       {/* tabs */}
       <div className="relative flex justify-center gap-4 text-base py-6">

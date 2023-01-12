@@ -91,22 +91,22 @@ const Home = ({
             )}
           </ListingGrid>
         </ScrollableVertical>
-
-        {/* todo: refactor */}
-        {/* SearchDrawer */}
-        <SlideIn
-          show={showDrawer}
-          styles={{
-            enter: {
-              top: '0',
-              left: '0',
-              height: '100%',
-            },
-          }}
-        >
-          <SearchDrawer handleHideDrawer={() => setShowDrawer(false)} />
-        </SlideIn>
       </div>
+      {/* todo: refactor */}
+      {/* SearchDrawer */}
+      <SlideIn
+        show={showDrawer}
+        styles={{
+          enter: {
+            top: '0',
+            left: '0',
+            height: '100%',
+          },
+        }}
+        className="z-50"
+      >
+        <SearchDrawer handleHideDrawer={() => setShowDrawer(false)} />
+      </SlideIn>
     </div>
   )
 }

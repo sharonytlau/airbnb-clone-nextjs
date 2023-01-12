@@ -8,9 +8,15 @@ type SlideInProps = {
     enter?: UseTransitionProps['enter']
     leave?: UseTransitionProps['leave']
   }
+  className?: string
 }
 
-export function SlideIn({ children, show, styles = {} }: SlideInProps) {
+export function SlideIn({
+  children,
+  show,
+  styles = {},
+  className = '',
+}: SlideInProps) {
   const { from = {}, enter = {}, leave = {} } = styles
   const transitions = useTransition(show, {
     from: {
@@ -36,7 +42,11 @@ export function SlideIn({ children, show, styles = {} }: SlideInProps) {
     <>
       {transitions(
         (styles: any, item) =>
-          item && <animated.div style={styles}>{children}</animated.div>
+          item && (
+            <animated.div style={styles} className={className}>
+              {children}
+            </animated.div>
+          )
       )}
     </>
   )
